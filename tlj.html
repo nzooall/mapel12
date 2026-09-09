@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Ujian TWAN - VoIP & Briker</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --border: #e2e8f0;
+            --correct: #22c55e;
+            --correct-bg: #f0fdf4;
+            --wrong: #ef4444;
+            --wrong-bg: #fef2f2;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0 0 8px 0;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        p {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        .result-card {
+            display: none;
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+            text-align: center;
+            border: 2px solid var(--primary);
+        }
+
+        .result-card h2 {
+            margin: 0 0 10px 0;
+        }
+
+        .score-text {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 12px;
+            white-space: pre-line;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        .option-label:hover {
+            background-color: #f1f5f9;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 12px;
+            margin-top: 4px;
+        }
+
+        /* Styling status Jawaban */
+        .option-label.correct {
+            background-color: var(--correct-bg) !important;
+            border-color: var(--correct) !important;
+            color: #15803d;
+            font-weight: 600;
+        }
+
+        .option-label.wrong {
+            background-color: var(--wrong-bg) !important;
+            border-color: var(--wrong) !important;
+            color: #b91c1c;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 24px;
+            margin-bottom: 40px;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-submit {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-reset {
+            background-color: #64748b;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background-color: #475569;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Bank Soal TWAN - VoIP & Briker</h1>
+        <p>Pilih jawaban yang paling tepat pada setiap soal, lalu klik "Selesai & Cek Hasil" di bagian bawah.</p>
+    </header>
+
+    <div id="resultCard" class="result-card">
+        <h2>Hasil Ujian</h2>
+        <p id="scoreText" class="score-text"></p>
+        <p id="detailText" style="margin-top: 8px;"></p>
+    </div>
+
+    <form id="quizForm">
+        <div id="questionsContainer"></div>
+
+        <div class="action-buttons">
+            <button type="button" class="btn-submit" onclick="submitQuiz()">Selesai & Cek Hasil</button>
+            <button type="button" class="btn-reset" onclick="resetQuiz()">Kerjakan Ulang</button>
+        </div>
+    </form>
+</div>
+
+<script>
+const quizData = [
+    {
+        q: "1. Apa kepanjangan dari VoIP?",
+        options: ["A. Voice over Internet Protocol", "B. Visual over Internet Protocol", "C. Voice on Internal Protocol", "D. Verification over Internet Protocol", "E. Voice over International Protocol"],
+        answer: 0
+    },
+    {
+        q: "2. Protokol signaling utama pada VoIP yang berfungsi untuk membangun, memodifikasi, dan mengakhiri sesi komunikasi multimedia adalah...",
+        options: ["A. HTTP", "B. FTP", "C. SIP", "D. SMTP", "E. DHCP"],
+        answer: 2
+    },
+    {
+        q: "3. Komponen dalam jaringan VoIP yang berfungsi sebagai pusat pengendali panggil / sentral telepon digital adalah...",
+        options: ["A. Modem", "B. Access Point", "C. IP-PBX / Server VoIP", "D. Network Interface Card", "E. Switch Unmanaged"],
+        answer: 2
+    },
+    {
+        q: "4. Aplikasi softphone yang digunakan sebagai client pengirim dan penerima suara pada praktikum ini adalah...",
+        options: ["A. Wireshark", "B. Zoiper", "C. Putty", "D. Cisco Packet Tracer", "E. WinSCP"],
+        answer: 1
+    },
+    {
+        q: "5. Sinyal audio analog diubah menjadi data digital dalam jaringan VoIP melalui proses...",
+        options: ["A. Modulasi AM", "B. Encoding/Digitasi", "C. Decryption", "D. Routing Static", "E. Switching Layer 2"],
+        answer: 1
+    },
+    {
+        q: "6. Mode jaringan pada VirtualBox yang menghubungkan Virtual Machine secara langsung ke kartu jaringan physical Host sehingga seolah-olah VM menjadi perangkat fisik terpisah dalam jaringan adalah...",
+        options: ["A. NAT (Network Address Translation)", "B. Host-Only Adapter", "C. Bridged Adapter", "D. Internal Network", "E. Not Attached"],
+        answer: 2
+    },
+    {
+        q: "7. Berapa alokasi RAM minimal yang direkomendasikan saat membuat Virtual Machine untuk Briker 2.1 pada praktikum ini?",
+        options: ["A. 128 MB", "B. 256 MB", "C. 512 MB", "D. 1024 MB (1 GB)", "E. 8192 MB (8 GB)"],
+        answer: 2
+    },
+    {
+        q: "8. Menu di VirtualBox yang digunakan untuk mengatur kartu jaringan virtual adalah...",
+        options: ["A. Settings > Storage", "B. Settings > Network", "C. Settings > Display", "D. Settings > System", "E. Settings > Audio"],
+        answer: 1
+    },
+    {
+        q: "9. Kombinasi Username dan Password default untuk login ke dalam Command Line Interface (CLI) Linux Briker sebagai superuser (root) adalah...",
+        options: ["A. user / user", "B. admin / admin", "C. root / Briker", "D. administrator / 1234", "E. support / support"],
+        answer: 2
+    },
+    {
+        q: "10. File konfigurasikan interface jaringan Linux Briker berada pada direktori...",
+        options: ["A. /etc/network/interfaces", "B. /var/www/html", "C. /etc/asterisk/sip.conf", "D. /home/user/network", "E. /root/config"],
+        answer: 0
+    },
+    {
+        q: "11. Perintah CLI yang digunakan untuk melakukan penyuntingan/edit file teks pada Linux Briker adalah...",
+        options: ["A. ls", "B. cd", "C. nano", "D. ping", "E. mkdir"],
+        answer: 2
+    },
+    {
+        q: "12. Perintah yang tepat untuk memuat ulang (restart) layanan jaringan di Linux Briker setelah mengubah IP address adalah...",
+        options: ["A. reboot now", "B. /etc/init.d/networking restart", "C. service ippbx restart", "D. ping localhost", "E. ifconfig eth0 down"],
+        answer: 1
+    },
+    {
+        q: "13. Alamat yang diketikkan pada browser PC untuk membuka antarmuka manajemen (Web GUI) Briker adalah...",
+        options: ["A. http://localhost", "B. https://[IP_Address_Server_Briker]", "C. ftp://127.0.0.1", "D. www.briker.org", "E. https://10.0.0.1"],
+        answer: 1
+    },
+    {
+        q: "14. Username dan Password default untuk masuk ke Web Administrator Briker adalah...",
+        options: ["A. root / Briker", "B. administrator / admin", "C. user / user", "D. admin / 1234", "E. guest / guest"],
+        answer: 3
+    },
+    {
+        q: "15. Menu pada Web GUI Briker yang digunakan untuk membuat akun penomoran nomor telepon client adalah...",
+        options: ["A. System Info", "B. Network Settings", "C. IPPBX Administration > Extensions", "D. Trunk Configuration", "E. Billing System"],
+        answer: 2
+    },
+    {
+        q: "16. Jenis tipe device yang dipilih saat menambahkan nomor ekstensi baru untuk softphone Zoiper di Briker adalah...",
+        options: ["A. Generic IAX2 Device", "B. Generic SIP Device", "C. Custom Extension", "D. DAHDI Extension", "E. Virtual Device"],
+        answer: 1
+    },
+    {
+        q: "17. Tombol / bar berwarna merah yang wajib diklik di bagian atas Web GUI Briker setelah selesai membuat/mengubah ekstensi agar konfigurasi diterapkan adalah...",
+        options: ["A. Save Changes", "B. Submit", "C. Apply Configuration Changes", "D. Reboot Server", "E. Reset Default"],
+        answer: 2
+    },
+    {
+        q: "18. Parameter utama yang diisikan pada Zoiper agar dapat terhubung dengan server Briker adalah...",
+        options: ["A. MAC Address & SSID", "B. Extension Number, Password, dan IP Server Briker", "C. Email, Password, dan DNS Server", "D. Subnet Mask, Gateway, dan Domain Name", "E. Serial Number dan License Key"],
+        answer: 1
+    },
+    {
+        q: "19. Format pengisian nama akun/credentials pada aplikasi Zoiper saat mendaftar ke server VoIP adalah...",
+        options: ["A. [IP_Server]@[Extension]", "B. [Extension]@[IP_Server]", "C. [Nama_User]@[Domain]", "D. [Password]@[IP_Server]", "E. [Extension]:[Password]"],
+        answer: 1
+    },
+    {
+        q: "20. Transport Protocol bawaan yang paling umum dipilih saat mendaftarkan Zoiper ke Briker karena sifatnya yang cepat (connectionless) adalah...",
+        options: ["A. TCP", "B. SIP UDP", "C. TLS", "D. HTTP", "E. SSH"],
+        answer: 1
+    },
+    {
+        q: "21. Agar dua perangkat smartphone/laptop yang menjalankan Zoiper dapat saling berkomunikasi via Wi-Fi, syarat utama jaringannya adalah...",
+        options: ["A. Harus menggunakan dua router Wi-Fi yang terpisah jauh", "B. Terhubung ke jaringan Wi-Fi / Access Point yang sama dan berada dalam satu subnet IP", "C. Salah satu HP harus menyalakan Mobile Data 4G/5G", "D. Memiliki merek HP yang sama", "E. Menggunakan IP Public yang disewa dari ISP"],
+        answer: 1
+    },
+    {
+        q: "22. Perintah dasar pada Command Prompt (CMD) yang digunakan untuk menguji konektivitas antarmuka IP antara Client dan Server Briker adalah...",
+        options: ["A. ipconfig", "B. tracert", "C. ping [IP_Address]", "D. nslookup", "E. netstat"],
+        answer: 2
+    },
+    {
+        q: "23. Kasus: Seorang siswa mengonfigurasi Briker di VirtualBox menggunakan IP 192.168.1.200/24. Laptop Host terhubung ke Wi-Fi dengan IP 192.168.1.15. Namun, smartphone client tidak bisa melakukan ping ke IP Briker. Setelah diperiksa, Adapter VirtualBox ter-setting ke NAT. Mengapa terjadi masalah ini?",
+        options: ["A. NAT menutup semua Port SIP Briker secara otomatis.", "B. Mode NAT membuat VM berada di belakang router virtual internal VirtualBox, sehingga tidak dapat diakses langsung oleh perangkat luar di jaringan Wi-Fi fisik.", "C. IP 192.168.1.200 tergolong IP Public yang diblokir oleh NAT.", "D. Mode NAT mewajibkan penggunaan kabel UTP, bukan Wi-Fi.", "E. RAM VirtualBox kurang besar untuk menjalankan NAT."],
+        answer: 1
+    },
+    {
+        q: "24. Analisis: Mengapa pengujian VoIP menggunakan Bridged Adapter pada kartu Wi-Fi terkkadang mengalami kendala unreachable, padahal pada kartu LAN (Ethernet) selalu berhasil?",
+        options: ["A. Wi-Fi tidak mendukung protokol UDP.", "B. Beberapa driver kartu Wi-Fi atau Access Point mengaktifkan fitur MAC Filtering / penolakan Promiscuous Mode yang mencegah pembagian MAC Address virtual oleh VirtualBox.", "C. Sinyal Wi-Fi terlalu lambat untuk membawa paket data suara.", "D. Briker 2.1 hanya kompatibel dengan kabel LAN Cat6.", "E. Kabel Wi-Fi tidak terpasang dengan benar pada VirtualBox."],
+        answer: 1
+    },
+    {
+        q: "25. Troubleshooting: Client A (IP: 192.168.10.5) dan Server Briker (IP: 192.168.10.200). Ketika Client B diberi IP Static 192.168.1.6/24 dan terhubung ke Wi-Fi, Client B gagal mendaftar (register) ke Zoiper. Analisis penyebab utamanya adalah...",
+        options: ["A. Password Zoiper Client B terlalu pendek.", "B. Client B berada di segmen subnet yang berbeda (192.168.1.X) dari Server Briker (192.168.10.X).", "C. Server Briker kehabisan alokasi ekstensi.", "D. Aplikasi Zoiper Client B belum di-update ke versi Pro.", "E. VirtualBox mengalami kerusakan sistem."],
+        answer: 1
+    },
+    {
+        q: "26. Evaluasi: Dalam sebuah lab komputer, terdapat 20 siswa yang mempraktikkan Briker dengan IP Static 192.168.1.200/24 pada Access Point yang sama. Dampak yang terjadi pada jaringan tersebut adalah...",
+        options: ["A. Komunikasi suara akan menjadi sangat jernih.", "B. Terjadi IP Address Conflict, menyebabkan server Briker antar siswa saling bertabrakan dan tidak bisa diakses stabil.", "C. Kecepatan Wi-Fi meningkat dua kali lipat.", "D. Zoiper akan otomatis mengganti nomor ekstensi sendiri.", "E. VirtualBox di semua PC akan mati secara tiba-tiba."],
+        answer: 1
+    },
+    {
+        q: "27. Solusi: Bagaimana merancang skema pengalamatan IP Static yang benar untuk 2 siswa yang bekerja berpasangan dalam satu jaringan Wi-Fi (10.10.10.0/24) dengan Gateway 10.10.10.1?",
+        options: ["A. Server: 10.10.10.1, Client 1: 10.10.10.1, Client 2: 10.10.10.1", "B. Server: 10.10.10.200, Client 1: 10.10.10.201, Client 2: 10.10.10.202", "C. Server: 10.10.20.200, Client 1: 10.10.30.201, Client 2: 10.10.40.202", "D. Server: 172.16.0.1, Client 1: 192.168.1.1, Client 2: 10.0.0.1", "E. Server: 255.255.255.0, Client 1: 255.255.255.0, Client 2: 255.255.255.0"],
+        answer: 1
+    },
+    {
+        q: "28. Analisis Protokol: Saat Client 1 (Ext 1001) memanggil Client 2 (Ext 1002), Zoiper Client 1 menampilkan status \"Ringing\", tetapi smartphone Client 2 tidak berdering sama sekali. Di mana kemungkinan letak kesalahannya?",
+        options: ["A. Client 1 belum memasang mikrofon.", "B. Akun Client 2 belum terdaftar (Unregistered) di Zoiper / Server Briker.", "C. Kabel power router Wi-Fi terputus.", "D. Server Briker mengalami kehabisan ruang harddisk.", "E. Client 1 menekan tombol Mute."],
+        answer: 1
+    },
+    {
+        q: "29. Diagram Alur (SIP Flow): Urutan sinyal komunikasi SIP yang benar ketika panggilan berhasil diangkat oleh penerima adalah...",
+        options: ["A. 200 OK - INVITE - RINGING - ACK", "B. INVITE - 180 RINGING - 200 OK - ACK", "C. ACK - INVITE - BYE - CANCEL", "D. BYE - 200 OK - INVITE - 180 RINGING", "E. 180 RINGING - ACK - INVITE - 200 OK"],
+        answer: 1
+    },
+    {
+        q: "30. Problem Solving: Pada saat melakukan Panggilan Suara via Zoiper, suara yang terdengar patah-patah (jitter/lag). Berdasarkan analisis jaringan Wi-Fi, penyebab teknis utama dari gangguan ini adalah...",
+        options: ["A. Format ekstensi di Briker menggunakan angka, bukan huruf.", "B. Terjadi variasi delay pengiriman paket (jitter) dan packet loss pada frekuensi jaringan nirkabel (Wi-Fi) yang terinterferensi.", "C. Versi Linux pada Briker terlalu lama.", "D. Password akun SIP terlalu rumit sehingga memperlambat dekripsi.", "E. Menggunakan IP Static pada Server."],
+        answer: 1
+    },
+    {
+        q: "31. Evaluasi Sistem: Protokol yang bertugas membawa data audio/suara secara real-time setelah jalur signaling SIP terbentuk antara dua client adalah...",
+        options: ["A. TCP", "B. RTP (Real-time Transport Protocol)", "C. ICMP", "D. ARP", "E. DNS"],
+        answer: 1
+    },
+    {
+        q: "32. Diagnosis: Apabila panggilan antar Zoiper terhubung (timer berjalan), tetapi kedua pihak tidak dapat saling mendengar suara sama sekali (One-way / No Audio), bagian sistem yang perlu diperiksa adalah...",
+        options: ["A. Konfigurasi Gateway IP di file /etc/resolv.conf.", "B. Bloking port RTP (biasanya port UDP 10000-20000) oleh Firewall Windows/Router atau kendala NAT traversal.", "C. Pengaturan nama Display Name pada Web GUI Briker.", "D. Jumlah memori RAM yang dialokasikan di VirtualBox kurang.", "E. Tipe instalasi Briker saat awal booting."],
+        answer: 1
+    },
+    {
+        q: "33. Kasus CLI: Setelah Anda mengubah IP pada file /etc/network/interfaces di Briker, Anda mengetikkan perintah ifconfig. Ternyata IP eth0 belum berubah. Tindakan pemecahan masalah yang tepat adalah...",
+        options: ["A. Menghapus folder /etc/network/.", "B. Menginstal ulang Briker dari awal.", "C. Menjalankan perintah /etc/init.d/networking restart atau merestart VM.", "D. Mengganti password root Briker.", "E. Mematikan Access Point Wi-Fi."],
+        answer: 2
+    },
+    {
+        q: "34. Analisis Keamanan/Autentikasi: Saat pendaftaran ekstensi 1001 di Zoiper gagal dengan pesan kesalahan \"401 Unauthorized\", apa yang dapat disimpulkan?",
+        options: ["A. Server Briker mati total.", "B. IP Server yang dimasukkan salah.", "C. Password (Secret) yang dimasukkan di Zoiper tidak cocok dengan password yang dibuat pada Web GUI Briker.", "D. Smartphone tidak terhubung ke Wi-Fi.", "E. Ekstensi 1001 sudah digunakan oleh 100 orang."],
+        answer: 2
+    },
+    {
+        q: "35. Sintesis Konfigurasi: Mengapa pada pembuatan Extension di Web GUI Briker, parameter Secret disarankan menggunakan kombinasi angka yang kuat, bukan sekadar 1234?",
+        options: ["A. Agar suara telepon menjadi lebih jernih.", "B. Mencegah serangan Brute Force / pembajakan jalur ekstensi oleh pihak tidak bertanggung jawab (SIP Scanner).", "C. Karena Briker akan menolak pembuatan ekstensi jika password terlalu pendek.", "D. Agar Zoiper dapat terhubung tanpa Wi-Fi.", "E. Mempercepat proses pendaftaran IP di router."],
+        answer: 1
+    },
+    {
+        q: "36. Analisis Logika: Apa yang terjadi jika dua buah smartphone (Client A dan Client B) dikonfigurasi menggunakan Nomor Extension yang sama (misal: 1001) pada saat bersamaan ke server Briker?",
+        options: ["A. Kedua HP akan berdering secara sempurna dan dapat melakukan konferensi 3 arah.", "B. Terjadi konflik pendaftaran (registration conflict), di mana panggil masuk akan acak atau membingungkan rute panggil Asterisk.", "C. Server Briker akan otomatis menghapus ekstensi 1001.", "D. Salah satu HP akan meledak.", "E. Aplikasi Zoiper di kedua HP akan terhapus otomatis."],
+        answer: 1
+    },
+    {
+        q: "37. Evaluasi Web GUI: Jika Anda lupa menekan tombol \"Apply Configuration Changes\" (baris merah) setelah membuat Ekstensi 1001 dan 1002, maka dampaknya adalah...",
+        options: ["A. Data ekstensi langsung aktif seketika tanpa perlu disave.", "B. Ekstensi tersimpan di database Web GUI, tetapi daemon Asterisk PBX belum memperbarui konfigurasinya sehingga Zoiper akan gagal login.", "C. Server Briker akan mengalami crash dan reboot.", "D. IP Address Briker berubah kembali ke default.", "E. Aplikasi VirtualBox ter-uninstall."],
+        answer: 1
+    },
+    {
+        q: "38. Skenario: Seorang teknisi ingin memastikan Server Briker dapat diakses oleh Web Browser Host, tetapi saat mengetik https://192.168.1.200, browser menampilkan pesan error \"Connection Refused\" atau \"Timeout\". Langkah runtut troubleshooting yang paling logis adalah...",
+        options: ["A. Langsung menginstall ulang laptop Host.", "B. 1) Cek status nyala VM Briker, 2) Tes ping ke IP Server dari Host, 3) Cek apakah web server Apache di Briker berjalan.", "C. Mengganti aplikasi Zoiper ke Skype.", "D. Mematikan semua koneksi Wi-Fi dan Bluetooth.", "E. Mengubah password administrator Briker via CLI."],
+        answer: 1
+    },
+    {
+        q: "39. Rancangan Topologi: Jika Anda diminta membangun jaringan VoIP untuk 2 gedung sekolah yang berbeda lantai tanpa kabel LAN, peralatan minimal yang harus disediakan di tiap lantai adalah...",
+        options: ["A. 1 Komputer Server Briker di setiap lantai.", "B. Wireless Access Point di setiap lantai yang terhubung dalam satu segmen jaringan (WDS/Bridge) dan 1 Server Briker pusat.", "C. Masing-masing siswa membawa Router sendiri.", "D. Menggunakan koneksi Bluetooth antar HP.", "E. Menggunakan kabel fiber optik tanpa access point."],
+        answer: 1
+    },
+    {
+        q: "40. Analisis Fungsi Codec: Pada settingan Zoiper terdapat pilihan Codec seperti g711u (ulaw), g711a (alaw), dan GSM. Jika bandwidth Wi-Fi di sekolah sangat terbatas dan padat, sebaiknya mengutamakan codec yang hemat bandwidth yaitu...",
+        options: ["A. G.711u (Uncompressed)", "B. GSM / G.729", "C. HD Audio Uncompressed", "D. WAV Linear", "E. FLAC Audio"],
+        answer: 1
+    },
+    {
+        q: "41. Troubleshooting Ping: Komputer Host bisa melakukan ping ke IP Briker (192.168.1.200), tetapi HP Client yang terhubung ke Wi-Fi tidak bisa ping ke IP Briker maupun ke Host. Fitur keamanan pada Router Wi-Fi yang kemungkinan menjadi penyebab isolasi ini adalah...",
+        options: ["A. WPA2-PSK", "B. AP Isolation / Client Isolation", "C. DHCP Server Enabled", "D. SSID Broadcast On", "E. MAC Address Cloning"],
+        answer: 1
+    },
+    {
+        q: "42. Evaluasi Port: Port standar pada protokol SIP yang digunakan Briker untuk mendengarkan (listen) registrasi dari Zoiper adalah port...",
+        options: ["A. Port 80 UDP", "B. Port 21 TCP", "C. Port 5060 UDP", "D. Port 443 TCP", "E. Port 8080 TCP"],
+        answer: 2
+    },
+    {
+        q: "43. Troubleshooting CLI: Ketika mengetik nano /etc/network/interfaces di CLI Briker, muncul pesan Command not found atau layar bersih tanpa isi teks. Kemungkinan penyebabnya adalah...",
+        options: ["A. Salah mengetikkan nama file/path atau teks editor nano belum terinstall (dapat diganti dengan vi).", "B. VirtualBox kehabisan ruang memori.", "C. Wi-Fi terputus.", "D. Ekstensi Zoiper belum dibuat.", "E. Server Briker terkena virus."],
+        answer: 0
+    },
+    {
+        q: "44. Sintesis Konfigurasi: Jika IP Gateway pada Access Point Wi-Fi adalah 192.168.100.1/24, manakah konfigurasi IP Static Briker yang paling tepat agar tidak terjadi conflict dan tetap berada dalam jaringan?",
+        options: ["A. IP: 192.168.1.200, Netmask: 255.255.255.0, Gateway: 192.168.1.1", "B. IP: 192.168.100.200, Netmask: 255.255.255.0, Gateway: 192.168.100.1", "C. IP: 10.0.0.1, Netmask: 255.0.0.0, Gateway: 192.168.100.1", "D. IP: 192.168.100.1, Netmask: 255.255.255.0, Gateway: 192.168.100.1", "E. IP: 172.16.0.200, Netmask: 255.255.0.0, Gateway: 172.16.0.1"],
+        answer: 1
+    },
+    {
+        q: "45. Analisis Kasus Operasional: Mengapa saat mengakses Web GUI Briker pertama kali di browser muncul peringatan \"Your connection is not private\" / \"SSL Certificate Error\"?",
+        options: ["A. Karena server Briker telah diretas.", "B. Karena Briker menggunakan sertifikat SSL Self-Signed bawaan yang belum terverifikasi oleh otoritas sertifikat publik (CA).", "C. Karena browser PC belum di-update.", "D. Karena IP Address Briker salah.", "E. Karena Zoiper sedang aktif dipanggil."],
+        answer: 1
+    },
+    {
+        q: "46. Pemeriksaan Status Ekstensi: Fitur pada Web GUI Briker atau Asterisk CLI (sip show peers) digunakan teknisi untuk...",
+        options: ["A. Melihat daftar ekstensi SIP yang terhubung/aktif beserta IP Address dan port client.", "B. Mengubah password root Linux.", "C. Format harddisk secara otomatis.", "D. Menghapus histori panggil secara permanen.", "E. Mengukur kecepatan kipas processor server."],
+        answer: 0
+    },
+    {
+        q: "47. Sintesis Praktikum: Kesimpulan terbaik mengenai peran kombinasi Briker 2.1, VirtualBox, dan Zoiper via Wi-Fi dalam simulasi jaringan VoIP adalah...",
+        options: ["A. VirtualBox bertindak sebagai router, Briker sebagai client, dan Zoiper sebagai penyedia internet.", "B. VirtualBox menyediakan infrastruktur virtualisasi server, Briker bertindak sebagai IP-PBX penterjemah & pengarah rute SIP, dan Zoiper bertindak sebagai media interaksi end-user melalui media Wi-Fi.", "C. Zoiper mengontrol penuh sistem operasi Briker tanpa membutuhkan IP Address.", "D. Briker 2.1 hanya bisa bekerja jika ada koneksi Internet Public aktif dari ISP.", "E. Wi-Fi berfungsi menggantikan seluruh fungsi Server IP-PBX Briker."],
+        answer: 1
+    }
+];
+
+function renderQuiz() {
+    const container = document.getElementById('questionsContainer');
+    container.innerHTML = '';
+
+    quizData.forEach((data, index) => {
+        const qCard = document.createElement('div');
+        qCard.className = 'question-card';
+        qCard.id = `q-card-${index}`;
+
+        const qText = document.createElement('div');
+        qText.className = 'question-text';
+        qText.textContent = data.q;
+        qCard.appendChild(qText);
+
+        const optionsDiv = document.createElement('div');
+        optionsDiv.className = 'options';
+
+        data.options.forEach((opt, optIndex) => {
+            const label = document.createElement('label');
+            label.className = 'option-label';
+            label.id = `label-${index}-${optIndex}`;
+
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = `question-${index}`;
+            radio.value = optIndex;
+
+            label.appendChild(radio);
+            label.appendChild(document.createTextNode(opt));
+            optionsDiv.appendChild(label);
+        });
+
+        qCard.appendChild(optionsDiv);
+        container.appendChild(qCard);
+    });
+}
+
+function submitQuiz() {
+    let score = 0;
+    let total = quizData.length;
+
+    quizData.forEach((data, index) => {
+        const selected = document.querySelector(`input[name="question-${index}"]:checked`);
+        const correctOptIndex = data.answer;
+
+        // Clear previous state classes
+        for (let i = 0; i < data.options.length; i++) {
+            const lbl = document.getElementById(`label-${index}-${i}`);
+            lbl.classList.remove('correct', 'wrong');
+        }
+
+        // Highlight Jawaban Benar
+        const correctLabel = document.getElementById(`label-${index}-${correctOptIndex}`);
+        correctLabel.classList.add('correct');
+
+        if (selected) {
+            const userAns = parseInt(selected.value);
+            if (userAns === correctOptIndex) {
+                score++;
+            } else {
+                const userLabel = document.getElementById(`label-${index}-${userAns}`);
+                userLabel.classList.add('wrong');
+            }
+        }
+    });
+
+    const percentage = Math.round((score / total) * 100);
+    const resultCard = document.getElementById('resultCard');
+    const scoreText = document.getElementById('scoreText');
+    const detailText = document.getElementById('detailText');
+
+    resultCard.style.display = 'block';
+    scoreText.textContent = `Nilai Anda: ${percentage} / 100`;
+    detailText.textContent = `Jumlah jawaban benar: ${score} dari ${total} soal.`;
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    document.getElementById('quizForm').reset();
+    document.getElementById('resultCard').style.display = 'none';
+
+    quizData.forEach((data, index) => {
+        for (let i = 0; i < data.options.length; i++) {
+            const lbl = document.getElementById(`label-${index}-${i}`);
+            lbl.classList.remove('correct', 'wrong');
+        }
+    });
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Inisialisasi Soal saat halaman dimuat
+renderQuiz();
+</script>
+
+</body>
+</html>
