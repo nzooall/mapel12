@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Praktikum MikroTik</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    body::before, body::after {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      filter: blur(90px);
+      z-index: 0;
+    }
+    body::before { background: rgba(99, 102, 241, 0.5); top: 10%; left: 15%; }
+    body::after { background: rgba(236, 72, 153, 0.4); bottom: 10%; right: 15%; }
+
+    .login-container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 420px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      color: #fff;
+    }
+    .login-header { text-align: center; margin-bottom: 32px; }
+    .login-header .icon-box {
+      width: 60px; height: 60px;
+      background: linear-gradient(135deg, #6366f1, #a855f7);
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px auto; font-size: 26px;
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+    }
+    .login-header h2 { font-size: 24px; font-weight: 700; letter-spacing: 0.5px; }
+    .login-header p { font-size: 13px; color: #94a3b8; margin-top: 6px; }
+
+    .input-group { margin-bottom: 20px; }
+    .input-group label { display: block; font-size: 13px; font-weight: 500; color: #cbd5e1; margin-bottom: 8px; }
+    .input-wrapper { position: relative; display: flex; align-items: center; }
+    .input-wrapper i { position: absolute; left: 16px; color: #94a3b8; font-size: 16px; }
+    .input-wrapper input {
+      width: 100%; padding: 14px 16px 14px 48px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px; color: #fff; font-size: 14px; outline: none;
+      transition: all 0.3s ease;
+    }
+    .input-wrapper input:focus {
+      border-color: #6366f1;
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+    }
+    .error-msg {
+      color: #f43f5e; font-size: 12px; margin-bottom: 12px; display: none; text-align: center;
+    }
+    .btn-submit {
+      width: 100%; padding: 14px; margin-top: 10px;
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      border: none; border-radius: 12px; color: #fff;
+      font-size: 15px; font-weight: 600; cursor: pointer;
+      box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4); transition: all 0.3s ease;
+    }
+    .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 25px rgba(79, 70, 229, 0.6); }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="login-header">
+      <div class="icon-box">
+        <i class="fa-solid fa-network-wired"></i>
+      </div>
+      <h2>LOGIN PORTAL</h2>
+      <p>Login terlebih dahulu sebelum masuk ke dashboard</p>
+    </div>
+
+    <div id="errorMsg" class="error-msg">Akun tidak terdaftar atau password salah!</div>
+
+    <form id="loginForm">
+      <div class="input-group">
+        <label for="username">Username</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-user"></i>
+          <input type="text" id="username" placeholder="Masukkan Username" required autocomplete="off">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="password" placeholder="Masukkan Password" required>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">
+        Masuk <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>
+      </button>
+    </form>
+  </div>
+
+  <script>
+    // 1. DILARANG INSPECT ELEMENT / KLIK KANAN / F12
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('keydown', e => {
+      if (
+        e.key === "F12" || 
+        (e.ctrlKey && (e.key === 'u' || e.key === 'U')) ||
+        (e.ctrlKey && e.shiftKey && ['I','i','J','j','C','c'].includes(e.key))
+      ) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // 2. DATABASE USER TERINTEGRASI
+    // Menerima password biasa mau pun Hash SHA-256
+    const registeredUsers = [
+      { 
+        username: "admin", 
+        passwords: ["manurung2009", "62fa86d110f08960fa740203f56e0d3cb35dd8aa3383e74ffba63c5d7df9d2c2"], 
+        role: "admin", 
+        name: "Administrator" 
+      },
+      { 
+        username: "kenzo", 
+        passwords: ["123", "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3"], 
+        role: "user", 
+        name: "Kenzo" 
+      },
+      { 
+        username: "andra", 
+        passwords: ["andra123", "123", "1fd1757ff6dbed35bc078b67104d412e2c0e86b240e89e09968a57173e35181b"], 
+        role: "user", 
+        name: "andra" 
+      }
+    ];
+
+    // 3. VERIFIKASI LOGIN SANGAT PRESISI
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      const userVal = document.getElementById("username").value.trim().toLowerCase();
+      const passVal = document.getElementById("password").value.trim();
+      const errorMsg = document.getElementById("errorMsg");
+
+      // Cari user berdasarkan nama (tidak sensitif huruf besar/kecil)
+      const foundUser = registeredUsers.find(u => u.username.toLowerCase() === userVal);
+
+      if (foundUser && foundUser.passwords.includes(passVal)) {
+        // Simpan sesi ke localStorage
+        localStorage.setItem("currentUser", JSON.stringify({
+          name: foundUser.name,
+          role: foundUser.role
+        }));
+
+        // Pindah ke Halaman Utama
+        window.location.href = "index.html";
+      } else {
+        errorMsg.style.display = "block";
+        errorMsg.innerText = "Akun tidak terdaftar atau password salah!";
+      }
+    });
+  </script>
+
+</body>
+</html>

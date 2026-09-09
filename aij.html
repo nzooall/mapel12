@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Praktikum MikroTik - Rangkuman & Simulasi Soal</title>
+    <form onsubmit="return checkPassword()">
+  <input type="password" id="pass" placeholder="Password">
+  <button type="submit">Masuk</button>
+</form>
+<script>
+  function checkPassword() {
+    const p = document.getElementById("pass").value;
+    if (p === "rahasia123") {
+      alert("Selamat datang, Kenzo!");
+      return true;
+    } else {
+      alert("Password salah!");
+      return false;
+    }
+  }
+</script>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary: #0f172a;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --border-color: #cbd5e1;
+            --correct-bg: #dcfce7;
+            --correct-border: #22c55e;
+            --wrong-bg: #fee2e2;
+            --wrong-border: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        header h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: #64748b;
+            font-size: 0.95rem;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background-color: #e2e8f0;
+            color: var(--secondary);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            background-color: #cbd5e1;
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(30, 58, 138, 0.3);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Styling Rangkuman */
+        h2 {
+            color: var(--primary);
+            background: #eff6ff;
+            padding: 10px 15px;
+            border-left: 5px solid var(--primary);
+            border-radius: 4px;
+            margin: 25px 0 15px 0;
+            font-size: 1.3rem;
+        }
+
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        .code-block {
+            background-color: #0f172a;
+            color: #38bdf8;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin: 2px 0;
+        }
+
+        /* Styling Kuis */
+        .quiz-header {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #166534;
+        }
+
+        /* Result Banner */
+        .result-box {
+            display: none;
+            background: #eff6ff;
+            border: 2px solid var(--primary-light);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .result-box h3 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .result-details {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .score-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+        }
+
+        .question-card {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .question-text {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .options {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .options li {
+            margin-bottom: 8px;
+        }
+
+        .options label {
+            display: block;
+            padding: 10px 14px;
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .options label:hover {
+            background: #f1f5f9;
+        }
+
+        .options input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        /* Class Indikator Jawaban Benar / Salah */
+        .options label.correct-opt {
+            background-color: var(--correct-bg) !important;
+            border-color: var(--correct-border) !important;
+            color: #14532d;
+            font-weight: 600;
+        }
+
+        .options label.wrong-opt {
+            background-color: var(--wrong-bg) !important;
+            border-color: var(--wrong-border) !important;
+            color: #7f1d1d;
+            font-weight: 600;
+        }
+
+        .answer-key {
+            display: none;
+            background-color: #dcfce7;
+            border: 1px solid #86efac;
+            color: #166534;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        /* Bottom Buttons */
+        .quiz-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-submit, .btn-reset {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit {
+            background-color: #16a34a;
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background-color: #15803d;
+        }
+
+        .btn-reset {
+            background-color: #dc2626;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background-color: #b91c1c;
+        }
+
+        .btn-disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>⚡ Modul Praktikum & Simulasi Ujian MikroTik</h1>
+        <p>Rangkuman Rinci Konfigurasi WinBox & 40 Soal Simulasi Ujian Interaktif</p>
+    </header>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('rangkuman')">📘 Bagian 1: Rangkuman Materi</button>
+        <button class="tab-btn" onclick="switchTab('kuis')">📝 Bagian 2: Simulasi 40 Soal</button>
+    </div>
+
+    <!-- BAGIAN 1: RANGKUMAN MATERI -->
+    <div id="rangkuman" class="tab-content active">
+        <h2>📌 1. Dashboard Praktikum MikroTik (index.html)</h2>
+        <p>Portal navigasi utama untuk mengakses seluruh modul pembelajaran dan panduan konfigurasi praktikum MikroTik RouterOS.</p>
+        <ul>
+            <li><b>Modul 1:</b> Konfigurasi Dasar, Identitas, Keamanan, DNS Server, dan SNTP Client.</li>
+            <li><b>Modul 2:</b> Koneksi WAN (ether3), DHCP Client, Routing Default, dan NAT Masquerade.</li>
+            <li><b>Modul 3:</b> Pengalamatan IP LAN (ether4), IP Pool, DHCP Server, Hotspot, dan Limitasi Bandwidth.</li>
+            <li><b>Modul 4:</b> Firewall Filter Rules (ICMP/Ping) dan Pemblokiran File (.mp3) via 3 Metode.</li>
+        </ul>
+
+        <h2>⚙️ 2. Modul 1 — Konfigurasi Dasar MikroTik (modul1.html)</h2>
+        <p>Pengaturan dasar RouterOS mencakup identitas perangkat, manajemen sandi, DNS Forwarder, dan sinkronisasi waktu.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Konfigurasi</th>
+                    <th>Path Menu WinBox</th>
+                    <th>Parameter & Nilai Diisi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td><b>Identity Router</b></td>
+                    <td><span class="code-block">System → Identity</span></td>
+                    <td>Name: <code>Router-NamaSiswa</code></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td><b>Password Router</b></td>
+                    <td><span class="code-block">System → Password</span></td>
+                    <td>Old Password: <i>(kosong)</i><br>New & Confirm: <code>(password baru)</code></td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td><b>DNS Server</b></td>
+                    <td><span class="code-block">IP → DNS</span></td>
+                    <td>Servers: <code>103.172.172.4</code><br>Allow Remote Requests: <code>✓ Centang</code></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td><b>NTP Client</b></td>
+                    <td><span class="code-block">System → NTP Client</span></td>
+                    <td>Enabled: <code>✓ Centang</code><br>Server DNS Names: <code>time.windows.com</code></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>🌍 3. Modul 2 — Konfigurasi Internet (ether3) & Routing Default (modul2.html)</h2>
+        <p>Langkah menghubungkan router ke ISP via interface WAN (ether3) secara dinamis agar terhubung ke internet.</p>
+        <ul>
+            <li><b>DHCP Client (WAN):</b> Navigasi ke <span class="code-block">IP → DHCP Client</span> → Tambah (<b>+</b>) → Interface: <code>ether3</code> | Use Peer DNS: <code>✓</code> | Add Default Route: <code>✓</code>.</li>
+            <li><b>Verifikasi Routing:</b> Navigasi ke <span class="code-block">IP → Routes</span> → Pastikan rute tujuannya <code>0.0.0.0/0</code> aktif (Flags: AS/ADC).</li>
+            <li><b>NAT Masquerade:</b> Navigasi ke <span class="code-block">IP → Firewall → NAT</span> → Tambah (<b>+</b>):
+                <ul>
+                    <li>Tab General: Chain: <code>srcnat</code> | Out. Interface: <code>ether3</code></li>
+                    <li>Tab Action: Action: <code>masquerade</code></li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>📶 4. Modul 3 — Konfigurasi IP LAN, DHCP Server & Hotspot (modul3.html)</h2>
+        <p>Pengelolaan alokasi IP lokal (ether4), distribusi IP otomatis, Captive Portal Hotspot, dan limitasi kecepatan (bandwidth).</p>
+        <ul>
+            <li><b>IP LAN (ether4):</b> <span class="code-block">IP → Addresses</span> → Address: <code>172.32.xx.1/24</code> | Interface: <code>ether4</code> (<i>xx = No. Absen</i>).</li>
+            <li><b>IP Pool LAN:</b> <span class="code-block">IP → Pool</span> → Name: <code>dhcp-pool-lan</code> | Addresses: <code>172.32.xx.21-172.32.xx.70</code>.</li>
+            <li><b>DHCP Setup:</b> <span class="code-block">IP → DHCP Server → DHCP Setup</span> → Interface: <code>ether4</code> | Range: <code>172.32.xx.21-172.32.xx.70</code>.</li>
+            <li><b>Hotspot Setup:</b> <span class="code-block">IP → Hotspot → Hotspot Setup</span> → Interface: <code>ether4</code> | DNS Name: <code>wifi-namasiswa.com</code>.</li>
+            <li><b>User Profiles (Rate Limit):</b> <span class="code-block">IP → Hotspot → User Profiles</span>:
+                <ul>
+                    <li><code>profile-guru</code>: Rate Limit = <code>10M/10M</code></li>
+                    <li><code>profile-siswa</code>: Rate Limit = <code>5M/5M</code></li>
+                </ul>
+            </li>
+            <li><b>Users Hotspot:</b> <span class="code-block">IP → Hotspot → Users</span> → Tambahkan akun <code>guru</code> dan <code>siswa</code> sesuai profilnya.</li>
+        </ul>
+
+        <h2>🛡️ 5. Modul 4 — Firewall Filter Rules & Pemblokiran File (modul4.html)</h2>
+        <p>Keamanan jaringan melalui aturan filter ICMP (Ping) serta 3 pilihan metode pemblokiran unduhan file `.mp3`.</p>
+        <ul>
+            <li><b>Blokir Ping Pool ke Router:</b> <span class="code-block">IP → Firewall → Filter Rules</span> → Chain: <code>input</code> | Src. Address: <code>172.32.xx.21-172.32.xx.70</code> | Protocol: <code>icmp</code> | Action: <code>drop</code>.</li>
+            <li><b>Blokir Ping Antar Klien (21-30 ke 61-70):</b> <span class="code-block">IP → Firewall → Filter Rules</span> → Chain: <code>forward</code> | Src. Address: <code>172.32.xx.21-172.32.xx.30</code> | Dst. Address: <code>172.32.xx.61-172.32.xx.70</code> | Protocol: <code>icmp</code> | Action: <code>drop</code>.</li>
+            <li><b>Pemblokiran File .mp3 (Metode 1: Layer7 Protocol - Utama):</b>
+                <ul>
+                    <li><span class="code-block">IP → Firewall → Layer7 Protocols</span> → Name: <code>block-mp3</code> | Regexp: <code>^.*\.mp3.*$</code></li>
+                    <li><span class="code-block">IP → Firewall → Filter Rules</span> → Chain: <code>forward</code> | Src. Address: <code>172.32.xx.0/24</code> | Protocol: <code>tcp</code> | Layer7 Protocol: <code>block-mp3</code> | Action: <code>drop</code></li>
+                </ul>
+            </li>
+            <li><b>Pemblokiran File .mp3 (Metode 2: Firewall Content - Alternatif 1):</b>
+                <ul>
+                    <li><span class="code-block">IP → Firewall → Filter Rules</span> → Chain: <code>forward</code> | Protocol: <code>tcp</code> | Dst. Port: <code>80</code> | Src. Address: <code>172.32.xx.0/24</code> | Content: <code>.mp3</code> | Action: <code>drop</code></li>
+                </ul>
+            </li>
+            <li><b>Pemblokiran File .mp3 (Metode 3: Web Proxy Access - Alternatif 2):</b>
+                <ul>
+                    <li><span class="code-block">IP → Web Proxy</span> → Enabled: <code>✓</code> | Port: <code>8080</code> | Anonymous: <code>✓</code></li>
+                    <li><span class="code-block">Web Proxy Access</span> → Path: <code>*.mp3</code> | Action: <code>deny</code></li>
+                    <li><span class="code-block">IP → Firewall → NAT</span> → Chain: <code>dstnat</code> | Protocol: <code>tcp</code> | Dst. Port: <code>80</code> | In. Interface: <code>ether4</code> | Action: <code>redirect</code> | To Ports: <code>8080</code></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- BAGIAN 2: SIMULASI SOAL -->
+    <div id="kuis" class="tab-content">
+        <div class="quiz-header">
+            <h3>📌 Panduan Pengerjaan Kuis Interaktif</h3>
+            <p>Pilih satu jawaban terbaik untuk setiap soal. Setelah selesai mengerjakan semua soal, klik tombol <b>"Selesai & Cek Hasil"</b> di bagian paling bawah untuk melihat skor akhir dan evaluasi jawaban.</p>
+        </div>
+
+        <!-- Tampilan Banner Hasil -->
+        <div id="result-box" class="result-box">
+            <h3>🎉 Hasil Ujian Anda</h3>
+            <div class="result-details">
+                <span class="score-badge" id="final-score" style="color: var(--primary);">Nilai: 0 / 100</span>
+                <span class="score-badge" id="correct-count" style="color: #16a34a;">Benar: 0</span>
+                <span class="score-badge" id="wrong-count" style="color: #dc2626;">Salah: 0</span>
+            </div>
+        </div>
+
+        <form id="quiz-form">
+            <div id="quiz-container"></div>
+
+            <div class="quiz-actions">
+                <button type="button" class="btn-submit" onclick="submitQuiz()">✅ Selesai & Cek Hasil</button>
+                <button type="button" class="btn-reset" onclick="resetQuiz()">🔄 Kerjakan Ulang</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    const questions = [
+        { q: "1. Apa fungsi utama dari portal index.html pada paket praktikum MikroTik?", options: ["A. Mengalihkan lalu lintas internet", "B. Sebagai halaman navigasi utama antar modul", "C. Konfigurasi otomatis WinBox", "D. Menjalankan skrip backup"], ans: "B. Sebagai halaman navigasi utama antar modul" },
+        { q: "2. Menu di WinBox yang digunakan untuk mengubah identitas router adalah...", options: ["A. IP -> Identity", "B. System -> Identity", "C. Tools -> Identity", "D. Interface -> Identity"], ans: "B. System -> Identity" },
+        { q: "3. Mengapa disarankan mengubah password bawaan admin pada MikroTik?", options: ["A. Agar internet lebih cepat", "B. Meningkatkan keamanan dasar router", "C. Menambah alokasi IP Address", "D. Mengaktifkan fitur Hotspot"], ans: "B. Meningkatkan keamanan dasar router" },
+        { q: "4. Fitur di MikroTik yang berfungsi menjadikan router sebagai DNS Forwarder untuk klien LAN adalah...", options: ["A. Allow Remote Requests", "B. Cache DNS Dynamic", "C. DNS Static Entry", "D. Peer DNS Enable"], ans: "A. Allow Remote Requests" },
+        { q: "5. Alasan utama memasang NTP Client pada router MikroTik adalah...", options: ["A. Mempercepat koneksi WiFi", "B. Menyinkronkan jam router dengan server internasional", "C. Mencegah kebocoran IP Address", "D. Memblokir situs web ilegal"], ans: "B. Menyinkronkan jam router dengan server internasional" },
+        { q: "6. Server NTP bawaan Windows yang sering digunakan pada konfigurasi MikroTik adalah...", options: ["A. pool.ntp.org", "B. time.windows.com", "C. time.google.com", "D. id.pool.ntp.org"], ans: "B. time.windows.com" },
+        { q: "7. Pada Modul 2, interface yang digunakan sebagai jalur penghubung WAN/Internet adalah...", options: ["A. ether1", "B. ether2", "C. ether3", "D. ether4"], ans: "C. ether3" },
+        { q: "8. Menu untuk mengonfigurasi IP otomatis dari ISP pada interface WAN adalah...", options: ["A. IP -> DHCP Server", "B. IP -> DHCP Client", "C. IP -> Addresses", "D. IP -> Pool"], ans: "B. IP -> DHCP Client" },
+        { q: "9. Fitur pada DHCP Client yang berfungsi membuat rute default secara otomatis adalah...", options: ["A. Use Peer DNS", "B. Add Default Route", "C. Use Peer NTP", "D. DHCP Options"], ans: "B. Add Default Route" },
+        { q: "10. Rute default menuju internet pada tabel routing ditunjukkan dengan Dst. Address...", options: ["A. 192.168.1.1/24", "B. 10.0.0.0/8", "C. 0.0.0.0/0", "D. 127.0.0.1/32"], ans: "C. 0.0.0.0/0" },
+        { q: "11. Action NAT yang digunakan agar IP privat LAN dapat mengakses internet menggunakan IP publik adalah...", options: ["A. redirect", "B. accept", "C. masquerade", "D. drop"], ans: "C. masquerade" },
+        { q: "12. Jalur menu untuk membuat aturan NAT pada WinBox adalah...", options: ["A. IP -> Routes -> NAT", "B. IP -> Firewall -> NAT", "C. System -> NAT", "D. Interfaces -> NAT"], ans: "B. IP -> Firewall -> NAT" },
+        { q: "13. Pada Modul 3, interface yang ditujukan khusus untuk jaringan LAN / Hotspot adalah...", options: ["A. ether1", "B. ether2", "C. ether3", "D. ether4"], ans: "D. ether4" },
+        { q: "14. Jika nomor absen siswa adalah 15, maka konfigurasi IP Address LAN ether4 yang benar adalah...", options: ["A. 172.32.15.1/24", "B. 192.168.15.1/24", "C. 10.32.15.1/24", "D. 172.16.15.1/24"], ans: "A. 172.32.15.1/24" },
+        { q: "15. Rentang IP Address (IP Pool) untuk LAN pada modul praktikum dimulai dari IP...", options: ["A. 172.32.xx.1 - 172.32.xx.50", "B. 172.32.xx.21 - 172.32.xx.70", "C. 172.32.xx.10 - 172.32.xx.100", "D. 172.32.xx.100 - 172.32.xx.200"], ans: "B. 172.32.xx.21 - 172.32.xx.70" },
+        { q: "16. Wizard otomatis untuk mengonfigurasi DHCP Server di MikroTik dinamakan...", options: ["A. DHCP Wizard", "B. DHCP Setup", "C. Quick Setup", "D. Address Creator"], ans: "B. DHCP Setup" },
+        { q: "17. Fitur Captive Portal berbasis web pada MikroTik disebut...", options: ["A. Web Proxy", "B. Hotspot", "C. PPPoE", "D. VPN Server"], ans: "B. Hotspot" },
+        { q: "18. Nama domain DNS Hotspot yang dibuat untuk siswa dinamakan dengan format...", options: ["A. hotspot-namasiswa.com", "B. wifi-namasiswa.com", "C. mikrotik-namasiswa.id", "D. internet-namasiswa.net"], ans: "B. wifi-namasiswa.com" },
+        { q: "19. Parameter pada Hotspot User Profiles yang berfungsi membatasi kecepatan unduh dan unggah adalah...", options: ["A. Shared Users", "B. Rate Limit (rx/tx)", "C. Openflow Timeout", "D. Session Timeout"], ans: "B. Rate Limit (rx/tx)" },
+        { q: "20. Berapa batas alokasi bandwidth (Rate Limit) untuk profil 'guru' pada Modul 3?", options: ["A. 5M/5M", "B. 10M/10M", "C. 2M/2M", "D. Unlimited"], ans: "B. 10M/10M" },
+        { q: "21. Berapa batas alokasi bandwidth (Rate Limit) untuk profil 'siswa' pada Modul 3?", options: ["A. 5M/5M", "B. 10M/10M", "C. 1M/1M", "D. 512k/512k"], ans: "A. 5M/5M" },
+        { q: "22. Jenis Chain pada Firewall Filter yang digunakan untuk memfilter paket data yang ditujukan langsung ke router adalah...", options: ["A. forward", "B. input", "C. output", "D. prerouting"], ans: "B. input" },
+        { q: "23. Jenis Chain pada Firewall Filter yang digunakan untuk memfilter paket dari klien LAN ke internet atau antar klien adalah...", options: ["A. input", "B. forward", "C. output", "D. postrouting"], ans: "B. forward" },
+        { q: "24. Protokol jaringan yang dipakai saat melakukan pengujian koneksi 'Ping' adalah...", options: ["A. TCP", "B. UDP", "C. ICMP", "D. IGMP"], ans: "C. ICMP" },
+        { q: "25. Langkah memblokir Ping dari DHCP Pool ke Router menggunakan Chain...", options: ["A. forward", "B. input", "C. output", "D. srcnat"], ans: "B. input" },
+        { q: "26. Action pada Filter Rules yang berfungsi membuang paket tanpa mengirim balasan pesan penolakan adalah...", options: ["A. reject", "B. drop", "C. passthrough", "D. log"], ans: "B. drop" },
+        { q: "27. Konfigurasi memblokir Ping antar klien (IP 21-30 ke IP 61-70) menggunakan Chain...", options: ["A. input", "B. forward", "C. output", "D. dstnat"], ans: "B. forward" },
+        { q: "28. Ekspresi reguler (Regexp) Layer7 Protocol yang benar untuk mendeteksi file .mp3 adalah...", options: ["A. *.mp3", "B. ^.*\\.mp3.*$", "C. %mp3%", "D. [mp3]$"], ans: "B. ^.*\\.mp3.*$" },
+        { q: "29. Menu untuk mendefinisikan ekspresi reguler Layer7 pada WinBox adalah...", options: ["A. IP -> Firewall -> Layer7 Protocols", "B. IP -> Firewall -> Service Ports", "C. System -> Layer7", "D. IP -> Web Proxy"], ans: "A. IP -> Firewall -> Layer7 Protocols" },
+        { q: "30. Pada pemblokiran file .mp3 metode Layer7, protokol yang dikunci pada Filter Rules adalah...", options: ["A. udp", "B. icmp", "C. tcp", "D. gre"], ans: "C. tcp" },
+        { q: "31. Metode kedua pemblokiran file .mp3 tanpa Layer7 menggunakan fitur Advanced...", options: ["A. Dst. Host", "B. Content", "C. Packet Mark", "D. Routing Mark"], ans: "B. Content" },
+        { q: "32. Port standar web HTTP yang menjadi sasaran pemblokiran file content .mp3 adalah...", options: ["A. 21", "B. 53", "C. 80", "D. 443"], ans: "C. 80" },
+        { q: "33. Port standar lokal yang diaktifkan saat menggunakan fitur Web Proxy MikroTik pada modul adalah...", options: ["A. 80", "B. 8080", "C. 3128", "D. 1080"], ans: "B. 8080" },
+        { q: "34. Parameter pada Web Proxy Access untuk menolak unduhan file audio mp3 adalah...", options: ["A. Path: *.mp3 | Action: deny", "B. URL: mp3 | Action: drop", "C. Dst.: *.mp3 | Action: reject", "D. Redirect: *.mp3 | Action: close"], ans: "A. Path: *.mp3 | Action: deny" },
+        { q: "35. Supaya trafik HTTP (Port 80) dialihkan otomatis ke Web Proxy (Port 8080), aksi NAT yang digunakan adalah...", options: ["A. masquerade", "B. redirect", "C. dst-nat", "D. same"], ans: "B. redirect" },
+        { q: "36. Chain NAT yang digunakan saat melakukan Redirect ke Web Proxy adalah...", options: ["A. srcnat", "B. dstnat", "C. input", "D. output"], ans: "B. dstnat" },
+        { q: "37. Fungsi dari mengaktifkan centang 'Anonymous' pada Web Proxy MikroTik adalah...", options: ["A. Menyembunyikan identitas router saat memproses permintaan web", "B. Mempercepat unduhan file", "C. Membuka blokir situs terlarang", "D. Mencegah serangan DDoS"], ans: "A. Menyembunyikan identitas router saat memproses permintaan web" },
+        { q: "38. Status rute otomatis yang muncul pada tabel routing jika DHCP Client berhasil terhubung adalah...", options: ["A. DAC", "B. DAS / AD", "C. S", "D. X"], ans: "B. DAS / AD" },
+        { q: "39. Parameter 'Use Peer DNS' pada DHCP Client berfungsi untuk...", options: ["A. Mengabaikan DNS dari ISP", "B. Menggunakan server DNS yang diberikan secara otomatis oleh ISP", "C. Memblokir DNS publik", "D. Mengubah IP Address router"], ans: "B. Menggunakan server DNS yang diberikan secara otomatis oleh ISP" },
+        { q: "40. Jika kita ingin melihat daftar pengguna Hotspot yang sedang aktif login, menu yang diakses adalah...", options: ["A. IP -> Hotspot -> Users", "B. IP -> Hotspot -> Active", "C. IP -> Hotspot -> Hosts", "D. IP -> Hotspot -> IP Binding"], ans: "B. IP -> Hotspot -> Active" }
+    ];
+
+    const quizContainer = document.getElementById('quiz-container');
+
+    // Render Semua Pertanyaan Kuis
+    function renderQuiz() {
+        quizContainer.innerHTML = '';
+        questions.forEach((qObj, idx) => {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.id = `q-card-${idx}`;
+            
+            let optionsHTML = '';
+            qObj.options.forEach((opt, optIdx) => {
+                optionsHTML += `
+                    <li>
+                        <label id="lbl-${idx}-${optIdx}">
+                            <input type="radio" name="q${idx}" value="${opt}"> ${opt}
+                        </label>
+                    </li>`;
+            });
+
+            card.innerHTML = `
+                <div class="question-text">${qObj.q}</div>
+                <ul class="options">${optionsHTML}</ul>
+                <div id="ans-${idx}" class="answer-key">Jawaban Benar: ${qObj.ans}</div>
+            `;
+            quizContainer.appendChild(card);
+        });
+    }
+
+    renderQuiz();
+
+    // Fungsi Koreksi & Cek Hasil
+    function submitQuiz() {
+        let correctCount = 0;
+        let wrongCount = 0;
+
+        questions.forEach((qObj, idx) => {
+            const selectedOpt = document.querySelector(`input[name="q${idx}"]:checked`);
+            const ansDiv = document.getElementById(`ans-${idx}`);
+            ansDiv.style.display = 'block';
+
+            qObj.options.forEach((opt, optIdx) => {
+                const labelElement = document.getElementById(`lbl-${idx}-${optIdx}`);
+                const radioElement = labelElement.querySelector('input');
+                radioElement.disabled = true; // Kunci pilihan setelah disubmit
+
+                // Sorot opsi yang merupakan jawaban benar
+                if (opt === qObj.ans) {
+                    labelElement.classList.add('correct-opt');
+                }
+
+                // Jika pengguna memilih opsi ini dan ternyata salah
+                if (selectedOpt && selectedOpt.value === opt && opt !== qObj.ans) {
+                    labelElement.classList.add('wrong-opt');
+                }
+            });
+
+            if (selectedOpt && selectedOpt.value === qObj.ans) {
+                correctCount++;
+            } else {
+                wrongCount++;
+            }
+        });
+
+        // Hitung Skor (Skala 0-100)
+        const finalScore = Math.round((correctCount / questions.length) * 100);
+
+        // Tampilkan Banner Hasil
+        document.getElementById('final-score').innerText = `Nilai: ${finalScore} / 100`;
+        document.getElementById('correct-count').innerText = `Benar: ${correctCount}`;
+        document.getElementById('wrong-count').innerText = `Salah: ${wrongCount}`;
+        
+        const resultBox = document.getElementById('result-box');
+        resultBox.style.display = 'block';
+
+        // Scroll otomatis ke banner hasil
+        resultBox.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Fungsi Kerjakan Ulang
+    function resetQuiz() {
+        document.getElementById('result-box').style.display = 'none';
+        renderQuiz();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
