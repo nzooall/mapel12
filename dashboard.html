@@ -417,6 +417,23 @@
 
   </div>
 
+   <script>
+    async function loadModules() {
+      const response = await fetch("modules.json");
+      const data = await response.json();
+
+      const aijCard = document.getElementById("AIJ");
+      if (data.MAPEL_PRODUKTIF.AIJ === "locked") {
+        aijCard.classList.add("locked");
+        aijCard.querySelector(".status").textContent = "🔒 Terkunci";
+      } else {
+        aijCard.classList.remove("locked");
+        aijCard.querySelector(".status").textContent = "✅ Terbuka";
+      }
+    }
+
+    loadModules();
+  </script>
   <script>
     // 1. DAFTAR FILE HTML MODUL YANG TERSEDIA
     const availableModules = {
