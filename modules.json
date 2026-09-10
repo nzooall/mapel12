@@ -1,0 +1,13 @@
+{
+  "MAPEL_PRODUKTIF": {
+    "AIJ": "locked",
+    "ASJ": "locked",
+    "TLJ": "unlocked"
+  },
+  "MAPEL_UMUM": {
+    "BINDO": "unlocked",
+    "BING": "unlocked",
+    "PKK": "unlocked",
+    "AGAMA": "unlocked"
+  }
+}
