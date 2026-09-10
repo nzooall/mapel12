@@ -45,7 +45,7 @@
         <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight">
           Modul Praktikum & Simulasi Ujian ASJ
         </h1>
-        <p class="text-blue-100/80 mt-2 text-xs sm:text-base max-w-2xl mx-auto font-normal">
+        <p class="text-blue-100/80 mt-2 text-sm sm:text-base max-w-2xl mx-auto font-normal">
           Rangkuman Rinci Administrasi Sistem Jaringan & 40 Soal Simulasi Ujian Interaktif
         </p>
       </div>
@@ -67,77 +67,86 @@
     <div id="kotak-materi" class="p-5 sm:p-10 space-y-8">
       
       <!-- Section 1 -->
-      <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-800 p-5 sm:p-6 rounded-r-2xl shadow-sm">
-        <h2 class="text-lg sm:text-xl font-extrabold text-blue-950 flex items-center gap-2.5">
+      <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-l-4 border-blue-800 p-6 rounded-r-2xl shadow-sm">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-blue-950 flex items-center gap-2.5">
           <i class="fa-solid fa-graduation-cap text-blue-800"></i> 1. Pengantar ASJ Kelas 12
         </h2>
-        <p class="text-slate-700 mt-2.5 leading-relaxed text-xs sm:text-sm">
-          Di kelas 12, fokus pembelajaran tidak lagi sebatas menginstal server berdiri sendiri (seperti Web, DNS, Mail, FTP, DHCP di kelas 11)[cite: 2], melainkan <strong>mengintegrasikan berbagai layanan jaringan[cite: 2]</strong>, memonitor ketersediaan sistem[cite: 2], dan mengamankannya secara menyeluruh[cite: 1, 2].
+        <p class="text-slate-800 mt-3 leading-relaxed text-base sm:text-lg">
+          Di kelas 12, fokus utama pembelajaran bukan lagi sekadar menginstal server berdiri sendiri (seperti Web, DNS, Mail, FTP, dan DHCP di kelas 11)[cite: 2], melainkan <strong>mengintegrasikan berbagai layanan jaringan[cite: 2]</strong>, memonitor ketersediaan sistem secara terpusat[cite: 2], dan mengamankan infrastruktur jaringan secara komprehensif[cite: 1, 2].
         </p>
       </div>
 
       <!-- Section 2 -->
       <div>
-        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
           <i class="fa-solid fa-server text-blue-700"></i> Shared Hosting, VPS, dan Dedicated Server
         </h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="border border-slate-200 p-5 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
-            <div class="w-10 h-10 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center mb-3 font-bold">
-              <i class="fa-solid fa-users text-lg"></i>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="border border-slate-200 p-6 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+            <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-800 flex items-center justify-center mb-4 font-bold">
+              <i class="fa-solid fa-users text-xl"></i>
             </div>
-            <h4 class="font-bold text-blue-900 text-sm mb-1">Shared Hosting</h4>
-            <p class="text-xs text-slate-600 leading-relaxed">Beberapa pengguna menyewa dan berbagi satu server fisik yang sama beserta seluruh resource-nya (CPU, RAM, Storage)[cite: 2].<br><span class="inline-block mt-2 font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[11px]">Contoh: smkn1batam.sch.id[cite: 2]</span></p>
+            <h4 class="font-bold text-blue-900 text-base mb-2">Shared Hosting</h4>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              Beberapa pengguna menyewa dan berbagi sumber daya pada satu server fisik yang sama (CPU, RAM, Storage)[cite: 2].
+            </p>
+            <span class="inline-block mt-3 font-mono bg-slate-100 text-slate-800 px-2.5 py-1 rounded text-xs font-semibold">Contoh: smkn1batam.sch.id[cite: 2]</span>
           </div>
           
-          <div class="border border-slate-200 p-5 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
-            <div class="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-800 flex items-center justify-center mb-3 font-bold">
-              <i class="fa-solid fa-cloud text-lg"></i>
+          <div class="border border-slate-200 p-6 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+            <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-800 flex items-center justify-center mb-4 font-bold">
+              <i class="fa-solid fa-cloud text-xl"></i>
             </div>
-            <h4 class="font-bold text-indigo-900 text-sm mb-1">VPS (Virtual Private Server)</h4>
-            <p class="text-xs text-slate-600 leading-relaxed">Komputer virtual di atas server fisik yang diisolasi, memiliki OS sendiri, dan dapat diakses jarak jauh melalui internet[cite: 2].<br><span class="inline-block mt-2 font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[11px]">Contoh: belajar.dikelasawan.my.id[cite: 2]</span></p>
+            <h4 class="font-bold text-indigo-900 text-base mb-2">VPS (Virtual Private Server)</h4>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              Server virtual yang berjalan di atas server fisik, diisolasi dengan OS sendiri, dan dapat diakses dari mana saja melalui internet[cite: 2].
+            </p>
+            <span class="inline-block mt-3 font-mono bg-slate-100 text-slate-800 px-2.5 py-1 rounded text-xs font-semibold">Contoh: belajar.dikelasawan.my.id[cite: 2]</span>
           </div>
 
-          <div class="border border-slate-200 p-5 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
-            <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center mb-3 font-bold">
-              <i class="fa-solid fa-hard-drive text-lg"></i>
+          <div class="border border-slate-200 p-6 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+            <div class="w-12 h-12 rounded-xl bg-purple-100 text-purple-800 flex items-center justify-center mb-4 font-bold">
+              <i class="fa-solid fa-hard-drive text-xl"></i>
             </div>
-            <h4 class="font-bold text-purple-900 text-sm mb-1">Dedicated Server</h4>
-            <p class="text-xs text-slate-600 leading-relaxed">Pengguna menyewa satu komputer fisik utuh secara eksklusif tanpa berbagi sumber daya dengan pengguna lain[cite: 2]. Cocok untuk trafik berskala tinggi.</p>
+            <h4 class="font-bold text-purple-900 text-base mb-2">Dedicated Server</h4>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              Satu komputer server fisik disewa secara eksklusif oleh satu pengguna tanpa berbagi resource dengan pihak lain[cite: 2]. Sangat cocok untuk trafik berskala besar.
+            </p>
           </div>
         </div>
       </div>
 
       <!-- Section 3 -->
       <div>
-        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
           <i class="fa-solid fa-sliders text-blue-700"></i> Control Panel Hosting & Teknologi VPN
         </h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl">
-            <h4 class="font-bold text-slate-900 text-sm mb-2 flex items-center gap-2">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl">
+            <h4 class="font-bold text-slate-900 text-base mb-2 flex items-center gap-2">
               <i class="fa-solid fa-desktop text-blue-600"></i> Control Panel Hosting
             </h4>
-            <p class="text-xs text-slate-600 leading-relaxed mb-3">
-              Aplikasi berbasis GUI yang mempermudah pengelolaan layanan server (Web, Mail, Database, FTP, Domain) tanpa perlu mengetik perintah CLI manual[cite: 2].
+            <p class="text-sm text-slate-700 leading-relaxed mb-3">
+              Aplikasi berbasis web (GUI) yang mempermudah admin dalam mengelola dan mengonfigurasi layanan server (Web Server, Database, FTP, Mail) tanpa perlu mengetikkan perintah CLI manual[cite: 2].
             </p>
-            <div class="flex flex-wrap gap-1.5">
-              <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-[11px] font-semibold text-slate-700">cPanel</span>
-              <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-[11px] font-semibold text-slate-700">Plesk</span>
-              <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-[11px] font-semibold text-slate-700">Webmin</span>
-              <span class="px-2.5 py-1 bg-white border border-slate-200 rounded-lg text-[11px] font-semibold text-slate-700">VistaPanel[cite: 2]</span>
+            <div class="flex flex-wrap gap-2 pt-1">
+              <span class="px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800">cPanel</span>
+              <span class="px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800">Plesk</span>
+              <span class="px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800">Webmin</span>
+              <span class="px-3 py-1 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800">VistaPanel / EHCP[cite: 2]</span>
             </div>
           </div>
 
-          <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl">
-            <h4 class="font-bold text-slate-900 text-sm mb-2 flex items-center gap-2">
+          <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl">
+            <h4 class="font-bold text-slate-900 text-base mb-2 flex items-center gap-2">
               <i class="fa-solid fa-shield-halved text-emerald-600"></i> Virtual Private Network (VPN)
             </h4>
-            <ul class="text-xs text-slate-600 space-y-2">
-              <li><strong>• Remote Client VPN:</strong> Menghubungkan client/staf WFH langsung ke jaringan LAN kantor[cite: 2].</li>
-              <li><strong>• Site-to-Site VPN:</strong> Menghubungkan dua jaringan lokal kantor yang terpisah geografis[cite: 2].</li>
-              <li><strong>• Protokol PPTP:</strong> Menggunakan autentikasi User & Password[cite: 2].</li>
-              <li><strong>• Protokol OpenVPN:</strong> Menggunakan SSL/TLS & Sertifikat digital untuk keamanan ekstra[cite: 2].</li>
+            <p class="text-sm text-slate-700 mb-2">Jaringan privat aman yang dibangun di atas publik (Internet)[cite: 2]:</p>
+            <ul class="text-sm text-slate-700 space-y-2">
+              <li><strong>• Remote Client VPN:</strong> Menghubungkan perangkat pegawai/WFH langsung ke LAN kantor[cite: 2].</li>
+              <li><strong>• Site-to-Site VPN:</strong> Menghubungkan 2 jaringan LAN kantor yang berbeda lokasi fisik[cite: 2].</li>
+              <li><strong>• PPTP:</strong> Menggunakan otentikasi sederhana User & Password[cite: 2].</li>
+              <li><strong>• OpenVPN:</strong> Menggunakan SSL/TLS & Sertifikat digital untuk enkripsi tingkat tinggi[cite: 2].</li>
             </ul>
           </div>
         </div>
@@ -145,29 +154,30 @@
 
       <!-- Section 4 -->
       <div>
-        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
           <i class="fa-solid fa-chart-line text-blue-700"></i> Control Monitoring Server & Keamanan Sistem
         </h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="bg-amber-50/60 border border-amber-200/80 p-5 rounded-2xl">
-            <h4 class="font-bold text-amber-950 text-sm mb-2 flex items-center gap-2">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="bg-amber-50/60 border border-amber-200/80 p-6 rounded-2xl">
+            <h4 class="font-bold text-amber-950 text-base mb-2 flex items-center gap-2">
               <i class="fa-solid fa-lock text-amber-700"></i> Keamanan Fisik vs Non-Fisik
             </h4>
-            <ul class="text-xs text-amber-900/90 space-y-1.5">
-              <li><strong>• Fisik:</strong> CCTV, APAR, Alarm, Kabel trunking, Grounding, Fingerprint server[cite: 1, 2].</li>
-              <li><strong>• Non-Fisik:</strong> Rule Firewall, Subnetting, Hak akses user, Enkripsi data[cite: 1, 2].</li>
-              <li class="pt-1 text-[11px] text-amber-800 font-semibold">⚡ Prinsip: "NO SYSTEM IS SAFE" — Keamanan harus berlapis[cite: 1, 2].</li>
+            <ul class="text-sm text-amber-900/90 space-y-2">
+              <li><strong>• Keamanan Fisik:</strong> CCTV, APAR/Pemadam Api, Alarm, Trunking Kabel, Grounding, Fingerprint Server[cite: 1, 2].</li>
+              <li><strong>• Keamanan Non-Fisik:</strong> Firewall Rules, Subnetting, Hak Akses/Pelevelan User, Enkripsi Data[cite: 1, 2].</li>
+              <li class="pt-2 text-xs font-bold text-amber-800">⚡ Prinsip Keamanan: "NO SYSTEM IS SAFE" — Tidak ada sistem yang aman 100%[cite: 1, 2].</li>
             </ul>
           </div>
 
-          <div class="bg-emerald-50/60 border border-emerald-200/80 p-5 rounded-2xl">
-            <h4 class="font-bold text-emerald-950 text-sm mb-2 flex items-center gap-2">
-              <i class="fa-solid fa-eye text-emerald-700"></i> Manfaat Control Monitoring
+          <div class="bg-emerald-50/60 border border-emerald-200/80 p-6 rounded-2xl">
+            <h4 class="font-bold text-emerald-950 text-base mb-2 flex items-center gap-2">
+              <i class="fa-solid fa-eye text-emerald-700"></i> Sistem Control Monitoring Server
             </h4>
-            <ul class="text-xs text-emerald-900/90 space-y-1.5">
-              <li><strong>• Efisiensi SDM:</strong> Memantau status router, switch, & server secara terpusat[cite: 2].</li>
-              <li><strong>• Visibilitas Real-time:</strong> Mengetahui kondisi traffic dan penggunaan resource[cite: 2].</li>
-              <li><strong>• Otomatisasi Alert:</strong> Mengirim notifikasi otomatis ke WhatsApp/Telegram saatdown[cite: 2].</li>
+            <p class="text-sm text-emerald-900/90 mb-2">Memantau status router, switch, server, dan service terpusat[cite: 2]:</p>
+            <ul class="text-sm text-emerald-900/90 space-y-1.5">
+              <li><strong>• Efisiensi SDM:</strong> Tidak perlu mengecek setiap server satu per satu[cite: 2].</li>
+              <li><strong>• Visibilitas Real-time:</strong> Mengetahui beban CPU, RAM, & trafik jaringan[cite: 2].</li>
+              <li><strong>• Otomatisasi Alert:</strong> Mengirim notifikasi otomatis via WA/Telegram jika ada server down[cite: 2].</li>
             </ul>
           </div>
         </div>
@@ -175,68 +185,68 @@
 
       <!-- Section 5 Table -->
       <div>
-        <h3 class="text-base sm:text-lg font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
-          <i class="fa-solid fa-code text-blue-700"></i> Panduan Lengkap Perintah CLI Praktikum
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
+          <i class="fa-solid fa-code text-blue-700"></i> Rincian Perintah CLI & File Konfigurasi Praktikum
         </h3>
         <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
-          <table class="w-full text-xs text-left border-collapse">
+          <table class="w-full text-sm text-left border-collapse">
             <thead>
               <tr class="bg-slate-900 text-white">
-                <th class="p-3 border-b border-slate-800">Perangkat</th>
-                <th class="p-3 border-b border-slate-800">Perintah CLI / File Konfigurasi</th>
-                <th class="p-3 border-b border-slate-800">Fungsi / Penjelasan Ringkas</th>
+                <th class="p-3.5 border-b border-slate-800">Perangkat</th>
+                <th class="p-3.5 border-b border-slate-800">Perintah CLI / File Konfigurasi</th>
+                <th class="p-3.5 border-b border-slate-800">Fungsi / Penjelasan Ringkas</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-200 bg-white">
+            <tbody class="divide-y divide-slate-200 bg-white text-slate-800">
               <tr class="hover:bg-slate-50">
-                <td class="p-3 font-bold text-blue-900">MikroTik</td>
-                <td class="p-3 font-mono text-indigo-700 bg-slate-50">interface print</td>
-                <td class="p-3">Melihat daftar seluruh interface ethernet router[cite: 1].</td>
+                <td class="p-3.5 font-bold text-blue-900">MikroTik RouterOS</td>
+                <td class="p-3.5 font-mono text-indigo-700 bg-slate-50">interface print</td>
+                <td class="p-3.5">Menampilkan daftar seluruh interface jaringan pada router[cite: 1].</td>
               </tr>
               <tr class="hover:bg-slate-50">
-                <td class="p-3 font-bold text-blue-900">MikroTik</td>
-                <td class="p-3 font-mono text-indigo-700 bg-slate-50">ip address add address=... interface=...</td>
-                <td class="p-3">Menambahkan IP address baru pada interface spesifik[cite: 1].</td>
+                <td class="p-3.5 font-bold text-blue-900">MikroTik RouterOS</td>
+                <td class="p-3.5 font-mono text-indigo-700 bg-slate-50">ip address add address=... interface=...</td>
+                <td class="p-3.5">Menambahkan konfigurasi IP Address pada interface spesifik[cite: 1].</td>
               </tr>
               <tr class="hover:bg-slate-50">
-                <td class="p-3 font-bold text-blue-900">MikroTik</td>
-                <td class="p-3 font-mono text-indigo-700 bg-slate-50">ip route add dst-address=0.0.0.0/0 gateway=...</td>
-                <td class="p-3">Menentukan jalur Default Gateway ke internet[cite: 1].</td>
+                <td class="p-3.5 font-bold text-blue-900">MikroTik RouterOS</td>
+                <td class="p-3.5 font-mono text-indigo-700 bg-slate-50">ip route add dst-address=0.0.0.0/0 gateway=...</td>
+                <td class="p-3.5">Menentukan rute default gateway menuju jaringan internet[cite: 1].</td>
               </tr>
               <tr class="hover:bg-slate-50">
-                <td class="p-3 font-bold text-blue-900">MikroTik</td>
-                <td class="p-3 font-mono text-indigo-700 bg-slate-50">ip dns set servers=... allow-remote-request=yes</td>
-                <td class="p-3">Mengonfigurasi DNS server dan DNS forwarder[cite: 1].</td>
+                <td class="p-3.5 font-bold text-blue-900">MikroTik RouterOS</td>
+                <td class="p-3.5 font-mono text-indigo-700 bg-slate-50">ip dns set servers=... allow-remote-request=yes</td>
+                <td class="p-3.5">Mengatur IP DNS Server dan mengaktifkan DNS forwarder[cite: 1].</td>
               </tr>
               <tr class="hover:bg-slate-50">
-                <td class="p-3 font-bold text-blue-900">MikroTik</td>
-                <td class="p-3 font-mono text-indigo-700 bg-slate-50">ip firewall nat add action=masquerade chain=srcnat...</td>
-                <td class="p-3">Mengaktifkan NAT agar jaringan lokal dapat terhubung internet[cite: 1].</td>
+                <td class="p-3.5 font-bold text-blue-900">MikroTik RouterOS</td>
+                <td class="p-3.5 font-mono text-indigo-700 bg-slate-50">ip firewall nat add action=masquerade chain=srcnat...</td>
+                <td class="p-3.5">Mengaktifkan NAT Masquerade agar jaringan lokal dapat terkoneksi ke internet[cite: 1].</td>
               </tr>
               <tr class="hover:bg-slate-50">
-                <td class="p-3 font-bold text-emerald-900">Debian 8</td>
-                <td class="p-3 font-mono text-emerald-700 bg-slate-50">nano /etc/network/interfaces</td>
-                <td class="p-3">Mengatur konfigurasi IP Address static/DHCP Debian[cite: 1].</td>
+                <td class="p-3.5 font-bold text-emerald-900">Debian 8 Linux</td>
+                <td class="p-3.5 font-mono text-emerald-700 bg-slate-50">nano /etc/network/interfaces</td>
+                <td class="p-3.5">Mengedit konfigurasi IP Address static maupun DHCP server Debian[cite: 1].</td>
               </tr>
               <tr class="hover:bg-slate-50">
-                <td class="p-3 font-bold text-emerald-900">Debian 8</td>
-                <td class="p-3 font-mono text-emerald-700 bg-slate-50">/etc/init.d/networking restart</td>
-                <td class="p-3">Merestart seluruh konfigurasi jaringan Debian[cite: 1].</td>
+                <td class="p-3.5 font-bold text-emerald-900">Debian 8 Linux</td>
+                <td class="p-3.5 font-mono text-emerald-700 bg-slate-50">/etc/init.d/networking restart</td>
+                <td class="p-3.5">Merestart seluruh service adapter jaringan pada Debian[cite: 1].</td>
               </tr>
               <tr class="hover:bg-slate-50">
-                <td class="p-3 font-bold text-emerald-900">Debian 8</td>
-                <td class="p-3 font-mono text-emerald-700 bg-slate-50">traceroute 1.1.1.1</td>
-                <td class="p-3">Mengecek hop/rute lintasan paket gateway[cite: 1].</td>
+                <td class="p-3.5 font-bold text-emerald-900">Debian 8 Linux</td>
+                <td class="p-3.5 font-mono text-emerald-700 bg-slate-50">traceroute 1.1.1.1</td>
+                <td class="p-3.5">Menguji dan melacak rute lintasan paket gateway menuju IP tujuan[cite: 1].</td>
               </tr>
               <tr class="hover:bg-slate-50">
-                <td class="p-3 font-bold text-emerald-900">Debian 8</td>
-                <td class="p-3 font-mono text-emerald-700 bg-slate-50">nano /etc/apt/sources.list</td>
-                <td class="p-3">Mengedit daftar alamat repository server aplikasi[cite: 1].</td>
+                <td class="p-3.5 font-bold text-emerald-900">Debian 8 Linux</td>
+                <td class="p-3.5 font-mono text-emerald-700 bg-slate-50">nano /etc/apt/sources.list</td>
+                <td class="p-3.5">Mendaftarkan repository server untuk instalasi paket aplikasi[cite: 1].</td>
               </tr>
               <tr class="hover:bg-slate-50">
-                <td class="p-3 font-bold text-emerald-900">Debian 8</td>
-                <td class="p-3 font-mono text-emerald-700 bg-slate-50">apt-get install apache2 mysql-server php5 phpmyadmin</td>
-                <td class="p-3">Menginstal Web Server, Database, & Management phpMyAdmin[cite: 1].</td>
+                <td class="p-3.5 font-bold text-emerald-900">Debian 8 Linux</td>
+                <td class="p-3.5 font-mono text-emerald-700 bg-slate-50">apt-get install apache2 mysql-server php5 phpmyadmin</td>
+                <td class="p-3.5">Menginstal stack Web Server, Database MySQL, & phpMyAdmin[cite: 1].</td>
               </tr>
             </tbody>
           </table>
@@ -254,7 +264,7 @@
         </div>
         <h3 class="text-xl sm:text-2xl font-black">HASIL SIMULASI UJIAN</h3>
         <p id="score-text" class="text-lg sm:text-2xl font-extrabold text-yellow-300"></p>
-        <p class="text-xs text-blue-100 max-w-lg mx-auto">Jawaban benar ditandai dengan warna <span class="bg-emerald-500 text-white px-1.5 py-0.5 rounded font-bold">HIJAU</span>. Jawaban salah yang Anda pilih ditandai warna <span class="bg-rose-500 text-white px-1.5 py-0.5 rounded font-bold">MERAH</span>.</p>
+        <p class="text-xs text-blue-100 max-w-lg mx-auto">Jawaban benar ditandai dengan warna <span class="bg-emerald-500 text-white px-1.5 py-0.5 rounded font-bold">HIJAU</span>. Jawaban salah yang Anda pilih ditandai warna <span class="bg-rose-500 text-white px-1.5 py-0.5 rounded font-bold">MERAH</span>. Pilihan jawaban telah dikunci.</p>
       </div>
 
       <form id="quiz-form" class="space-y-6">
@@ -264,7 +274,7 @@
 
         <!-- Tombol Aksi di Paling Bawah -->
         <div class="pt-8 border-t border-slate-200 flex flex-col sm:flex-row justify-center gap-4">
-          <button type="button" onclick="checkAnswers()" class="w-full sm:w-auto px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold rounded-2xl shadow-lg shadow-emerald-600/30 transition flex items-center justify-center gap-2">
+          <button type="button" id="btn-cek-hasil" onclick="checkAnswers()" class="w-full sm:w-auto px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold rounded-2xl shadow-lg shadow-emerald-600/30 transition flex items-center justify-center gap-2">
             <i class="fa-solid fa-circle-check"></i> Cek Hasil Simulasi Ujian
           </button>
           <button type="button" onclick="resetQuiz()" class="w-full sm:w-auto px-8 py-3.5 bg-rose-600 hover:bg-rose-700 active:scale-95 text-white font-bold rounded-2xl shadow-lg shadow-rose-600/30 transition flex items-center justify-center gap-2">
@@ -334,7 +344,7 @@
       { q: "Dalam topologi praktikum Tugas 4, OS client virtual yang digunakan adalah...", options: ["Windows 10", "Windows XP", "Ubuntu", "Android"], ans: 1 },
       { q: "Sistem operasi Linux yang digunakan sebagai Web Server pada praktikum Tugas 4 adalah...", options: ["Debian 8", "CentOS 7", "RedHat", "Fedora"], ans: 0 },
       { q: "Fitur otomasikan pada monitoring server memungkinkan sistem untuk...", options: ["Mengirim notifikasi gangguan ke WA/Telegram", "Membuat postingan di media sosial", "Membeli perangkat keras baru", "Menghapus file log otomatis"], ans: 0 },
-      { q: "Penggunaan fingerprint untuk membatasi orang yang masuk ke ruang server tergolong keamanan...", options: ["Fisik", "Non-Fisik", "Logika", "Jaringan"], ans: 0 },
+      { q: "Penggunaan fingerprint untuk membatasi orang yang masuk ke ruang server tergolong keamanan...", options: ["Fisik", "Non-Fisik", "Logika", "Jaringan"], options: ["Fisik", "Non-Fisik", "Logika", "Jaringan"], ans: 0 },
       { q: "Password default VPN PPTP yang ditentukan pada Tugas 4 adalah...", options: ["admin123", "siswa123", "123456", "tkj2021"], ans: 0 },
       { q: "Perangkat keras router terkemuka yang digunakan sebagai contoh dalam VPN Site-to-Site pada modul adalah...", options: ["FortiGate", "Cisco Catalyst", "TP-Link", "Tenda"], ans: 0 }
     ];
@@ -350,18 +360,18 @@
         let optionsHTML = '';
         data.options.forEach((opt, optIdx) => {
           optionsHTML += `
-            <label id="opt-label-${qIdx}-${optIdx}" class="flex items-center p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-blue-50/80 hover:border-blue-300 transition text-xs sm:text-sm font-medium">
-              <input type="radio" name="q${qIdx}" value="${optIdx}" class="mr-3 accent-blue-800">
+            <label id="opt-label-${qIdx}-${optIdx}" class="flex items-center p-3.5 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-blue-50/80 hover:border-blue-300 transition text-sm font-medium">
+              <input type="radio" name="q${qIdx}" value="${optIdx}" class="mr-3 accent-blue-800 w-4 h-4">
               <span><strong class="text-slate-500 mr-1.5">${String.fromCharCode(65 + optIdx)}.</strong> ${opt}</span>
             </label>
           `;
         });
 
         qCard.innerHTML = `
-          <p class="font-bold text-slate-900 text-xs sm:text-sm leading-relaxed">
-            <span class="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-blue-100 text-blue-900 font-mono text-xs mr-1.5">${qIdx + 1}</span> ${data.q}
+          <p class="font-bold text-slate-900 text-sm sm:text-base leading-relaxed">
+            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-blue-100 text-blue-900 font-mono text-xs mr-2">${qIdx + 1}</span> ${data.q}
           </p>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
             ${optionsHTML}
           </div>
         `;
@@ -376,9 +386,14 @@
         const selectedOpt = document.querySelector(`input[name="q${qIdx}"]:checked`);
         const userAns = selectedOpt ? parseInt(selectedOpt.value) : -1;
 
+        // Kunci semua opsi agar tidak bisa diklik lagi setelah diperiksa
+        const allRadios = document.querySelectorAll(`input[name="q${qIdx}"]`);
+        allRadios.forEach(radio => radio.disabled = true);
+
         data.options.forEach((_, optIdx) => {
           const label = document.getElementById(`opt-label-${qIdx}-${optIdx}`);
           label.classList.remove('correct-ans', 'wrong-ans');
+          label.classList.add('cursor-not-allowed'); // Mengubah kursor jadi disabled
         });
 
         const correctLabel = document.getElementById(`opt-label-${qIdx}-${data.ans}`);
@@ -403,9 +418,12 @@
     function resetQuiz() {
       document.getElementById('quiz-form').reset();
       quizData.forEach((data, qIdx) => {
+        const allRadios = document.querySelectorAll(`input[name="q${qIdx}"]`);
+        allRadios.forEach(radio => radio.disabled = false);
+
         data.options.forEach((_, optIdx) => {
           const label = document.getElementById(`opt-label-${qIdx}-${optIdx}`);
-          label.classList.remove('correct-ans', 'wrong-ans');
+          label.classList.remove('correct-ans', 'wrong-ans', 'cursor-not-allowed');
         });
       });
       document.getElementById('score-banner').classList.add('hidden');
