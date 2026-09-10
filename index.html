@@ -137,7 +137,6 @@
     });
 
     // 2. DATABASE USER TERINTEGRASI
-    // Menerima password biasa mau pun Hash SHA-256
     const registeredUsers = [
       { 
         username: "admin", 
@@ -179,27 +178,18 @@
       const passVal = document.getElementById("password").value.trim();
       const errorMsg = document.getElementById("errorMsg");
 
-      // Cari user berdasarkan nama (tidak sensitif huruf besar/kecil)
       const foundUser = registeredUsers.find(u => u.username.toLowerCase() === userVal);
 
       if (foundUser && foundUser.passwords.includes(passVal)) {
-        // Simpan sesi ke localStorage
+        // Simpan sesi ke localStorage (username disimpan supaya bisa dilacak di panel admin)
         localStorage.setItem("currentUser", JSON.stringify({
+          username: foundUser.username,
           name: foundUser.name,
           role: foundUser.role
         }));
 
         // Pindah ke Halaman Utama
         window.location.href = "dashboard.html";
-
-    // Fungsi Logout / Keluar
-    function logout() {
-        // 1. Hapus data sesi pengguna di localStorage
-        localStorage.removeItem("currentUser");
-
-        // 2. Arahkan kembali ke halaman login utama (index.html)
-        window.location.href = "index.html";
-      }
       } else {
         errorMsg.style.display = "block";
         errorMsg.innerText = "Akun tidak terdaftar atau password salah!";
