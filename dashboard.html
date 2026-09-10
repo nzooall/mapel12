@@ -8,7 +8,26 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-    
+
+    <script>
+  async function loadModules() {
+    const response = await fetch("modules.json");
+    const data = await response.json();
+
+    // Contoh: cek status AIJ
+    const aijCard = document.getElementById("AIJ");
+    if (data.MAPEL_PRODUKTIF.AIJ === "locked") {
+      aijCard.classList.add("locked");
+      aijCard.querySelector(".status").textContent = "🔒 Terkunci";
+    } else {
+      aijCard.classList.remove("locked");
+      aijCard.querySelector(".status").textContent = "✅ Terbuka";
+    }
+  }
+
+  loadModules();
+</script>
+
     body {
       min-height: 100vh;
       background: #0b1120;
