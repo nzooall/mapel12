@@ -229,6 +229,68 @@
       margin-left: 6px;
     }
 
+    /* Panel User Aktif (Khusus Admin) */
+    .active-users-panel {
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 30px;
+    }
+    .active-users-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .active-user-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px;
+      padding: 10px 16px;
+    }
+    .active-user-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+    .active-user-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.7);
+      flex-shrink: 0;
+    }
+    .active-user-name { font-weight: 600; }
+    .active-user-role {
+      font-size: 11px;
+      color: #94a3b8;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+    .btn-kick {
+      background: rgba(244, 63, 94, 0.15);
+      color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      padding: 6px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      transition: 0.2s;
+    }
+    .btn-kick:hover { background: #f43f5e; color: #fff; }
+    .active-users-empty {
+      font-size: 13px;
+      color: #64748b;
+      text-align: center;
+      padding: 10px 0;
+    }
+
     /* Responsif untuk Layar Tablet/HP */
     @media (max-width: 1024px) {
       .grid-umum { grid-template-columns: repeat(2, 1fr); }
@@ -264,6 +326,17 @@
     
     <!-- Banner Informasi Berdasarkan Sistem Login -->
     <div id="roleBanner" class="role-banner"></div>
+
+    <!-- PANEL USER AKTIF (hanya tampil untuk admin) -->
+    <div id="activeUsersPanel" class="active-users-panel" style="display:none;">
+      <div class="section-header">
+        <i class="fa-solid fa-users color-productive"></i>
+        <h2>USER AKTIF SEKARANG</h2>
+      </div>
+      <div id="activeUsersList" class="active-users-list">
+        <div class="active-users-empty">Memuat data...</div>
+      </div>
+    </div>
 
     <!-- MAPEL PRODUKTIF (3 Kartu) -->
     <div class="section-group">
@@ -421,7 +494,7 @@
     // 1. DAFTAR FILE HTML MODUL YANG TERSEDIA
     const availableModules = {
       "aij": "aij.html", // Mengarah ke file aij.html
-      "tlj": "tlj.html" // Mengarah ke file tlj.html
+      "tlj": "tlj.html"  // Mengarah ke file tlj.html
     };
 
     const moduleNames = {
@@ -559,12 +632,153 @@
     }
 
     // 8. FUNGSI LOGOUT
-    function logout() {
+    async function logout() {
+      await removePresence();
       localStorage.removeItem("currentUser");
       window.location.href = "index.html";
     }
 
-    // Jalankan sistem: ambil status kunci terbaru dari server setiap kali halaman dibuka
+    // 9. SISTEM PELACAKAN USER AKTIF & FITUR KICK
+    // currentUser.username dipakai sebagai kunci unik di Firebase
+    const myUsername = currentUser.username || currentUser.name.toLowerCase();
+    const PRESENCE_ENDPOINT = FIREBASE_URL + "/activeUsers/" + myUsername + ".json";
+    const ALL_PRESENCE_ENDPOINT = FIREBASE_URL + "/activeUsers.json";
+    const ONLINE_THRESHOLD_MS = 15000; // dianggap online kalau heartbeat < 15 detik terakhir
+
+    // Daftarkan diri sebagai "aktif" saat dashboard dibuka (reset flag kicked)
+    async function registerPresence() {
+      try {
+        await fetch(PRESENCE_ENDPOINT, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: currentUser.name,
+            role: currentUser.role,
+            lastSeen: Date.now(),
+            kicked: false
+          })
+        });
+      } catch (err) {
+        console.error("Gagal mendaftarkan sesi aktif:", err);
+      }
+    }
+
+    // Hapus data diri dari daftar aktif (dipanggil saat logout)
+    async function removePresence() {
+      try {
+        await fetch(PRESENCE_ENDPOINT, { method: "DELETE" });
+      } catch (err) {
+        console.error("Gagal menghapus sesi aktif:", err);
+      }
+    }
+
+    // Kirim heartbeat + cek apakah diri sendiri sedang dikick admin
+    async function heartbeatAndCheckKicked() {
+      try {
+        const res = await fetch(PRESENCE_ENDPOINT);
+        const myData = await res.json();
+
+        if (myData && myData.kicked === true) {
+          alert("Anda telah dikeluarkan dari sesi oleh Administrator!");
+          await removePresence();
+          localStorage.removeItem("currentUser");
+          window.location.href = "index.html";
+          return;
+        }
+
+        // Perbarui waktu aktif terakhir
+        await fetch(PRESENCE_ENDPOINT, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ lastSeen: Date.now() })
+        });
+      } catch (err) {
+        console.error("Gagal memperbarui status aktif:", err);
+      }
+    }
+
+    // Ambil & tampilkan daftar user aktif (khusus tampilan admin)
+    async function fetchAndRenderActiveUsers() {
+      const panel = document.getElementById("activeUsersPanel");
+      const listEl = document.getElementById("activeUsersList");
+      if (currentUser.role !== "admin") return;
+
+      panel.style.display = "block";
+
+      try {
+        const res = await fetch(ALL_PRESENCE_ENDPOINT);
+        const allUsers = await res.json() || {};
+        const now = Date.now();
+
+        const onlineEntries = Object.entries(allUsers).filter(([uname, data]) => {
+          return data && (now - data.lastSeen) < ONLINE_THRESHOLD_MS;
+        });
+
+        if (onlineEntries.length === 0) {
+          listEl.innerHTML = '<div class="active-users-empty">Belum ada user lain yang aktif.</div>';
+          return;
+        }
+
+        listEl.innerHTML = "";
+        onlineEntries.forEach(([uname, data]) => {
+          const row = document.createElement("div");
+          row.className = "active-user-row";
+
+          const isSelf = uname === myUsername;
+          const isAdminTarget = data.role === "admin";
+
+          row.innerHTML = `
+            <div class="active-user-info">
+              <span class="active-user-dot"></span>
+              <span class="active-user-name">${data.name}${isSelf ? " (Anda)" : ""}</span>
+              <span class="active-user-role">${data.role.toUpperCase()}</span>
+            </div>
+            ${(!isSelf && !isAdminTarget) ? `<button class="btn-kick" data-username="${uname}">Kick</button>` : ""}
+          `;
+
+          const kickBtn = row.querySelector(".btn-kick");
+          if (kickBtn) {
+            kickBtn.addEventListener("click", () => kickUser(uname, data.name));
+          }
+
+          listEl.appendChild(row);
+        });
+      } catch (err) {
+        console.error("Gagal mengambil daftar user aktif:", err);
+        listEl.innerHTML = '<div class="active-users-empty">Gagal memuat data user aktif.</div>';
+      }
+    }
+
+    // Tandai user tertentu sebagai "kicked" di Firebase
+    async function kickUser(username, displayName) {
+      if (!confirm(`Kick user "${displayName}" sekarang?`)) return;
+
+      try {
+        await fetch(FIREBASE_URL + "/activeUsers/" + username + ".json", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ kicked: true })
+        });
+        alert(`${displayName} akan dikeluarkan dalam beberapa detik.`);
+      } catch (err) {
+        console.error("Gagal mengirim perintah kick:", err);
+        alert("Gagal mengirim perintah kick. Periksa koneksi internet.");
+      }
+    }
+
+    // Jalankan sistem presence: daftar begitu halaman dibuka
+    registerPresence();
+
+    // Loop berkala: cek status kunci mapel, heartbeat, dan daftar user aktif (khusus admin)
+    setInterval(() => {
+      fetchLockedModules();
+      heartbeatAndCheckKicked();
+      fetchAndRenderActiveUsers();
+    }, 5000);
+
+    // Render pertama kali saat halaman dibuka
+    fetchAndRenderActiveUsers();
+
     fetchLockedModules();
   </script>
 </body>
