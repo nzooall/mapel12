@@ -17,6 +17,7 @@
       flex-direction: column;
     }
 
+    /* Top Navigation Bar */
     .navbar {
       background: #111827;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -44,6 +45,7 @@
       gap: 12px;
     }
 
+    /* Badge Pembeda Role User vs Admin */
     .user-badge {
       padding: 8px 16px;
       border-radius: 20px;
@@ -80,6 +82,7 @@
     }
     .btn-logout:hover { background: #f43f5e; color: #fff; }
 
+    /* Main Container */
     .container {
       max-width: 1280px;
       margin: 30px auto;
@@ -88,6 +91,7 @@
       flex: 1;
     }
 
+    /* Banner Pemberitahuan Hak Akses */
     .role-banner {
       padding: 14px 20px;
       border-radius: 12px;
@@ -110,6 +114,7 @@
       color: #38bdf8;
     }
 
+    /* Section Header */
     .section-group { margin-bottom: 40px; }
     .section-header {
       display: flex;
@@ -123,6 +128,7 @@
     .color-productive { color: #f43f5e; }
     .color-general { color: #10b981; }
 
+    /* Layout Grids */
     .grid-produktif {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -135,6 +141,7 @@
       gap: 20px;
     }
 
+    /* Kartu Modul */
     .card-item {
       background: #1e293b;
       border: 1px solid rgba(255, 255, 255, 0.05);
@@ -192,6 +199,7 @@
       color: #64748b;
     }
 
+    /* Tombol Kunci/Buka Akses Khusus Admin */
     .lock-btn {
       position: absolute;
       top: 16px; right: 16px;
@@ -209,6 +217,7 @@
     }
     .lock-btn:hover { background: #38bdf8; color: #0f172a; }
 
+    /* Indikator Status Terkunci bagi User */
     .card-item.is-locked {
       background: #0f172a;
       border-color: rgba(239, 68, 68, 0.25);
@@ -220,6 +229,7 @@
       margin-left: 6px;
     }
 
+    /* Responsif untuk Layar Tablet/HP */
     @media (max-width: 1024px) {
       .grid-umum { grid-template-columns: repeat(2, 1fr); }
       .grid-produktif { grid-template-columns: repeat(2, 1fr); }
@@ -233,6 +243,7 @@
 </head>
 <body>
 
+  <!-- Top Bar Navbar -->
   <nav class="navbar">
     <div class="navbar-brand">
       <i class="fa-solid fa-server"></i>
@@ -251,8 +262,10 @@
 
   <div class="container">
     
+    <!-- Banner Informasi Berdasarkan Sistem Login -->
     <div id="roleBanner" class="role-banner"></div>
 
+    <!-- MAPEL PRODUKTIF (3 Kartu) -->
     <div class="section-group">
       <div class="section-header">
         <i class="fa-solid fa-laptop-code color-productive"></i>
@@ -301,6 +314,7 @@
       </div>
     </div>
 
+    <!-- MAPEL UMUM (7 Kartu) -->
     <div class="section-group">
       <div class="section-header">
         <i class="fa-solid fa-book-open color-general"></i>
@@ -425,6 +439,7 @@
     // 2. CEK SESI LOGIN DENGAN AMAN
     let currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
+    // Jika dibuka langsung tanpa login, buat akun User sementara (biar tidak layar putih)
     if (!currentUser) {
       currentUser = { name: "Siswa", role: "user" };
       localStorage.setItem("currentUser", JSON.stringify(currentUser));
@@ -458,11 +473,14 @@
 
     // 4. KONEKSI KE FIREBASE REALTIME DATABASE
     // GANTI URL DI BAWAH INI DENGAN URL DATABASE FIREBASE KAMU SENDIRI
-    const FIREBASE_URL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app/";
+    // Contoh: "https://mapel12-dashboard-default-rtdb.asia-southeast1.firebasedatabase.app"
+    const FIREBASE_URL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
     const LOCK_ENDPOINT = FIREBASE_URL + "/lockedModules.json";
 
+    // Status kunci disimpan di variabel ini setelah diambil dari Firebase
     let lockedModules = {};
 
+    // Ambil status kunci terbaru dari Firebase (dipanggil saat halaman dibuka/refresh)
     async function fetchLockedModules() {
       try {
         const res = await fetch(LOCK_ENDPOINT);
@@ -475,6 +493,7 @@
       renderModules();
     }
 
+    // Simpan perubahan status kunci ke Firebase supaya semua orang bisa lihat perubahannya
     async function saveLockedModules() {
       try {
         await fetch(LOCK_ENDPOINT, {
@@ -513,14 +532,14 @@
       });
     }
 
-    // 6. FUNGSI TOGGLE LOCK ADMIN
+    // 6. FUNGSI TOGGLE LOCK ADMIN (langsung kirim ke Firebase)
     async function toggleLock(event, id) {
       event.stopPropagation();
       if (currentUser.role !== "admin") return;
 
       lockedModules[id] = !lockedModules[id];
-      renderModules();
-      await saveLockedModules();
+      renderModules(); // update tampilan langsung biar terasa responsif
+      await saveLockedModules(); // kirim ke server supaya semua orang lihat perubahan
     }
 
     // 7. FUNGSI MASUK KE MODUL / PERINGATAN
@@ -544,6 +563,7 @@
       window.location.href = "index.html";
     }
 
+    // Jalankan sistem: ambil status kunci terbaru dari server setiap kali halaman dibuka
     fetchLockedModules();
   </script>
 </body>
