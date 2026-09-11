@@ -537,6 +537,40 @@ async function simpanHasilUjian(modulId, nilai, benar, salah, totalSoal) {
     }
 }
 
+// ==== JAGA STATUS "AKTIF" TETAP HIDUP SELAMA DI DALAM MODUL + CEK KICK ADMIN ====
+(function() {
+    const userSesi = JSON.parse(localStorage.getItem("currentUser"));
+    if (!userSesi || !userSesi.username) return;
+
+    const presenceEndpoint = FIREBASE_URL_HASIL + "/activeUsers/" + userSesi.username + ".json";
+
+    async function heartbeatDanCekKick() {
+        try {
+            const res = await fetch(presenceEndpoint);
+            const myData = await res.json();
+
+            if (myData && myData.kicked === true) {
+                alert("Anda telah dikeluarkan dari sesi oleh Administrator!");
+                await fetch(presenceEndpoint, { method: "DELETE" });
+                localStorage.removeItem("currentUser");
+                window.location.href = "index.html";
+                return;
+            }
+
+            await fetch(presenceEndpoint, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ lastSeen: Date.now() })
+            });
+        } catch (err) {
+            console.error("Gagal memperbarui status aktif:", err);
+        }
+    }
+
+    heartbeatDanCekKick();
+    setInterval(heartbeatDanCekKick, 5000);
+})();
+
 function resetQuiz() {
     document.getElementById('quizForm').reset();
     document.getElementById('resultCard').style.display = 'none';
