@@ -291,6 +291,65 @@
       padding: 10px 0;
     }
 
+    /* Panel Hasil Ujian Siswa (Khusus Admin) */
+    .results-panel {
+      background: #1e293b;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 30px;
+    }
+    .results-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .results-tab-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      padding: 6px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: 0.2s;
+    }
+    .results-tab-btn.active {
+      background: #38bdf8;
+      color: #0f172a;
+      border-color: #38bdf8;
+    }
+    .results-table-wrap { overflow-x: auto; }
+    .results-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .results-table th, .results-table td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .results-table th {
+      color: #94a3b8;
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .score-pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .score-high { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
+    .score-mid { background: rgba(234, 179, 8, 0.15); color: #facc15; }
+    .score-low { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+
     /* Responsif untuk Layar Tablet/HP */
     @media (max-width: 1024px) {
       .grid-umum { grid-template-columns: repeat(2, 1fr); }
@@ -335,6 +394,35 @@
       </div>
       <div id="activeUsersList" class="active-users-list">
         <div class="active-users-empty">Memuat data...</div>
+      </div>
+    </div>
+
+    <!-- PANEL HASIL UJIAN SISWA (hanya tampil untuk admin) -->
+    <div id="resultsPanel" class="results-panel" style="display:none;">
+      <div class="section-header">
+        <i class="fa-solid fa-chart-simple color-general"></i>
+        <h2>HASIL UJIAN SISWA</h2>
+      </div>
+      <div class="results-tabs" id="resultsTabs">
+        <button class="results-tab-btn active" data-modul="aij" onclick="pilihModulHasil('aij')">AIJ</button>
+        <button class="results-tab-btn" data-modul="asj" onclick="pilihModulHasil('asj')">ASJ</button>
+        <button class="results-tab-btn" data-modul="tlj" onclick="pilihModulHasil('tlj')">TLJ</button>
+      </div>
+      <div class="results-table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Nama Siswa</th>
+              <th>Nilai</th>
+              <th>Benar</th>
+              <th>Salah</th>
+              <th>Terakhir Dikerjakan</th>
+            </tr>
+          </thead>
+          <tbody id="resultsTableBody">
+            <tr><td colspan="5" style="color:#64748b; text-align:center; padding:16px;">Memuat data...</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -767,18 +855,81 @@
       }
     }
 
+    // 10. PANEL HASIL UJIAN SISWA (khusus admin)
+    let modulHasilTerpilih = "aij";
+
+    function pilihModulHasil(modulId) {
+      modulHasilTerpilih = modulId;
+      document.querySelectorAll(".results-tab-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-modul") === modulId);
+      });
+      fetchAndRenderResults();
+    }
+
+    function warnaNilai(nilai) {
+      if (nilai >= 80) return "score-high";
+      if (nilai >= 60) return "score-mid";
+      return "score-low";
+    }
+
+    function formatWaktu(timestamp) {
+      if (!timestamp) return "-";
+      const d = new Date(timestamp);
+      return d.toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+    }
+
+    async function fetchAndRenderResults() {
+      const panel = document.getElementById("resultsPanel");
+      const tbody = document.getElementById("resultsTableBody");
+      if (currentUser.role !== "admin") return;
+
+      panel.style.display = "block";
+
+      try {
+        const res = await fetch(FIREBASE_URL + "/examResults/" + modulHasilTerpilih + ".json");
+        const data = await res.json() || {};
+        const entries = Object.values(data);
+
+        if (entries.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="color:#64748b; text-align:center; padding:16px;">Belum ada siswa yang mengerjakan modul ini.</td></tr>';
+          return;
+        }
+
+        // Urutkan dari nilai tertinggi ke terendah
+        entries.sort((a, b) => (b.nilai || 0) - (a.nilai || 0));
+
+        tbody.innerHTML = "";
+        entries.forEach(item => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${item.name || item.username}</td>
+            <td><span class="score-pill ${warnaNilai(item.nilai)}">${item.nilai}</span></td>
+            <td>${item.benar}</td>
+            <td>${item.salah}</td>
+            <td>${formatWaktu(item.waktu)}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error("Gagal mengambil data hasil ujian:", err);
+        tbody.innerHTML = '<tr><td colspan="5" style="color:#64748b; text-align:center; padding:16px;">Gagal memuat data.</td></tr>';
+      }
+    }
+
     // Jalankan sistem presence: daftar begitu halaman dibuka
     registerPresence();
 
-    // Loop berkala: cek status kunci mapel, heartbeat, dan daftar user aktif (khusus admin)
+    // Loop berkala: cek status kunci mapel, heartbeat, daftar user aktif, dan hasil ujian (khusus admin)
     setInterval(() => {
       fetchLockedModules();
       heartbeatAndCheckKicked();
       fetchAndRenderActiveUsers();
+      fetchAndRenderResults();
     }, 5000);
 
     // Render pertama kali saat halaman dibuka
     fetchAndRenderActiveUsers();
+    fetchAndRenderResults();
 
     fetchLockedModules();
   </script>
