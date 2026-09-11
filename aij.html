@@ -598,6 +598,36 @@
 
         // Scroll otomatis ke banner hasil
         resultBox.scrollIntoView({ behavior: 'smooth' });
+
+        // Simpan hasil ke database supaya admin bisa lihat nilainya
+        simpanHasilUjian("aij", finalScore, correctCount, wrongCount, questions.length);
+    }
+
+    // ==== SIMPAN HASIL UJIAN KE FIREBASE (biar admin bisa pantau nilai siswa) ====
+    const FIREBASE_URL_HASIL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
+
+    async function simpanHasilUjian(modulId, nilai, benar, salah, totalSoal) {
+        try {
+            const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+            if (!currentUser || !currentUser.username) return; // tidak login, tidak disimpan
+
+            const endpoint = FIREBASE_URL_HASIL + "/examResults/" + modulId + "/" + currentUser.username + ".json";
+            await fetch(endpoint, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: currentUser.name,
+                    username: currentUser.username,
+                    nilai: nilai,
+                    benar: benar,
+                    salah: salah,
+                    totalSoal: totalSoal,
+                    waktu: Date.now()
+                })
+            });
+        } catch (err) {
+            console.error("Gagal menyimpan hasil ujian:", err);
+        }
     }
 
     // Fungsi Kerjakan Ulang
