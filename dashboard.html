@@ -878,6 +878,9 @@
       return d.toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
     }
 
+    // Hasil ujian otomatis dianggap kadaluarsa setelah sekian jam, supaya data tidak menumpuk
+    const HASIL_UJIAN_EXPIRY_MS = 6 * 60 * 60 * 1000; // 6 jam
+
     async function fetchAndRenderResults() {
       const panel = document.getElementById("resultsPanel");
       const tbody = document.getElementById("resultsTableBody");
@@ -888,18 +891,36 @@
       try {
         const res = await fetch(FIREBASE_URL + "/examResults/" + modulHasilTerpilih + ".json");
         const data = await res.json() || {};
-        const entries = Object.values(data);
+        const now = Date.now();
 
-        if (entries.length === 0) {
+        // Pisahkan data yang masih berlaku dan yang sudah kadaluarsa
+        const entriesValid = [];
+        const usernameKadaluarsa = [];
+
+        Object.entries(data).forEach(([uname, item]) => {
+          if (item && item.waktu && (now - item.waktu) > HASIL_UJIAN_EXPIRY_MS) {
+            usernameKadaluarsa.push(uname);
+          } else {
+            entriesValid.push(item);
+          }
+        });
+
+        // Hapus data yang sudah kadaluarsa dari database (berjalan di latar belakang)
+        usernameKadaluarsa.forEach(uname => {
+          fetch(FIREBASE_URL + "/examResults/" + modulHasilTerpilih + "/" + uname + ".json", { method: "DELETE" })
+            .catch(err => console.error("Gagal menghapus hasil kadaluarsa:", err));
+        });
+
+        if (entriesValid.length === 0) {
           tbody.innerHTML = '<tr><td colspan="5" style="color:#64748b; text-align:center; padding:16px;">Belum ada siswa yang mengerjakan modul ini.</td></tr>';
           return;
         }
 
         // Urutkan dari nilai tertinggi ke terendah
-        entries.sort((a, b) => (b.nilai || 0) - (a.nilai || 0));
+        entriesValid.sort((a, b) => (b.nilai || 0) - (a.nilai || 0));
 
         tbody.innerHTML = "";
-        entries.forEach(item => {
+        entriesValid.forEach(item => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
             <td>${item.name || item.username}</td>
@@ -913,6 +934,7 @@
       } catch (err) {
         console.error("Gagal mengambil data hasil ujian:", err);
         tbody.innerHTML = '<tr><td colspan="5" style="color:#64748b; text-align:center; padding:16px;">Gagal memuat data.</td></tr>';
+
       }
     }
 
