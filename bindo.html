@@ -10,7 +10,6 @@
       --panel-bg: #ffffff;
       --card-bg: #f8fafc;
       --primary: #2563eb;
-      --primary-hover: #1d4ed8;
       --text-main: #0f172a;
       --text-sub: #475569;
       --correct: #16a34a;
@@ -42,7 +41,6 @@
       gap: 10px;
       margin-bottom: 20px;
       border: 1px solid var(--border);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
 
     .auth-bar input {
@@ -72,7 +70,6 @@
       background: var(--panel-bg);
       border-radius: 16px;
       border: 1px solid var(--border);
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
     }
 
     .header h1 {
@@ -103,14 +100,12 @@
       font-weight: 600;
       border-radius: 10px;
       cursor: pointer;
-      transition: 0.2s;
     }
 
     .nav-btn.active {
       background: var(--primary);
       color: white;
       border-color: var(--primary);
-      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
     }
 
     /* Content Panels */
@@ -135,7 +130,6 @@
       padding: 22px;
       margin-bottom: 20px;
       border: 1px solid var(--border);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
 
     .material-card h2 {
@@ -171,7 +165,7 @@
       font-size: 14px;
     }
 
-    /* Quiz Styles */
+    /* Quiz Styles - Super Ringan */
     .quiz-subtabs {
       display: flex;
       gap: 10px;
@@ -200,7 +194,6 @@
       border-radius: 12px;
       padding: 20px;
       margin-bottom: 15px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
 
     .q-text {
@@ -225,13 +218,11 @@
       border-radius: 8px;
       text-align: left;
       cursor: pointer;
-      transition: 0.2s;
       font-size: 14.5px;
     }
 
     .opt-btn:hover {
-      border-color: var(--primary);
-      background: #f0f9ff;
+      background: #e2e8f0;
     }
 
     .opt-btn.selected {
@@ -277,7 +268,7 @@
       border: 1px solid #fca5a5;
     }
 
-    /* Controls Bar */
+    /* Controls Bar - Menghapus sticky & shadow agar responsif & tidak menguras GPU */
     .quiz-controls {
       background: var(--panel-bg);
       padding: 15px 20px;
@@ -287,9 +278,6 @@
       align-items: center;
       border: 1px solid var(--border);
       margin-top: 20px;
-      position: sticky;
-      bottom: 20px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .action-btn {
@@ -347,8 +335,8 @@
         <h2>2. Ketentuan Penulisan Alamat Surat</h2>
         <p>Penulisan alamat surat harus presisi dan sesuai ejaan resmi:</p>
         <ul>
-          <li><strong>Tidak Menggunakan Kata "Kepada":</strong> Langsung ditulis <code>Yth.
-          <li><strong>Penggunaan Sapaan:</strong> Kata sapaan (Bapak/Ibu) hanya digunakan jika diikuti nama orang (contoh: <i>Yth. Bapak Ahmad</i>). Jika diikuti nama jabatan, tidak menggunakan sapaan (contoh: <i>Yth. Direktur PT Jaya</i>).</li>
+          <li><strong>Tidak Menggunakan Kata "Kepada":</strong> Langsung ditulis <code>Yth.</code></li>
+          <li><strong>Penggunaan Sapaan:</strong> Kata sapaan (Bapak/Ibu) hanya digunakan jika diikuti nama orang (contoh: <i>Yth. Bapak Ahmad</i>). Jika diikuti nama jabatan, tidak menggunakan sapaan (contoh: <i>Yth. Direktur PT Mulia</i>).</li>
           <li><strong>Penulisan Kata Jalan:</strong> Kata "Jalan" tidak boleh disingkat menjadi "Jl." atau "Jln.".</li>
           <li><strong>Tanpa Titik di Akhir Baris:</strong> Alamat surat tidak menggunakan tanda titik di akhir barisnya.</li>
         </ul>
@@ -445,13 +433,13 @@
   </div>
 
   <script>
-    // ==================== SIMPAN HASIL UJIAN KE FIREBASE (biar admin bisa pantau nilai siswa) ====================
+    // ==================== SIMPAN HASIL UJIAN KE FIREBASE ====================
     const FIREBASE_URL_HASIL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
 
     async function simpanHasilUjian(modulId, nilai, benar, salah, totalSoal) {
       try {
         const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-        if (!currentUser || !currentUser.username) return; // tidak login, tidak disimpan
+        if (!currentUser || !currentUser.username) return;
 
         const endpoint = FIREBASE_URL_HASIL + "/examResults/" + modulId + "/" + currentUser.username + ".json";
         await fetch(endpoint, {
@@ -472,7 +460,7 @@
       }
     }
 
-    // ==================== JAGA STATUS "AKTIF" TETAP HIDUP SELAMA DI DALAM MODUL + CEK KICK ADMIN ====================
+    // ==================== JAGA STATUS "AKTIF" TETAP HIDUP ====================
     (function () {
       const userSesi = JSON.parse(localStorage.getItem("currentUser"));
       if (!userSesi || !userSesi.username) return;
@@ -506,7 +494,6 @@
       setInterval(heartbeatDanCekKick, 15000);
     })();
 
-    // Data Soal 1-50 Terkoneksi 100% dengan Kisi-Kisi Paket A & B
     const soalPaketA = [
       { id: 1, q: "1. Penulisan alamat surat lamaran pekerjaan yang tepat adalah ...", opt: ["A. Kepada Yth. Bapak Direktur PT Mulia, Jalan Melati No. 4 Jakarta", "B. Yth. Direktur PT Mulia / Jalan Melati No. 4 / Jakarta", "C. Yth. Direktur PT Mulia / Jl. Melati 4, Jakarta.", "D. Yth. Direktur PT Mulia\nJalan Melati No. 4\nJakarta", "E. Kepada Yth: Direktur PT Mulia Jalan Melati No.4 Jakarta"], ans: 3 },
       { id: 2, q: "2. Perhatikan bagian surat: 'Sesuai dengan iklan lowongan pekerjaan dari PT Berkah Jaya...'. Bagian tersebut merupakan ...", opt: ["A. Salam pembuka", "B. Alinea pembuka", "C. Alinea isi", "D. Perihal surat", "E. Alinea penutup"], ans: 1 },
@@ -565,7 +552,6 @@
 
     let userAnswers = {};
 
-    // Render Soal ke HTML
     function renderQuiz(data, containerId) {
       const container = document.getElementById(containerId);
       container.innerHTML = "";
@@ -588,25 +574,22 @@
       });
     }
 
-    // Eksekusi Render
     renderQuiz(soalPaketA, "paketA");
     renderQuiz(soalPaketB, "paketB");
 
-    // Pilih Jawaban
+    // Dioptimalkan: Hanya mengupdate tombol yang diklik & tombol sebelumnya (tidak merender ulang semua pilihan)
     function selectOption(qId, optIdx) {
+      const prevSelected = userAnswers[qId];
+      if (prevSelected !== undefined) {
+        const prevBtn = document.getElementById(`btn-${qId}-${prevSelected}`);
+        if (prevBtn) prevBtn.classList.remove("selected");
+      }
+
       userAnswers[qId] = optIdx;
-
-      const currentSoal = [...soalPaketA, ...soalPaketB].find(s => s.id === qId);
-      currentSoal.opt.forEach((_, idx) => {
-        const btn = document.getElementById(`btn-${qId}-${idx}`);
-        if(btn) btn.classList.remove("selected");
-      });
-
       const selectedBtn = document.getElementById(`btn-${qId}-${optIdx}`);
-      if(selectedBtn) selectedBtn.classList.add("selected");
+      if (selectedBtn) selectedBtn.classList.add("selected");
     }
 
-    // Cek Hasil & Munculkan Jawaban Benar Jika Salah
     function checkAnswers() {
       let score = 0;
       let wrongCount = 0;
@@ -648,12 +631,10 @@
 
       document.getElementById("score-text").innerText = `Hasil Skor Total: ${score} / ${allQuestions.length} Terjawab Benar`;
 
-      // Kirim hasil ujian ke Firebase supaya muncul di dashboard admin
       const nilaiAkhir = Math.round((score / allQuestions.length) * 100);
       simpanHasilUjian("bindo", nilaiAkhir, score, wrongCount, allQuestions.length);
     }
 
-    // Reset Jawaban
     function resetQuiz() {
       userAnswers = {};
       document.getElementById("score-text").innerText = "Status: Belum Diperiksa";
@@ -674,7 +655,6 @@
       });
     }
 
-    // Tab Navigation
     function showTab(tabId, element) {
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -683,7 +663,6 @@
       element.classList.add('active');
     }
 
-    // Paket A / B Sub-Navigation
     function switchPaket(paketId, element) {
       document.querySelectorAll('.paket-container').forEach(p => p.style.display = 'none');
       document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
