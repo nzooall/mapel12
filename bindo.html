@@ -310,6 +310,9 @@
       color: var(--primary);
     }
   </style>
+  <!-- Firebase SDK (versi compat, paling gampang dipakai tanpa build tool) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 </head>
 <body>
 
@@ -347,7 +350,7 @@
         <h2>2. Ketentuan Penulisan Alamat Surat</h2>
         <p>Penulisan alamat surat harus presisi dan sesuai ejaan resmi:</p>
         <ul>
-          <li><strong>Tidak Menggunakan Kata "Kepada":</strong> Langsung ditulis <code>Yth.</code></li>
+          <li><strong>Tidak Menggunakan Kata "Kepada":</strong> Langsung ditulis <code>Yth.
           <li><strong>Penggunaan Sapaan:</strong> Kata sapaan (Bapak/Ibu) hanya digunakan jika diikuti nama orang (contoh: <i>Yth. Bapak Ahmad</i>). Jika diikuti nama jabatan, tidak menggunakan sapaan (contoh: <i>Yth. Direktur PT Jaya</i>).</li>
           <li><strong>Penulisan Kata Jalan:</strong> Kata "Jalan" tidak boleh disingkat menjadi "Jl." atau "Jln.".</li>
           <li><strong>Tanpa Titik di Akhir Baris:</strong> Alamat surat tidak menggunakan tanda titik di akhir barisnya.</li>
@@ -445,10 +448,82 @@
   </div>
 
   <script>
-    // Konfigurasi Endpoint Firebase Realtime Database
-    const FIREBASE_URL_HASIL = "https://mapel12-website-default-rtdb.asia-southeast1.firebaseadatabase.app";
+    // =====================================================================
+    // KONFIGURASI FIREBASE
+    // Ganti bagian ini dengan config asli project kamu (mapel12-website).
+    // Supaya PASTI sama persis dengan yang dipakai dashboard.html, paling
+    // aman adalah COPY-PASTE object firebaseConfig dari dashboard.html kamu
+    // ke sini (cari di bagian <script> dashboard.html, biasanya di dekat
+    // baris firebase.initializeApp(...)).
+    // =====================================================================
+    const firebaseConfig = {
+      apiKey: "ISI_API_KEY_KAMU",
+      authDomain: "mapel12-website.firebaseapp.com",
+      databaseURL: "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "mapel12-website",
+      storageBucket: "mapel12-website.appspot.com",
+      messagingSenderId: "ISI_SENDER_ID_KAMU",
+      appId: "ISI_APP_ID_KAMU"
+    };
 
-    // Data Soal 1-50
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // =====================================================================
+    // IDENTITAS SISWA
+    // Opsi A (disarankan kalau 1 file HTML = 1 siswa, seperti pola di
+    // aij.html): isi langsung nama siswa pemilik file ini di NAMA_SISWA.
+    // Opsi B: biarkan NAMA_SISWA = "" -> nanti otomatis muncul kotak isi
+    // nama sekali saja, lalu diingat di browser siswa itu (localStorage).
+    // =====================================================================
+    const NAMA_SISWA = ""; // <-- contoh: "Kenzo"
+
+    function getNamaSiswa() {
+      let nama = NAMA_SISWA.trim();
+      if (!nama) nama = localStorage.getItem("namaSiswaBindo") || "";
+      if (!nama) {
+        nama = prompt("Masukkan nama lengkap kamu untuk Modul BINDO:") || "Siswa Tanpa Nama";
+        localStorage.setItem("namaSiswaBindo", nama);
+      }
+      return nama;
+    }
+
+    const namaSiswa = getNamaSiswa();
+    // Key Firebase tidak boleh mengandung . # $ / [ ]
+    const userKey = namaSiswa.replace(/[.#$/\[\]]/g, "_");
+
+    // =====================================================================
+    // DETEKSI ONLINE (masuk ke activeUsers, seperti yang dibaca dashboard)
+    // =====================================================================
+    const statusRef = db.ref("activeUsers/" + userKey);
+
+    db.ref(".info/connected").on("value", (snap) => {
+      if (snap.val() === true) {
+        statusRef.set({
+          name: namaSiswa,
+          module: "bindo",
+          status: "online",
+          lastActive: firebase.database.ServerValue.TIMESTAMP
+        });
+        // Kalau tab ditutup / koneksi putus, otomatis hilang dari daftar online
+        statusRef.onDisconnect().remove();
+      }
+    });
+
+    // =====================================================================
+    // KIRIM HASIL UJIAN KE ADMIN (examResults/bindo)
+    // =====================================================================
+    function kirimHasilKeAdmin(benar, salah, totalSoal) {
+      db.ref("examResults/bindo/" + userKey).set({
+        nama: namaSiswa,
+        nilai: Math.round((benar / totalSoal) * 100),
+        benar: benar,
+        salah: salah,
+        waktu: firebase.database.ServerValue.TIMESTAMP
+      });
+    }
+
+    // Data Soal 1-50 Terkoneksi 100% dengan Kisi-Kisi Paket A & B
     const soalPaketA = [
       { id: 1, q: "1. Penulisan alamat surat lamaran pekerjaan yang tepat adalah ...", opt: ["A. Kepada Yth. Bapak Direktur PT Mulia, Jalan Melati No. 4 Jakarta", "B. Yth. Direktur PT Mulia / Jalan Melati No. 4 / Jakarta", "C. Yth. Direktur PT Mulia / Jl. Melati 4, Jakarta.", "D. Yth. Direktur PT Mulia\nJalan Melati No. 4\nJakarta", "E. Kepada Yth: Direktur PT Mulia Jalan Melati No.4 Jakarta"], ans: 3 },
       { id: 2, q: "2. Perhatikan bagian surat: 'Sesuai dengan iklan lowongan pekerjaan dari PT Berkah Jaya...'. Bagian tersebut merupakan ...", opt: ["A. Salam pembuka", "B. Alinea pembuka", "C. Alinea isi", "D. Perihal surat", "E. Alinea penutup"], ans: 1 },
@@ -548,41 +623,11 @@
       if(selectedBtn) selectedBtn.classList.add("selected");
     }
 
-    // Kirim Hasil Ujian ke Firebase Realtime Database
-    async function simpanHasilUjian(modulId, nilai, benar, salah, totalSoal) {
-      try {
-        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-        
-        if (!currentUser || !currentUser.username) {
-          console.warn("User belum login, nilai tidak dikirim ke database.");
-          return;
-        }
-
-        const endpoint = `${FIREBASE_URL_HASIL}/examResults/${modulId}/${currentUser.username}.json`;
-        
-        await fetch(endpoint, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: currentUser.name || currentUser.username,
-            username: currentUser.username,
-            nilai: nilai,
-            benar: benar,
-            salah: salah,
-            totalSoal: totalSoal,
-            waktu: Date.now()
-          })
-        });
-      } catch (error) {
-        console.error("Gagal menyimpan hasil ujian ke Firebase:", error);
-      }
-    }
-
-    // Cek Hasil Jawaban & Update UI
+    // Cek Hasil & Munculkan Jawaban Benar Jika Salah
     function checkAnswers() {
       let score = 0;
+      let wrongCount = 0;
       const allQuestions = [...soalPaketA, ...soalPaketB];
-      const totalSoal = allQuestions.length;
 
       allQuestions.forEach((item) => {
         const userAns = userAnswers[item.id];
@@ -609,6 +654,7 @@
             feedbackElem.innerText = "✓ Jawaban Kamu Benar!";
           }
         } else {
+          wrongCount++;
           if (feedbackElem) {
             const correctText = item.opt[item.ans];
             feedbackElem.className = "feedback-note show-wrong";
@@ -617,13 +663,10 @@
         }
       });
 
-      const totalSalah = totalSoal - score;
-      const percentage = Math.round((score / totalSoal) * 100);
+      document.getElementById("score-text").innerText = `Hasil Skor Total: ${score} / ${allQuestions.length} Terjawab Benar`;
 
-      document.getElementById("score-text").innerText = `Hasil Skor Total: ${score} / ${totalSoal} Terjawab Benar (Nilai: ${percentage})`;
-
-      // Kirim hasil ke Firebase Realtime Database
-      simpanHasilUjian("bindo", percentage, score, totalSalah, totalSoal);
+      // Kirim hasil ujian ke Firebase supaya muncul di dashboard admin
+      kirimHasilKeAdmin(score, wrongCount, allQuestions.length);
     }
 
     // Reset Jawaban
