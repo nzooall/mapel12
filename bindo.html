@@ -10,6 +10,7 @@
       --panel-bg: #ffffff;
       --card-bg: #f8fafc;
       --primary: #2563eb;
+      --primary-hover: #1d4ed8;
       --text-main: #0f172a;
       --text-sub: #475569;
       --correct: #16a34a;
@@ -41,6 +42,7 @@
       gap: 10px;
       margin-bottom: 20px;
       border: 1px solid var(--border);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
 
     .auth-bar input {
@@ -70,6 +72,7 @@
       background: var(--panel-bg);
       border-radius: 16px;
       border: 1px solid var(--border);
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
     }
 
     .header h1 {
@@ -100,12 +103,14 @@
       font-weight: 600;
       border-radius: 10px;
       cursor: pointer;
+      transition: 0.2s;
     }
 
     .nav-btn.active {
       background: var(--primary);
       color: white;
       border-color: var(--primary);
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
     }
 
     /* Content Panels */
@@ -130,6 +135,7 @@
       padding: 22px;
       margin-bottom: 20px;
       border: 1px solid var(--border);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
 
     .material-card h2 {
@@ -165,7 +171,7 @@
       font-size: 14px;
     }
 
-    /* Quiz Styles - Super Ringan */
+    /* Quiz Styles */
     .quiz-subtabs {
       display: flex;
       gap: 10px;
@@ -194,6 +200,7 @@
       border-radius: 12px;
       padding: 20px;
       margin-bottom: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
     }
 
     .q-text {
@@ -218,11 +225,13 @@
       border-radius: 8px;
       text-align: left;
       cursor: pointer;
+      transition: 0.2s;
       font-size: 14.5px;
     }
 
     .opt-btn:hover {
-      background: #e2e8f0;
+      border-color: var(--primary);
+      background: #f0f9ff;
     }
 
     .opt-btn.selected {
@@ -268,7 +277,7 @@
       border: 1px solid #fca5a5;
     }
 
-    /* Controls Bar - Menghapus sticky & shadow agar responsif & tidak menguras GPU */
+    /* Controls Bar */
     .quiz-controls {
       background: var(--panel-bg);
       padding: 15px 20px;
@@ -278,6 +287,9 @@
       align-items: center;
       border: 1px solid var(--border);
       margin-top: 20px;
+      position: sticky;
+      bottom: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .action-btn {
@@ -322,81 +334,266 @@
 
     <!-- PANEL 1: RANGKUMAN MATERI LENGKAP -->
     <div id="rangkuman-tab" class="panel active">
-      
+
       <!-- MATERI PAKET A -->
-      <div class="section-banner">📌 Rangkuman Lengkap Materi Ujian - Paket A</div>
+      <div class="section-banner">📌 Rangkuman Lengkap Materi Ujian - Paket A (25 Poin Kisi-Kisi)</div>
 
       <div class="material-card">
-        <h2>1. Pengertian Surat Lamaran Pekerjaan</h2>
-        <p>Surat lamaran pekerjaan adalah surat formal/resmi dari perorangan yang ditujukan kepada instansi atau perusahaan untuk mengajukan diri guna memperoleh pekerjaan sesuai posisi yang ditawarkan.</p>
+        <h2>1. Penulisan Alamat Surat yang Benar</h2>
+        <p>Alamat surat ditulis tanpa kata "Kepada" jika sudah memakai "Yth.", tidak diakhiri tanda titik pada tiap barisnya, dan kata sapaan seperti Bapak/Ibu ditulis dengan huruf kapital di awal.</p>
       </div>
 
       <div class="material-card">
-        <h2>2. Ketentuan Penulisan Alamat Surat</h2>
-        <p>Penulisan alamat surat harus presisi dan sesuai ejaan resmi:</p>
-        <ul>
-          <li><strong>Tidak Menggunakan Kata "Kepada":</strong> Langsung ditulis <code>Yth.</code></li>
-          <li><strong>Penggunaan Sapaan:</strong> Kata sapaan (Bapak/Ibu) hanya digunakan jika diikuti nama orang (contoh: <i>Yth. Bapak Ahmad</i>). Jika diikuti nama jabatan, tidak menggunakan sapaan (contoh: <i>Yth. Direktur PT Mulia</i>).</li>
-          <li><strong>Penulisan Kata Jalan:</strong> Kata "Jalan" tidak boleh disingkat menjadi "Jl." atau "Jln.".</li>
-          <li><strong>Tanpa Titik di Akhir Baris:</strong> Alamat surat tidak menggunakan tanda titik di akhir barisnya.</li>
-        </ul>
-        <div class="code-box">
-          Yth. Direktur PT Mulia<br>
-          Jalan Melati No. 4<br>
-          Jakarta
-        </div>
+        <h2>2. Contoh Penulisan Bagian Surat Lamaran yang Salah</h2>
+        <p>Kesalahan umum: menulis "Kepada Yth. Bapak Direktur." (mengulang kata sapaan sekaligus memakai titik), atau menulis nama jabatan tanpa huruf kapital.</p>
       </div>
 
       <div class="material-card">
-        <h2>3. Penulisan Tanggal, Lampiran, & Perihal Surat</h2>
-        <ul>
-          <li><strong>Tanggal Surat:</strong> Nama tempat dan tanggal dipisahkan koma, bulan ditulis huruf, dan tanpa titik di akhir. Contoh: <code>Jakarta, 12 September 2026</code>.</li>
-          <li><strong>Lampiran & Perihal:</strong> Kata 'Lampiran' dan 'Perihal' tidak disingkat (bukan Lamp. / Hal.). Angka lampiran kurang dari 10 ditulis huruf. Contoh: <code>Lampiran: Empat lembar</code>.</li>
-        </ul>
+        <h2>3. Memperbaiki Kalimat Surat</h2>
+        <p>Kalimat surat resmi harus efektif, tidak bertele-tele, menggunakan ejaan baku (PUEBI), dan tidak mencampur bahasa gaul atau singkatan tidak resmi.</p>
       </div>
 
       <div class="material-card">
-        <h2>4. Penulisan Identitas Pelamar & Kalimat Penutup Surat</h2>
-        <ul>
-          <li><strong>Identitas Pelamar:</strong> Label awal identitas (nama, tempat, pendidikan, alamat) diawali <strong>huruf kecil</strong> karena merupakan kelanjutan kalimat sebelumnya. Contoh: <code>nama : Ahmad Subagja</code>.</li>
-          <li><strong>Perbaikan Kalimat Penutup:</strong> Hindari penggunaan kata ganti <code>-nya</code> dan kalimat berlebihan.<br>
-          <i>Salah:</i> Atas perhatiannya Bapak, saya ucapkan terima kasih banyak.<br>
-          <i>Benar:</i> <code>Atas perhatian Bapak, saya mengucapkan terima kasih.</code>.</li>
-          <li><strong>Salam Penutup:</strong> <code>Hormat saya,</code> (diakhiri tanda koma).</li>
-        </ul>
+        <h2>4. Menentukan Bagian Surat Lamaran Pekerjaan</h2>
+        <p>Bagian surat lamaran terdiri atas: tempat & tanggal, lampiran & hal, alamat surat, salam pembuka, paragraf pembuka, isi surat, paragraf penutup, salam penutup, serta tanda tangan dan nama terang.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>5. Contoh Penulisan Tanggal Surat yang Benar</h2>
+        <p>Tanggal ditulis dengan urutan: nama tempat, tanggal (angka), nama bulan (huruf, tidak disingkat), tahun, tanpa tanda titik di akhir.</p>
+        <div class="code-box">Jakarta, 12 September 2026</div>
+      </div>
+
+      <div class="material-card">
+        <h2>6. Menentukan Isi Surat yang Tidak Sesuai</h2>
+        <p>Isi surat lamaran yang tidak sesuai biasanya berupa informasi yang tidak relevan dengan kualifikasi pekerjaan, seperti curahan pengalaman pribadi yang tidak berkaitan dengan posisi yang dilamar.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>7. Penulisan Lampiran dan Perihal yang Benar</h2>
+        <p>Kata "Lampiran" dan "Hal" ditulis dengan huruf kapital di awal, angka lampiran ditulis dengan huruf, dan tidak diakhiri tanda titik.</p>
+        <div class="code-box">Lampiran: Lima lembar<br>Hal: Lamaran Pekerjaan</div>
+      </div>
+
+      <div class="material-card">
+        <h2>8. Kalimat Pembuka Surat Lamaran yang Benar</h2>
+        <p>Kalimat pembuka biasanya merujuk sumber informasi lowongan, contoh: "Berdasarkan iklan yang dimuat pada harian Kompas, 10 September 2026, saya bermaksud mengajukan lamaran pekerjaan sebagai...".</p>
+      </div>
+
+      <div class="material-card">
+        <h2>9. Contoh Penulisan Identitas yang Benar dalam Surat Lamaran Pekerjaan</h2>
+        <p>Identitas pelamar ditulis rapi dan berurutan: nama, tempat & tanggal lahir, pendidikan terakhir, alamat, dan nomor telepon, masing-masing diawali huruf kapital pada label datanya.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>10. Memperbaiki Kalimat Surat Lamaran Pekerjaan</h2>
+        <p>Perbaikan kalimat difokuskan pada penggunaan kata baku, tanda baca yang tepat, serta struktur kalimat yang tidak berbelit (Subjek-Predikat-Objek yang jelas).</p>
+      </div>
+
+      <div class="material-card">
+        <h2>11. Memperbaiki Kalimat Pembuka dalam Surat Lamaran Pekerjaan</h2>
+        <p>Kalimat pembuka yang baik langsung menyebutkan sumber informasi dan maksud melamar, bukan basa-basi panjang yang tidak perlu.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>12. Hal yang Tidak Perlu Dicantumkan dalam Surat Lamaran Pekerjaan</h2>
+        <p>Hal yang tidak perlu dicantumkan antara lain: permintaan gaji secara langsung tanpa diminta, keluhan pribadi, atau alasan berhenti dari pekerjaan sebelumnya secara detail.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>13. Contoh Penulisan Salam Penutup Surat yang Benar</h2>
+        <p>Salam penutup ditulis "Hormat saya," — huruf kapital hanya di kata pertama, diikuti tanda koma, tanpa digarisbawahi atau ditebalkan berlebihan.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>14. Hal-Hal yang Harus Diperhatikan dalam Menulis Surat Lamaran Pekerjaan</h2>
+        <p>Perhatikan kerapian format, ejaan baku, kesopanan bahasa, kejujuran data diri, serta kelengkapan lampiran yang disyaratkan oleh perusahaan.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>15. Menentukan Bagian Kalimat Surat Lamaran Pekerjaan</h2>
+        <p>Setiap bagian surat memiliki fungsi berbeda: paragraf pembuka menyatakan maksud, isi menjelaskan kualifikasi, penutup berisi harapan dan ucapan terima kasih.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>16. Pahami Pengertian Surat Lamaran Pekerjaan</h2>
+        <p>Surat lamaran pekerjaan adalah surat resmi yang dibuat oleh seseorang untuk mengajukan permohonan agar diterima bekerja pada suatu instansi atau perusahaan.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>17. Pahami Penulisan Salam Pembuka</h2>
+        <p>Salam pembuka baku dalam surat lamaran adalah "Dengan hormat," — ditulis dengan huruf kapital di awal kalimat dan diakhiri tanda koma, bukan tanda titik.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>18. Menentukan Bagian yang Tidak Terdapat dalam Surat Lamaran Pekerjaan</h2>
+        <p>Surat lamaran resmi tidak memuat bagian seperti "kata pengantar" atau "daftar isi" — bagian tersebut hanya ada pada karya tulis seperti makalah atau laporan.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>19. Hal yang Tidak Terdapat dalam Surat Lamaran Pekerjaan</h2>
+        <p>Surat lamaran tidak memuat unsur promosi diri berlebihan tanpa data pendukung, ataupun bahasa yang terlalu santai/tidak formal.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>20. Hal yang Tidak Perlu Dilampirkan dalam Surat Lamaran Pekerjaan</h2>
+        <p>Dokumen yang umumnya tidak perlu dilampirkan: rapor SD/SMP, foto keluarga, atau dokumen pribadi yang tidak berkaitan dengan kualifikasi kerja.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>21. Hal yang Tidak Harus Diperhatikan dalam Isi Surat Lamaran Pekerjaan</h2>
+        <p>Hal seperti warna kertas atau jenis font yang mencolok tidak menjadi fokus utama; yang diperhatikan adalah kejelasan isi, kejujuran, dan kerapian format resmi.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>22. Memperbaiki Kalimat Penutup Surat</h2>
+        <p>Kalimat penutup yang baik singkat, sopan, dan berisi harapan serta ucapan terima kasih.</p>
+        <div class="code-box">Atas perhatian Bapak/Ibu, saya ucapkan terima kasih.</div>
+      </div>
+
+      <div class="material-card">
+        <h2>23. Pahami Ketentuan Penulisan Alamat Surat</h2>
+        <p>Alamat surat ditulis maksimal tiga baris, tidak boleh disingkat berlebihan, dan tidak menggunakan tanda titik di setiap akhir barisnya.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>24. Menentukan Pernyataan yang Benar atau Salah Berdasarkan Isi Surat</h2>
+        <p>Untuk menjawab soal benar/salah, cocokkan pernyataan dengan fakta yang tertulis eksplisit dalam surat contoh yang diberikan pada soal.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>25. Pahami Bagian-Bagian Surat Lamaran Pekerjaan</h2>
+        <p>Ingat urutan lengkap: tempat/tanggal → lampiran & hal → alamat surat → salam pembuka → pembuka → isi → penutup → salam penutup → tanda tangan & nama terang.</p>
       </div>
 
       <!-- MATERI PAKET B -->
-      <div class="section-banner">⚙️ Rangkuman Lengkap Materi Ujian - Paket B</div>
+      <div class="section-banner">⚙️ Rangkuman Lengkap Materi Ujian - Paket B (25 Poin Kisi-Kisi)</div>
 
       <div class="material-card">
-        <h2>1. Koreksi Kesalahan Alamat Surat & Tanda Baca</h2>
-        <p>Kesalahan umum alamat surat meliputi penggunaan tanda titik pada singkatan PT dan akhir baris.</p>
-        <ul>
-          <li>Singkatan <strong>PT</strong> (Perseroan Terbatas) tidak diakhiri tanda titik (bukan <i>PT.</i>).</li>
-          <li>Tanda baca titik tidak digunakan di akhir baris alamat surat.</li>
-        </ul>
-        <div class="code-box">
-          <strong>Perbaikan Alamat Surat yang Salah:</strong><br>
-          <i>Salah:</i> Kepada Yth. Bapak HRD PT. Jaya Abadi.<br>
-          <i>Benar:</i> <code>Yth. HRD PT Jaya Abadi</code>
-        </div>
+        <h2>1. Penulisan Alamat Surat yang Benar</h2>
+        <p>Sama seperti Paket A: gunakan salah satu antara "Kepada" atau "Yth." (tidak keduanya), dan jangan mengakhiri tiap baris alamat dengan tanda titik.</p>
       </div>
 
       <div class="material-card">
-        <h2>2. Kalimat Pembuka Surat Sesuai Sumber Iklan</h2>
-        <p>Kalimat pembuka surat lamaran berdasarkan iklan wajib menyebutkan nama media, tanggal terbit iklan, dan nama posisi.</p>
-        <div class="code-box">
-          <code>"Setelah membaca iklan lowongan pekerjaan yang dimuat pada harian Riau Pos tanggal 5 September 2026, dengan ini saya bermaksud melamar..."</code>
-        </div>
+        <h2>2. Kesalahan Penggunaan Tanda Baca Titik ( . ) pada Alamat Surat</h2>
+        <p>Kesalahan paling sering ditemukan adalah menambahkan tanda titik di akhir baris nama jalan, kota, atau kode pos pada alamat surat — padahal alamat surat tidak diakhiri titik.</p>
       </div>
 
       <div class="material-card">
-        <h2>3. Penulisan Daftar Riwayat Hidup (CV) & Berkas Lampiran</h2>
-        <ul>
-          <li><strong>Daftar Riwayat Hidup (CV):</strong> Harus memuat data jujur, akurat, dan relevan. Dilarang mencantumkan informasi palsu atau silsilah keluarga secara detail.</li>
-          <li><strong>Berkas Lampiran yang Diperlukan:</strong> Fotokopi ijazah, CV, pasfoto, SKCK, dan sertifikat keahlian. Lampiran pribadi seperti riwayat keuangan atau akta lahir keluarga tidak perlu dilampirkan.</li>
-        </ul>
+        <h2>3. Perbaikan Kalimat Penutup Surat Lamaran Pekerjaan</h2>
+        <p>Kalimat penutup sebaiknya diperbaiki menjadi kalimat yang padat dan sopan.</p>
+        <div class="code-box">Besar harapan saya untuk dapat bergabung dan berkontribusi di perusahaan Bapak/Ibu.</div>
+      </div>
+
+      <div class="material-card">
+        <h2>4. Hal-Hal yang Tidak Perlu Dicantumkan dalam Surat Lamaran Pekerjaan</h2>
+        <p>Hindari mencantumkan hal pribadi yang tidak relevan seperti status hubungan, hobi yang tidak berkaitan dengan pekerjaan, atau permintaan fasilitas berlebihan.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>5. Menentukan Bagian-Bagian dalam Surat Lamaran Pekerjaan</h2>
+        <p>Bagian surat lamaran pekerjaan meliputi: tanggal surat, hal/lampiran, alamat tujuan, salam pembuka, isi (pembuka-isi-penutup), salam penutup, dan tanda tangan.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>6. Perbaikan Kalimat yang Tepat dalam Surat Lamaran</h2>
+        <p>Perbaikan kalimat difokuskan pada penggunaan kata baku sesuai KBBI, tanda baca sesuai PUEBI, dan penghindaran kalimat ambigu.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>7. Penulisan Salam Pembuka yang Salah dalam Surat Lamaran Pekerjaan</h2>
+        <p>Kesalahan umum: menulis "Dengan Hormat," (huruf H kapital padahal seharusnya huruf kecil), atau mengakhiri dengan titik bukan koma.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>8. Perbaikan Penulisan Daftar Riwayat Hidup/CV yang Benar</h2>
+        <p>Daftar riwayat hidup (CV) ditulis sistematis: data diri, riwayat pendidikan, pengalaman (jika ada), dan keterangan tambahan, dengan format konsisten dan ejaan baku.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>9. Bagian yang Tidak Terdapat dalam Surat Lamaran Pekerjaan</h2>
+        <p>Surat lamaran tidak memuat "abstrak" atau "daftar pustaka" — itu adalah unsur karya ilmiah, bukan surat resmi pribadi.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>10. Penulisan Tanggal Surat yang Benar</h2>
+        <p>Format baku: nama kota, tanggal (angka), bulan (huruf lengkap), tahun — tanpa tanda titik di akhir.</p>
+        <div class="code-box">Bandung, 5 Oktober 2026</div>
+      </div>
+
+      <div class="material-card">
+        <h2>11. Penulisan Lampiran dan Perihal yang Tepat dalam Surat Lamaran Pekerjaan</h2>
+        <p>Kata "Lampiran" dan "Hal" sejajar, huruf awal kapital, angka pada lampiran ditulis dengan huruf, dan tidak diakhiri tanda titik.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>12. Perbaikan Kalimat Pembuka Surat Lamaran Pekerjaan yang Tepat</h2>
+        <p>Kalimat pembuka yang tepat langsung merujuk sumber lowongan dan maksud pelamar tanpa bertele-tele, misalnya menyebutkan nama media dan tanggal publikasi iklan.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>13. Hal-Hal yang Harus Dihindari dalam Menulis Surat Lamaran</h2>
+        <p>Hindari bahasa tidak baku, singkatan tidak resmi (misal "yg", "dgn"), kesalahan ejaan, serta nada kalimat yang terlalu memaksa atau tidak sopan.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>14. Penulisan yang Salah Bagian-Bagian Surat Lamaran Pekerjaan</h2>
+        <p>Contoh kesalahan: salam pembuka diakhiri titik, alamat memakai "Kepada Yth." bersamaan, atau nama jabatan penerima surat ditulis huruf kecil semua.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>15. Penulisan Identitas yang Benar untuk Melengkapi Surat Lamaran Pekerjaan</h2>
+        <p>Identitas ditulis lengkap dan berurutan (nama, tempat/tanggal lahir, pendidikan, alamat, nomor HP) dengan huruf kapital pada label data, bukan pada seluruh isinya.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>16. Pengertian Surat Lamaran</h2>
+        <p>Surat lamaran adalah surat resmi permohonan kerja yang dibuat pelamar untuk mengajukan diri mengisi posisi tertentu pada suatu perusahaan atau instansi.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>17. Perbaikan Kalimat Pembuka Surat Lamaran Pekerjaan</h2>
+        <p>Kalimat pembuka diperbaiki agar efektif dan tidak berulang makna (misalnya menghindari pengulangan kata "melamar pekerjaan" dua kali dalam satu paragraf).</p>
+      </div>
+
+      <div class="material-card">
+        <h2>18. Urutan yang Tepat Sistematika Surat Lamaran Pekerjaan</h2>
+        <p>Urutan baku: tempat & tanggal surat → lampiran & hal → alamat surat → salam pembuka → paragraf pembuka → isi surat → paragraf penutup → salam penutup → tanda tangan & nama terang.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>19. Menentukan Pernyataan Sesuai dan Tidak Sesuai Terkait Surat Lamaran</h2>
+        <p>Cocokkan tiap pernyataan pada soal dengan fakta eksplisit di surat contoh — pernyataan yang tidak tertulis atau bertentangan dengan isi surat dianggap tidak sesuai.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>20. Menentukan Bagian yang Bukan Merupakan Lampiran dalam Surat Lamaran</h2>
+        <p>Bukan termasuk lampiran surat lamaran: rapor sekolah dasar, foto keluarga, atau dokumen yang tidak berkaitan dengan kualifikasi pekerjaan yang dilamar.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>21. Perbaikan Kalimat Penutup Surat Lamaran Pekerjaan agar Lebih Efektif</h2>
+        <p>Kalimat penutup yang efektif singkat namun tetap sopan, langsung menyampaikan harapan dan ucapan terima kasih tanpa pengulangan kalimat pembuka.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>22. Menentukan Kalimat Isi Surat yang Paling Meyakinkan</h2>
+        <p>Kalimat isi yang meyakinkan biasanya memuat data konkret (pendidikan, keterampilan, pengalaman) yang relevan dengan posisi yang dilamar, bukan pernyataan umum tanpa bukti.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>23. Kalimat Pembuka Surat Lamaran yang Paling Tepat Sesuai dengan Iklan</h2>
+        <p>Kalimat pembuka harus menyesuaikan dengan detail iklan yang diberikan pada soal (nama media, tanggal terbit, posisi yang dibutuhkan) — bukan kalimat pembuka generik.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>24. Menentukan Pernyataan Benar dan Salah</h2>
+        <p>Bandingkan tiap opsi pernyataan dengan kaidah penulisan surat resmi yang telah dipelajari (ejaan, tanda baca, struktur) untuk menentukan benar atau salahnya.</p>
+      </div>
+
+      <div class="material-card">
+        <h2>25. Menentukan Hubungan dalam Bagian-Bagian Surat Lamaran</h2>
+        <p>Setiap bagian surat saling berkaitan, misalnya salam pembuka harus selaras dengan alamat tujuan, dan paragraf pembuka harus merujuk pada hal/perihal yang tercantum.</p>
       </div>
 
     </div>
@@ -433,13 +630,13 @@
   </div>
 
   <script>
-    // ==================== SIMPAN HASIL UJIAN KE FIREBASE ====================
+    // ==================== SIMPAN HASIL UJIAN KE FIREBASE (biar admin bisa pantau nilai siswa) ====================
     const FIREBASE_URL_HASIL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
 
     async function simpanHasilUjian(modulId, nilai, benar, salah, totalSoal) {
       try {
         const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-        if (!currentUser || !currentUser.username) return;
+        if (!currentUser || !currentUser.username) return; // tidak login, tidak disimpan
 
         const endpoint = FIREBASE_URL_HASIL + "/examResults/" + modulId + "/" + currentUser.username + ".json";
         await fetch(endpoint, {
@@ -460,7 +657,7 @@
       }
     }
 
-    // ==================== JAGA STATUS "AKTIF" TETAP HIDUP ====================
+    // ==================== JAGA STATUS "AKTIF" TETAP HIDUP SELAMA DI DALAM MODUL + CEK KICK ADMIN ====================
     (function () {
       const userSesi = JSON.parse(localStorage.getItem("currentUser"));
       if (!userSesi || !userSesi.username) return;
@@ -494,64 +691,66 @@
       setInterval(heartbeatDanCekKick, 15000);
     })();
 
+    // Data Soal 1-50 Terkoneksi 100% dengan Kisi-Kisi Paket A & B
     const soalPaketA = [
-      { id: 1, q: "1. Penulisan alamat surat lamaran pekerjaan yang tepat adalah ...", opt: ["A. Kepada Yth. Bapak Direktur PT Mulia, Jalan Melati No. 4 Jakarta", "B. Yth. Direktur PT Mulia / Jalan Melati No. 4 / Jakarta", "C. Yth. Direktur PT Mulia / Jl. Melati 4, Jakarta.", "D. Yth. Direktur PT Mulia\nJalan Melati No. 4\nJakarta", "E. Kepada Yth: Direktur PT Mulia Jalan Melati No.4 Jakarta"], ans: 3 },
-      { id: 2, q: "2. Perhatikan bagian surat: 'Sesuai dengan iklan lowongan pekerjaan dari PT Berkah Jaya...'. Bagian tersebut merupakan ...", opt: ["A. Salam pembuka", "B. Alinea pembuka", "C. Alinea isi", "D. Perihal surat", "E. Alinea penutup"], ans: 1 },
-      { id: 3, q: "3. Penulisan tanggal surat lamaran pekerjaan yang benar adalah ...", opt: ["A. Jakarta, 12-September-2026.", "B. Jakarta, 12 September 2026", "C. Jakarta, 12 Sep 2026.", "D. Jakarta. 12 September 2026", "E. Jakarta 12 September 2026."], ans: 1 },
-      { id: 4, q: "4. Penulisan lampiran dan perihal yang tepat adalah ...", opt: ["A. Lampiran: 4 Lembar / Hal: Lamaran Pekerjaan", "B. Lamp.: empat lembar / Perihal: Melamar kerja", "C. Lampiran: Empat lembar\nPerihal : Lamaran Pekerjaan", "D. Lampiran: 4 (empat) lembar.\nPerihal: Surat Lamaran Kerja.", "E. Lamp : 4 lembar\nHal : Lamaran"], ans: 2 },
-      { id: 5, q: "5. Perbaikan kalimat penutup: 'Atas perhatiannya Bapak, saya mengucapkan terima kasih banyak.' yang efektif adalah ...", opt: ["A. Atas perhatian Bapak, saya mengucapkan terima kasih.", "B. Atas perhatiannya, saya ucapkan banyak terima kasih.", "C. Atas perhatian Bapak, saya haturkan terima kasih.", "D. Terima kasih banyak atas perhatian dari Bapak.", "E. Atas perhatiannya Bapak, diucapkan terima kasih."], ans: 0 },
-      { id: 6, q: "6. Penulisan rincian identitas pelamar yang tepat adalah ...", opt: ["A. Nama : Rahmat Hidayat\nTempat, Tanggal Lahir : Medan, 5 Mei 2003", "B. nama : Rahmat Hidayat\ntempat, tanggal lahir : Medan, 5 Mei 2003", "C. Nama : rahmat hidayat\nTempat/Tanggal Lahir : Medan/ 5 Mei 2003", "D. NAMA : Rahmat Hidayat\nTEMPAT, TANGGAL LAHIR : Medan, 5 Mei 2003", "E. nama : Rahmat Hidayat.\ntempat, tanggal lahir : Medan, 5 Mei 2003."], ans: 1 },
-      { id: 7, q: "7. Hal yang TIDAK perlu dicantumkan dalam lampiran surat lamaran pekerjaan adalah ...", opt: ["A. Fotokopi ijazah terakhir", "B. Daftar riwayat hidup", "C. Daftar riwayat hidup seluruh anggota keluarga", "D. Pasfoto terbaru", "E. Sertifikat keahlian"], ans: 2 },
-      { id: 8, q: "8. Penulisan salam penutup yang tepat dalam surat lamaran pekerjaan adalah ...", opt: ["A. Hormat Saya,", "B. Hormat saya.", "C. Hormat saya,", "D. Hormat Saya", "E. Salam Hormat,"], ans: 2 },
-      { id: 9, q: "9. Surat lamaran pekerjaan tergolong ke dalam jenis surat ...", opt: ["A. Dinas pemerintah", "B. Niaga", "C. Pribadi bersifat resmi", "D. Pribadi bersifat tidak resmi", "E. Kebudayaan"], ans: 2 },
-      { id: 10, q: "10. Penulisan salam pembuka yang benar adalah ...", opt: ["A. Dengan Hormat,", "B. Dengan hormat.", "C. Dengan hormat,", "D. Dengan Hormat", "E. Dengan hormat:"], ans: 2 },
-      { id: 11, q: "11. Contoh penulisan bagian surat yang SALAH adalah ...", opt: ["A. Yth. Kepala Bagian Personalia", "B. Jl. Jenderal Sudirman No. 10", "C. Lampiran: Lima lembar", "D. Dengan hormat,", "E. Jakarta, 10 Oktober 2026"], ans: 1 },
-      { id: 12, q: "12. Kalimat pembuka surat lamaran berdasarkan inisiatif sendiri yang paling tepat adalah ...", opt: ["A. Berdasarkan iklan di koran, saya bermaksud melamar pekerjaan.", "B. Yang bertanda tangan di bawah ini, saya... bermaksud melamar pekerjaan pada perusahaan Bapak/Ibu.", "C. Menurut kabar dari teman, perusahaan Bapak membutuhkan staf.", "D. Saya mendapat informasi dari brosur bahwa ada lowongan kerja.", "E. Mengingat Bapak membutuhkan karyawan baru, maka saya mendaftar."], ans: 1 },
-      { id: 13, q: "13. Bagian: 'Saya bermaksud melamar pekerjaan... Sebagai bahan pertimbangan, bersama ini saya lampirkan...' termasuk ...", opt: ["A. Salam pembuka", "B. Maksud/Tujuan dan lampiran pada isi surat", "C. Alinea penutup", "D. Salam penutup", "E. Perihal surat"], ans: 1 },
-      { id: 14, q: "14. Hal yang TIDAK harus diperhatikan dalam menyusun isi surat lamaran pekerjaan adalah ...", opt: ["A. Kebersihan dan kerapian fisik surat", "B. Penggunaan bahasa yang formal dan sopan", "C. Kebenaran data diri yang dituliskan", "D. Menceritakan masalah pribadi secara detail", "E. Kesesuaian kualifikasi diri"], ans: 3 },
-      { id: 15, q: "15. Pernyataan yang BENAR terkait penulisan surat lamaran pekerjaan adalah ...", opt: ["A. Kata 'Kepada' wajib ditulis sebelum 'Yth.'", "B. Tanda titik digunakan di akhir baris alamat surat", "C. Nama bulan pada tanggal surat tidak boleh ditulis angka", "D. Singkatan 'Lamp.' lebih disukai dibanding kata utuh 'Lampiran'", "E. Penulisan nama identitas wajib diawali huruf kapital di setiap labelnya"], ans: 2 },
-      { id: 16, q: "16. Bagian yang TIDAK terdapat dalam sistematika umum surat lamaran pekerjaan adalah ...", opt: ["A. Tempat dan tanggal pembuatan surat", "B. Nomor surat dan tembusan", "C. Salam pembuka", "D. Alinea penutup", "E. Tanda tangan dan nama terang"], ans: 1 },
-      { id: 17, q: "17. Contoh penulisan alamat surat yang SALAH adalah ...", opt: ["A. Yth. HRD PT Sentosa\nJalan Pemuda No. 12\nSemarang", "B. Yth. Bapak HRD PT Sentosa.", "C. Yth. Manajer Pemasaran PT Sentosa\nJalan Pemuda No. 12\nSemarang", "D. Yth. Direktur Utama PT Sentosa\nJalan Pemuda No. 12\nSemarang", "E. Yth. Pimpinan PT Sentosa\nJalan Pemuda No. 12\nSemarang"], ans: 1 },
-      { id: 18, q: "18. Memperbaiki kalimat: 'Saya berharap Bapak mau menerima saya kerja di sini.' yang santun adalah ...", opt: ["A. Besar harapan saya untuk dapat diterima bekerja di perusahaan yang Bapak/Ibu pimpin.", "B. Saya minta tolong Bapak terima saya bekerja di perusahaan ini.", "C. Tolong terima saya kerja karena saya butuh uang.", "D. Harapan saya sangat besar agar saya diterima di sini.", "E. Semoga Bapak tidak menolak lamaran kerja saya ini."], ans: 0 },
-      { id: 19, q: "19. Unsur yang menentukan isi dari surat lamaran pekerjaan adalah ...", opt: ["A. Pengalaman hidup masa kecil", "B. Kualifikasi pelamar dan persyaratan lowongan", "C. Riwayat kesehatan seluruh keluarga", "D. Jumlah gaji yang diminta tanpa negosiasi", "E. Latar belakang politik pelamar"], ans: 1 },
-      { id: 20, q: "20. Kalimat pembuka surat lamaran berdasarkan informasi dari iklan koran memuat hal penting, yaitu ...", opt: ["A. Nama surat kabar dan tanggal terbit iklan", "B. Nama pembuat iklan secara pribadi", "C. Harga surat kabar tersebut", "D. Alasan penjual menjual surat kabar", "E. Jumlah orang yang membaca iklan"], ans: 0 },
-      { id: 21, q: "21. Mengapa penulisan kata 'Jalan' dalam alamat surat tidak boleh disingkat?", opt: ["A. Karena menghemat kertas", "B. Sesuai standar penulisan formal dan tata bahasa resmi", "C. Agar kelihatan lebih panjang", "D. Karena aturan dari kantor pos", "E. Tidak ada alasan tertentu"], ans: 1 },
-      { id: 22, q: "22. Dokumen yang TIDAK perlu dilampirkan dalam lamaran kerja standar adalah ...", opt: ["A. Fotokopi Ijazah", "B. Curriculum Vitae", "C. Sertifikat Akta Kelahiran Anak", "D. Pasfoto", "E. Fotokopi KTP"], ans: 2 },
-      { id: 23, q: "23. Perhatikan kalimat: 'Demikian surat lamaran ini saya buat, atas perhatiannya disampaikan terima kasih.' Kesalahan terletak pada ...", opt: ["A. Penggunaan kata 'Demikian'", "B. Penggunaan kata 'surat'", "C. Penggunaan akhiran '-nya' dan kata pasif 'disampaikan'", "D. Penggunaan kata 'terima kasih'", "E. Penggunaan kata 'saya'"], ans: 2 },
-      { id: 24, q: "24. Manakah isi surat yang TIDAK sesuai dengan prinsip penulisan formal?", opt: ["A. Melampirkan berkas pendukung yang dipersyaratkan", "B. Menjelaskan keterampilan utama yang dimiliki", "C. Meminta gaji tinggi dengan nada mendesak", "D. Menyebutkan posisi pekerjaan yang dilamar", "E. Menggunakan bahasa yang lugas dan santun"], ans: 2 },
-      { id: 25, q: "25. Sistematika yang terletak sebelum 'salam pembuka' pada surat lamaran pekerjaan adalah ...", opt: ["A. Tempat dan tanggal surat, Lampiran & Perihal, serta Alamat surat", "B. Isi surat", "C. Alinea pembuka", "D. Tanda tangan", "E. Salam penutup"], ans: 0 }
+      { id: 1, q: "1. Penulisan alamat surat lamaran pekerjaan yang tepat adalah ...", opt: ["A. Kepada Yth. Bapak Direktur PT Mulia, Jalan Melati No. 4, Jakarta.", "B. Yth. Direktur PT Mulia\nJalan Melati No. 4\nJakarta", "C. Yth. Direktur PT Mulia, Jl. Melati No. 4, Jakarta.", "D. Kepada Direktur PT Mulia, Jalan Melati No. 4, Jakarta", "E. YTH: Direktur PT Mulia Jalan Melati No 4 Jakarta"], ans: 1 },
+      { id: 2, q: "2. Berikut ini contoh penulisan bagian surat lamaran yang SALAH adalah ...", opt: ["A. Yth. Kepala HRD PT Sentosa", "B. Dengan hormat,", "C. Hormat saya,", "D. Kepada Yth. Bapak Kepala HRD PT Sentosa.", "E. Jakarta, 12 September 2026"], ans: 3 },
+      { id: 3, q: "3. Kalimat 'Saya yang bertanda tangan dibawah ini' seharusnya diperbaiki menjadi ...", opt: ["A. Saya yang bertanda tangan di bawah ini", "B. saya Yang bertanda tangan dibawah ini", "C. Saya Yang Bertanda Tangan Dibawah Ini", "D. Saya, yang bertanda-tangan, dibawah ini", "E. Saya yang bertandatangan di bawah ini"], ans: 0 },
+      { id: 4, q: "4. Bagian surat lamaran pekerjaan yang berisi ucapan terima kasih dan harapan pelamar disebut ...", opt: ["A. Salam pembuka", "B. Alinea pembuka", "C. Alinea penutup", "D. Identitas pelamar", "E. Lampiran surat"], ans: 2 },
+      { id: 5, q: "5. Penulisan tanggal surat lamaran pekerjaan yang benar adalah ...", opt: ["A. Jakarta, 12 September 2026.", "B. Jakarta, 12-09-2026", "C. Jakarta, 12 September 2026", "D. JAKARTA, 12 SEPTEMBER 2026", "E. Jakarta 12 September 2026."], ans: 2 },
+      { id: 6, q: "6. Manakah isi surat lamaran yang TIDAK sesuai untuk dicantumkan?", opt: ["A. Riwayat pendidikan pelamar", "B. Keluhan terhadap perusahaan sebelumnya", "C. Maksud dan tujuan melamar", "D. Kualifikasi yang dimiliki pelamar", "E. Posisi yang dilamar"], ans: 1 },
+      { id: 7, q: "7. Penulisan lampiran dan perihal yang benar adalah ...", opt: ["A. Lampiran: 5 lembar\nHal: Lamaran Pekerjaan.", "B. Lampiran: Lima Lembar\nHal: Lamaran Pekerjaan", "C. Lampiran: Lima lembar\nHal: Lamaran Pekerjaan", "D. lampiran: lima lembar\nhal: lamaran pekerjaan", "E. Lamp.: 5 lembar\nPerihal: Lamaran Kerja."], ans: 2 },
+      { id: 8, q: "8. Kalimat pembuka surat lamaran yang tepat adalah ...", opt: ["A. Saya ingin melamar pekerjaan di perusahaan Bapak.", "B. Berdasarkan iklan di harian Kompas, 10 September 2026, saya bermaksud melamar pekerjaan sebagai staf administrasi.", "C. Mohon diterima sebagai karyawan.", "D. Saya butuh pekerjaan segera.", "E. Sehubungan adanya info lowongan, saya melamar."], ans: 1 },
+      { id: 9, q: "9. Penulisan identitas pelamar yang benar adalah ...", opt: ["A. nama: budi santoso", "B. Nama: Budi Santoso", "C. NAMA : BUDI SANTOSO", "D. Nama : budi Santoso", "E. Nama; Budi Santoso."], ans: 1 },
+      { id: 10, q: "10. Kalimat 'Saya sangat berpengalaman dan pasti sangat cocok untuk posisi ini' sebaiknya diperbaiki menjadi kalimat yang lebih ...", opt: ["A. Emosional", "B. Panjang", "C. Objektif dan didukung data konkret", "D. Singkat tanpa penjelasan", "E. Menggunakan bahasa santai"], ans: 2 },
+      { id: 11, q: "11. Kalimat pembuka 'Sehubungan dengan adanya lowongan kerja, dengan ini saya' merupakan contoh kalimat pembuka yang ...", opt: ["A. Sudah tepat dan efektif", "B. Kurang tepat karena tidak menyebutkan sumber info lowongan", "C. Terlalu panjang", "D. Menggunakan bahasa tidak baku", "E. Sudah sesuai kaidah baku"], ans: 1 },
+      { id: 12, q: "12. Berikut yang TIDAK perlu dicantumkan dalam surat lamaran pekerjaan adalah ...", opt: ["A. Riwayat pendidikan", "B. Permintaan gaji tanpa diminta perusahaan", "C. Kualifikasi yang dimiliki", "D. Maksud melamar pekerjaan", "E. Identitas diri pelamar"], ans: 1 },
+      { id: 13, q: "13. Penulisan salam penutup yang benar adalah ...", opt: ["A. Hormat Saya,", "B. HORMAT SAYA,", "C. Hormat saya,", "D. hormat saya.", "E. Hormat saya."], ans: 2 },
+      { id: 14, q: "14. Hal yang HARUS diperhatikan saat menulis surat lamaran pekerjaan adalah ...", opt: ["A. Menggunakan bahasa gaul agar terlihat santai", "B. Menggunakan kertas berwarna mencolok", "C. Ejaan baku dan kesopanan bahasa", "D. Menulis surat sepanjang mungkin", "E. Menyingkat semua kata agar ringkas"], ans: 2 },
+      { id: 15, q: "15. Paragraf yang berisi penjelasan kualifikasi dan maksud pelamar disebut bagian ...", opt: ["A. Salam pembuka", "B. Isi surat", "C. Salam penutup", "D. Identitas surat", "E. Lampiran surat"], ans: 1 },
+      { id: 16, q: "16. Surat lamaran pekerjaan adalah ...", opt: ["A. Surat pribadi untuk teman", "B. Surat resmi permohonan untuk bekerja di suatu instansi", "C. Surat pengumuman dari perusahaan", "D. Surat izin tidak masuk kerja", "E. Surat perjanjian kerja"], ans: 1 },
+      { id: 17, q: "17. Salam pembuka yang baku dalam surat lamaran pekerjaan adalah ...", opt: ["A. Dengan Hormat,", "B. Dengan hormat,", "C. Assalamualaikum,", "D. Salam sejahtera,", "E. Dengan hormat."], ans: 1 },
+      { id: 18, q: "18. Bagian yang TIDAK terdapat dalam surat lamaran pekerjaan adalah ...", opt: ["A. Salam pembuka", "B. Daftar isi", "C. Tanda tangan pelamar", "D. Alamat surat", "E. Salam penutup"], ans: 1 },
+      { id: 19, q: "19. Berikut yang TIDAK terdapat dalam surat lamaran pekerjaan yang baik adalah ...", opt: ["A. Bahasa yang sopan dan formal", "B. Data diri pelamar", "C. Bahasa yang terlalu santai dan tidak baku", "D. Maksud dan tujuan surat", "E. Salam pembuka dan penutup"], ans: 2 },
+      { id: 20, q: "20. Dokumen yang TIDAK perlu dilampirkan dalam surat lamaran pekerjaan adalah ...", opt: ["A. Fotokopi ijazah", "B. Daftar riwayat hidup", "C. Rapor SD", "D. Pas foto terbaru", "E. Sertifikat keahlian"], ans: 2 },
+      { id: 21, q: "21. Hal yang TIDAK harus diperhatikan dalam isi surat lamaran pekerjaan adalah ...", opt: ["A. Kejujuran data diri", "B. Kejelasan maksud dan tujuan", "C. Warna kertas yang mencolok", "D. Kerapian format surat", "E. Kesesuaian kualifikasi dengan posisi"], ans: 2 },
+      { id: 22, q: "22. Kalimat penutup 'Demikian, atas perhatiannya saya ucapkan makasih' sebaiknya diperbaiki menjadi ...", opt: ["A. Demikian, atas perhatian Bapak/Ibu, saya ucapkan terima kasih.", "B. Demikian atas perhatianya saya ucapkan makasih.", "C. Sekian, makasih banyak ya pak/bu.", "D. Demikian, terima kasih banget.", "E. Atas perhatiannya makasih banyak."], ans: 0 },
+      { id: 23, q: "23. Ketentuan penulisan alamat surat yang benar adalah ...", opt: ["A. Ditulis maksimal 3 baris tanpa tanda titik di akhir", "B. Boleh menggunakan tanda titik di setiap baris", "C. Harus disingkat semaksimal mungkin", "D. Ditulis dalam satu baris panjang", "E. Diawali dengan kata 'Kepada' dan 'Yth.' sekaligus"], ans: 0 },
+      { id: 24, q: "24. Jika dalam surat tertulis pelamar melampirkan fotokopi ijazah dan KTP, maka pernyataan 'pelamar tidak melampirkan dokumen apa pun' adalah ...", opt: ["A. Benar", "B. Salah", "C. Tidak dapat ditentukan", "D. Sesuai isi surat", "E. Sebagian benar"], ans: 1 },
+      { id: 25, q: "25. Urutan bagian-bagian surat lamaran pekerjaan yang benar adalah ...", opt: ["A. Salam penutup - isi - salam pembuka", "B. Tempat/tanggal - lampiran/hal - alamat surat - salam pembuka - isi - salam penutup", "C. Isi - alamat surat - tempat/tanggal", "D. Salam pembuka - tempat/tanggal - isi", "E. Tanda tangan - alamat - isi"], ans: 1 }
     ];
 
     const soalPaketB = [
-      { id: 26, q: "26. Kesalahan alamat surat: 'Kepada Yth. Bapak HRD PT. Jaya Abadi.' Kesalahan terletak pada ...", opt: ["A. Penggunaan kata 'Kepada', sebutan 'Bapak', dan tanda titik setelah 'PT.'", "B. Penggunaan kata 'Yth.'", "C. Penggunaan nama perusahaan", "D. Penggunaan huruf kapital", "E. Penggunaan singkatan 'HRD'"], ans: 0 },
-      { id: 27, q: "27. Perbaikan alamat surat pada nomor 26 yang benar adalah ...", opt: ["A. Yth. HRD PT Jaya Abadi", "B. Kepada Yth. HRD PT. Jaya Abadi", "C. Yth. Bapak HRD PT Jaya Abadi.", "D. Kepada HRD PT Jaya Abadi", "E. Yth. HRD PT. Jaya Abadi."], ans: 0 },
-      { id: 28, q: "28. Perbaikan penutup: 'Atas perhatiannya, saya ucapkan terima kasih banyak.' yang efektif yaitu ...", opt: ["A. Atas perhatian Bapak/Ibu, saya mengucapkan terima kasih.", "B. Atas perhatiannya Bapak, saya haturkan terima kasih.", "C. Atas perhatian, saya ucapkan banyak-banyak terima kasih.", "D. Terima kasih banyak atas perhatiannya Bapak/Ibu.", "E. Atas perhatiannya disebarkan terima kasih."], ans: 0 },
-      { id: 29, q: "29. Dalam surat lamaran pekerjaan, hal yang TIDAK perlu dicantumkan adalah ...", opt: ["A. Kualifikasi pendidikan", "B. Pengalaman kerja yang relevan", "C. Maksud melamar pekerjaan", "D. Rincian silsilah keluarga pelamar", "E. Identitas diri pelamar"], ans: 3 },
-      { id: 30, q: "30. Bagian surat lamaran yang berisi alasan pelamar serta sumber informasi lowongan disebut ...", opt: ["A. Alinea pembuka", "B. Alinea penutup", "C. Salam pembuka", "D. Identitas pelamar", "E. Lampiran surat"], ans: 0 },
-      { id: 31, q: "31. Perbaikan kalimat: 'Saya tau perusahaan Bapak bagus makanya saya mau kerja di sini.' yang sopan adalah ...", opt: ["A. Saya mengetahui reputasi baik perusahaan Bapak/Ibu, oleh karena itu saya tertarik untuk bergabung.", "B. Perusahaan Bapak bagus sekali, saya mau mendaftar di sini.", "C. Karena perusahaan ini populer, saya ingin coba-coba kerja.", "D. Saya tahu perusahaan ini hebat makanya saya melamar.", "E. Begitu tahu perusahaan ini bagus, saya langsung daftar."], ans: 0 },
-      { id: 32, q: "32. Penulisan salam pembuka berikut yang SALAH adalah ...", opt: ["A. Dengan hormat,", "B. Dengan Hormat,", "C. Dengan hormat", "D. B dan C Benar", "E. Tidak ada yang salah"], ans: 3 },
-      { id: 33, q: "33. Dalam penulisan Daftar Riwayat Hidup (CV), kesalahan yang harus DIHINDARI adalah ...", opt: ["A. Mencantumkan riwayat pendidikan formal secara urut", "B. Mencantumkan informasi palsu atau tidak jujur", "C. Menuliskan keahlian yang relevan dengan pekerjaan", "D. Menuliskan pengalaman organisasi", "E. Menyediakan informasi kontak yang aktif"], ans: 1 },
-      { id: 34, q: "34. Bagian yang BUKAN merupakan komponen utama surat lamaran pekerjaan adalah ...", opt: ["A. Kepala Surat / Kop Surat Resmi Swasta (Milik Pelamar)", "B. Tempat dan tanggal surat", "C. Alamat tujuan", "D. Isi surat", "E. Tanda tangan pelamar"], ans: 0 },
-      { id: 35, q: "35. Penulisan tanggal surat yang BENAR adalah ...", opt: ["A. Batam, 12 September 2026", "B. Batam, 12-09-2026", "C. Batam, 12 Sept. 2026.", "D. Batam 12 September 2026.", "E. Batam. 12 September 2026"], ans: 0 },
-      { id: 36, q: "36. Perbaikan lampiran: 'Lampiran: 5 Lembar' yang tepat adalah ...", opt: ["A. Lampiran: Lima lembar", "B. Lamp.: 5 lembar", "C. Lampiran: 5 (lima) lembar.", "D. Lampiran: lima lembar.", "E. Hal: 5 lembar"], ans: 0 },
-      { id: 37, q: "37. Kalimat pembuka lamaran pekerjaan berdasarkan iklan di media cetak yang tepat adalah ...", opt: ["A. Setelah membaca iklan di harian Riau Pos tanggal 5 September 2026, saya bermaksud...", "B. Saya baca di koran ada lowongan, maka saya melamar...", "C. Katanya di harian Riau Pos ada lowongan kerja...", "D. Memenuhi iklan lowongan kerja di koran...", "E. Berdasarkan iklan yang saya lihat kemarin..."], ans: 0 },
-      { id: 38, q: "38. Hal yang harus dihindari saat menulis surat lamaran pekerjaan adalah ...", opt: ["A. Bahasa yang bertele-tele dan tidak efektif", "B. Penggunaan kertas yang bersih", "C. Ejaan yang sesuai dengan EYD", "D. Format penyusunan yang rapi", "E. Informasi data diri yang akurat"], ans: 0 },
-      { id: 39, q: "39. Penulisan identitas pelamar berikut ini yang SALAH adalah ...", opt: ["A. Nama : Budi Santoso", "B. nama : Budi Santoso", "C. alamat : Jalan Meranti No. 3", "D. pendidikan : S-1 Ekonomi", "E. tempat, tanggal lahir : Batam, 1 Januari 2002"], ans: 0 },
-      { id: 40, q: "40. Penulisan rincian identitas diawali huruf kecil karena ...", opt: ["A. Berupa kelanjutan dari kalimat sebelumnya yang belum selesai", "B. Aturan khusus hanya untuk surat lamaran", "C. Kesepakatan bersama antarperusahaan", "D. Agar terlihat lebih estetik", "E. Tidak ada alasan tata bahasa"], ans: 0 },
-      { id: 41, q: "41. Apa pengertian utama dari surat lamaran pekerjaan?", opt: ["A. Surat dari perusahaan untuk memanggil calon karyawan", "B. Surat pribadi resmi yang dikirim calon pelamar untuk memperoleh pekerjaan", "C. Surat pengunduran diri dari pekerjaan lama", "D. Surat perjanjian kerja antara dua belah pihak", "E. Surat permohonan izin tidak masuk kerja"], ans: 1 },
-      { id: 42, q: "42. Perbaikan pembuka surat: 'Menjawab iklan Bapak, saya mau melamar pekerjaan...' menjadi baku adalah ...", opt: ["A. Menanggapi iklan lowongan pekerjaan perusahaan Bapak/Ibu, saya bermaksud melamar...", "B. Membalas iklan dari Bapak, saya ingin kerja...", "C. Menjawab iklan lowongan kemarin, saya mau mendaftar...", "D. Dari iklan Bapak, saya tertarik kerja...", "E. Karena melihat iklan Bapak, saya tanyakan pekerjaan..."], ans: 0 },
-      { id: 43, q: "43. Urutan sistematika surat lamaran pekerjaan yang BENAR adalah ...", opt: ["A. Tempat/tanggal -> Lampiran/Hal -> Alamat -> Salam pembuka -> Pembuka -> Isi -> Penutup -> Salam penutup -> Tanda tangan/Nama", "B. Alamat -> Tempat/tanggal -> Salam pembuka -> Isi -> Penutup -> Tanda tangan", "C. Tempat/tanggal -> Isi -> Alamat -> Salam pembuka -> Penutup -> Tanda tangan", "D. Lampiran/Hal -> Tempat/tanggal -> Pembuka -> Isi -> Salam penutup -> Tanda tangan", "E. Salam pembuka -> Alamat -> Tempat/tanggal -> Isi -> Penutup -> Tanda tangan"], ans: 0 },
-      { id: 44, q: "44. Pernyataan yang TIDAK SESUAI mengenai surat lamaran pekerjaan adalah ...", opt: ["A. Surat lamaran harus menggunakan bahasa resmi dan komunikatif", "B. Alamat surat diawali dengan kata 'Kepada'", "C. Tanda tangan dan nama terang diletakkan di kanan bawah", "D. Bagian isi menjelaskan kualifikasi pelamar", "E. Lampiran berfungsi sebagai bukti pendukung"], ans: 1 },
-      { id: 45, q: "45. Manakah di bawah ini yang BUKAN merupakan lampiran berkas lamaran kerja?", opt: ["A. Ijazah terakhir", "B. Transkrip nilai", "C. Laporan keuangan pribadi harian", "D. Surat Keterangan Catatan Kepolisian (SKCK)", "E. Sertifikat pelatihan"], ans: 2 },
-      { id: 46, q: "46. Perbaikan penutup: 'Sekian surat ini, saya tunggu panggilannya.' yang santun adalah ...", opt: ["A. Demikian surat lamaran ini, besar harapan saya untuk dapat mengikuti tahap wawancara.", "B. Cukup sekian, cepat panggil saya ya.", "C. Sekian dulu, semoga Bapak memanggil saya segera.", "D. Terima kasih, saya tunggu kabar baiknya secepatnya.", "E. Sampai di sini dulu surat dari saya."], ans: 0 },
-      { id: 47, q: "47. Kalimat isi surat lamaran yang paling meyakinkan HRD adalah ...", opt: ["A. Saya memiliki pengalaman 3 tahun di bidang pemasaran dan siap meningkatkan target penjualan perusahaan.", "B. Saya sangat butuh pekerjaan ini agar bisa membayar utang.", "C. Saya rasa saya cukup pintar untuk posisi yang ditawarkan.", "D. Saya akan berusaha kalau diterima di perusahaan ini.", "E. Saya jamin perusahaan tidak akan rugi memilih saya."], ans: 0 },
-      { id: 48, q: "48. Jika lowongan diperoleh dari situs web resmi perusahaan, kalimat pembuka yang tepat adalah ...", opt: ["A. Berdasarkan informasi lowongan pekerjaan yang dimuat pada laman resmi PT ABC tanggal 10 September 2026...", "B. Saya buka web PT ABC dan melihat ada lowongan...", "C. Melihat internet kemarin, PT ABC membuka kerjaan...", "D. Dari website yang saya kunjungi, saya mau melamar...", "E. Menyanggupi lowongan di web PT ABC..."], ans: 0 },
-      { id: 49, q: "49. Tentukan pernyataan BENAR/SALAH: 'Singkatan PT (Perseroan Terbatas) harus diakhiri dengan tanda titik (PT.).'", opt: ["A. BENAR", "B. SALAH"], ans: 1 },
-      { id: 50, q: "50. Hubungan antara alinea pembuka dan alinea isi pada surat lamaran pekerjaan adalah ...", opt: ["A. Alinea pembuka menyampaikan dasar/alasan melamar, sedangkan alinea isi menjelaskan identitas dan kualifikasi pendukungnya.", "B. Alinea pembuka berisi ucapan terima kasih, alinea isi berisi salam.", "C. Alinea pembuka berisi alamat, alinea isi berisi nomor HP.", "D. Keduanya tidak memiliki hubungan logika.", "E. Alinea pembuka berisi penutup, alinea isi berisi salam."], ans: 0 }
+      { id: 26, q: "26. Penulisan alamat surat yang benar adalah ...", opt: ["A. Yth. Bapak/Ibu Pimpinan PT Sejahtera", "B. Kepada Yth. Bapak/Ibu Pimpinan PT Sejahtera.", "C. kepada yth bapak/ibu pimpinan pt sejahtera", "D. Yth : Bapak/Ibu Pimpinan, PT. Sejahtera.", "E. Yth, Bapak/Ibu Pimpinan PT Sejahtera."], ans: 0 },
+      { id: 27, q: "27. Kesalahan penggunaan tanda baca titik ( . ) pada alamat surat biasa terjadi pada ...", opt: ["A. Akhir baris nama jalan/kota pada alamat", "B. Awal kalimat pembuka", "C. Tengah kalimat isi surat", "D. Nama pelamar", "E. Salam pembuka"], ans: 0 },
+      { id: 28, q: "28. Kalimat penutup 'Terima kasih ya atas perhatiannya' sebaiknya diperbaiki menjadi ...", opt: ["A. Besar harapan saya untuk dapat bergabung dan berkontribusi di perusahaan Bapak/Ibu.", "B. Makasih banyak ya pak.", "C. Terima kasih ya sudah baca surat ini.", "D. Sekian aja, makasih.", "E. Terima kasih atas perhatiannya ya bu."], ans: 0 },
+      { id: 29, q: "29. Hal yang TIDAK perlu dicantumkan dalam surat lamaran pekerjaan adalah ...", opt: ["A. Riwayat pendidikan", "B. Status hubungan pribadi", "C. Kualifikasi kerja", "D. Maksud melamar", "E. Identitas diri"], ans: 1 },
+      { id: 30, q: "30. Berikut merupakan bagian-bagian surat lamaran pekerjaan, KECUALI ...", opt: ["A. Salam pembuka", "B. Daftar pustaka", "C. Tanda tangan pelamar", "D. Alamat surat", "E. Salam penutup"], ans: 1 },
+      { id: 31, q: "31. Kalimat 'saya adalah orang yg jujur dan pekerja keras' sebaiknya diperbaiki menjadi ...", opt: ["A. Saya adalah orang yang jujur dan pekerja keras.", "B. saya adalah orang Yang jujur dan pekerja keras", "C. Saya Adalah Orang Yang Jujur Dan Pekerja Keras", "D. saya adalah orang yg jujur dan pekerja keras.", "E. Saya org yang jujur dan pekerja keras."], ans: 0 },
+      { id: 32, q: "32. Penulisan salam pembuka yang SALAH adalah ...", opt: ["A. Dengan hormat,", "B. Salam sejahtera,", "C. Dengan Hormat,", "D. Hormat kami,", "E. Yang terhormat,"], ans: 2 },
+      { id: 33, q: "33. Daftar riwayat hidup (CV) yang baik ditulis secara ...", opt: ["A. Acak tanpa urutan", "B. Sistematis: data diri, pendidikan, pengalaman", "C. Hanya berisi nama dan alamat", "D. Sepanjang mungkin tanpa struktur", "E. Berupa cerita bebas tanpa poin"], ans: 1 },
+      { id: 34, q: "34. Bagian yang TIDAK terdapat dalam surat lamaran pekerjaan adalah ...", opt: ["A. Salam pembuka", "B. Abstrak", "C. Identitas pelamar", "D. Salam penutup", "E. Tanda tangan dan nama terang"], ans: 1 },
+      { id: 35, q: "35. Penulisan tanggal surat yang benar adalah ...", opt: ["A. Bandung, 5 Oktober 2026", "B. Bandung, 05-10-2026.", "C. BANDUNG, 5 OKTOBER 2026", "D. Bandung 5 Oktober 2026.", "E. Bandung, 5 Okt 2026."], ans: 0 },
+      { id: 36, q: "36. Penulisan lampiran dan hal yang tepat adalah ...", opt: ["A. Lampiran : 3 Lembar\nHal : Lamaran Pekerjaan.", "B. Lampiran: Tiga lembar\nHal: Lamaran Pekerjaan", "C. lampiran: tiga lembar\nhal: lamaran pekerjaan", "D. Lampiran: 3 Lembar\nHal: Lamaran pekerjaan", "E. Lamp.: tiga lembar\nPerihal: lamaran pekerjaan."], ans: 1 },
+      { id: 37, q: "37. Kalimat pembuka 'Saya mau melamar kerja di perusahaan ini' sebaiknya diperbaiki menjadi ...", opt: ["A. Berdasarkan informasi lowongan kerja pada laman resmi perusahaan tanggal 3 Oktober 2026, saya bermaksud mengajukan lamaran pekerjaan.", "B. Saya pengen kerja disini.", "C. Mohon terima saya kerja disini ya.", "D. Saya melamar kerja.", "E. Saya ingin sekali kerja di sini karena butuh uang."], ans: 0 },
+      { id: 38, q: "38. Hal yang HARUS dihindari dalam menulis surat lamaran adalah ...", opt: ["A. Bahasa baku", "B. Kesopanan", "C. Singkatan tidak resmi seperti 'yg' dan 'dgn'", "D. Kejujuran data", "E. Kejelasan maksud dan tujuan"], ans: 2 },
+      { id: 39, q: "39. Berikut penulisan bagian surat lamaran yang SALAH ...", opt: ["A. Dengan hormat,", "B. Hormat saya,", "C. Dengan hormat.", "D. Yth. Kepala HRD", "E. Jakarta, 12 September 2026"], ans: 2 },
+      { id: 40, q: "40. Penulisan identitas yang tepat untuk melengkapi surat lamaran adalah ...", opt: ["A. nama : Sari dewi", "B. Nama: Sari Dewi", "C. NAMA: SARI DEWI", "D. Nama : sari Dewi", "E. Nama; Sari Dewi."], ans: 1 },
+      { id: 41, q: "41. Surat lamaran adalah ...", opt: ["A. Surat resmi permohonan bekerja di suatu instansi", "B. Surat pemberitahuan resmi dari sekolah", "C. Surat pengunduran diri", "D. Surat edaran perusahaan", "E. Surat perjanjian kerja"], ans: 0 },
+      { id: 42, q: "42. Kalimat pembuka 'Melalui surat ini saya mengajukan lamaran pekerjaan mengajukan diri sebagai karyawan' perlu diperbaiki karena ...", opt: ["A. Sudah efektif", "B. Terdapat pengulangan makna ('mengajukan' dua kali)", "C. Terlalu singkat", "D. Tidak menggunakan huruf kapital", "E. Tidak menyebutkan nama pelamar"], ans: 1 },
+      { id: 43, q: "43. Urutan sistematika surat lamaran pekerjaan yang tepat adalah ...", opt: ["A. Isi - tempat/tanggal - alamat surat", "B. Tempat/tanggal - lampiran & hal - alamat surat - salam pembuka - isi - salam penutup - tanda tangan", "C. Salam penutup - salam pembuka - isi", "D. Tanda tangan - isi - alamat surat", "E. Alamat surat - isi - tempat/tanggal - tanda tangan"], ans: 1 },
+      { id: 44, q: "44. Jika surat menyebutkan pelamar berpendidikan S1 Akuntansi, maka pernyataan 'pelamar belum menyelesaikan pendidikan tinggi' adalah ...", opt: ["A. Sesuai", "B. Tidak sesuai", "C. Tidak dapat ditentukan", "D. Sebagian sesuai", "E. Benar sepenuhnya"], ans: 1 },
+      { id: 45, q: "45. Berikut yang BUKAN merupakan lampiran dalam surat lamaran pekerjaan adalah ...", opt: ["A. Fotokopi ijazah", "B. Daftar riwayat hidup", "C. Foto keluarga", "D. Pas foto terbaru", "E. Sertifikat keahlian"], ans: 2 },
+      { id: 46, q: "46. Kalimat penutup 'Sekian surat lamaran ini saya buat, mohon dibaca' sebaiknya diperbaiki agar lebih efektif menjadi ...", opt: ["A. Demikian surat lamaran ini saya buat, atas perhatian Bapak/Ibu saya ucapkan terima kasih.", "B. Sekian aja ya, makasih.", "C. Segitu aja suratnya, mohon dibaca ya.", "D. Demikian, mohon dibaca sampai habis.", "E. Sekian dan terima kasih banyak ya pak."], ans: 0 },
+      { id: 47, q: "47. Kalimat isi surat yang PALING meyakinkan adalah ...", opt: ["A. Saya yakin bisa bekerja dengan baik.", "B. Saya lulusan SMK Teknik Komputer Jaringan dengan pengalaman magang 6 bulan di bidang jaringan.", "C. Saya orang yang rajin dan pintar.", "D. Saya pasti akan menjadi karyawan terbaik.", "E. Saya sangat percaya diri bisa bekerja di sini."], ans: 1 },
+      { id: 48, q: "48. Jika iklan menyebutkan lowongan dimuat di Instagram resmi perusahaan tanggal 1 Oktober 2026, kalimat pembuka paling tepat adalah ...", opt: ["A. Saya melihat lowongan kerja dan tertarik melamar.", "B. Berdasarkan informasi lowongan kerja pada akun Instagram resmi perusahaan tanggal 1 Oktober 2026, saya bermaksud melamar pekerjaan.", "C. Saya dengar ada lowongan kerja di sini.", "D. Saya mau melamar kerja di perusahaan Bapak/Ibu.", "E. Setelah lihat Instagram, saya mau kerja di sini."], ans: 1 },
+      { id: 49, q: "49. Pernyataan 'Salam pembuka boleh diakhiri tanda titik' adalah pernyataan yang ...", opt: ["A. Benar", "B. Salah", "C. Tergantung konteks", "D. Sesuai kaidah baku", "E. Berlaku untuk semua jenis surat"], ans: 1 },
+      { id: 50, q: "50. Hubungan antara paragraf pembuka dan bagian 'Hal' dalam surat lamaran adalah ...", opt: ["A. Tidak berkaitan sama sekali", "B. Paragraf pembuka harus merujuk pada hal/perihal yang tercantum", "C. Hal hanya untuk keperluan administrasi tanpa kaitan isi", "D. Paragraf pembuka menggantikan fungsi hal", "E. Hal ditulis setelah paragraf pembuka selesai"], ans: 1 }
     ];
 
     let userAnswers = {};
 
+    // Render Soal ke HTML
     function renderQuiz(data, containerId) {
       const container = document.getElementById(containerId);
       container.innerHTML = "";
@@ -574,22 +773,25 @@
       });
     }
 
+    // Eksekusi Render
     renderQuiz(soalPaketA, "paketA");
     renderQuiz(soalPaketB, "paketB");
 
-    // Dioptimalkan: Hanya mengupdate tombol yang diklik & tombol sebelumnya (tidak merender ulang semua pilihan)
+    // Pilih Jawaban
     function selectOption(qId, optIdx) {
-      const prevSelected = userAnswers[qId];
-      if (prevSelected !== undefined) {
-        const prevBtn = document.getElementById(`btn-${qId}-${prevSelected}`);
-        if (prevBtn) prevBtn.classList.remove("selected");
-      }
-
       userAnswers[qId] = optIdx;
+
+      const currentSoal = [...soalPaketA, ...soalPaketB].find(s => s.id === qId);
+      currentSoal.opt.forEach((_, idx) => {
+        const btn = document.getElementById(`btn-${qId}-${idx}`);
+        if(btn) btn.classList.remove("selected");
+      });
+
       const selectedBtn = document.getElementById(`btn-${qId}-${optIdx}`);
-      if (selectedBtn) selectedBtn.classList.add("selected");
+      if(selectedBtn) selectedBtn.classList.add("selected");
     }
 
+    // Cek Hasil & Munculkan Jawaban Benar Jika Salah
     function checkAnswers() {
       let score = 0;
       let wrongCount = 0;
@@ -631,10 +833,12 @@
 
       document.getElementById("score-text").innerText = `Hasil Skor Total: ${score} / ${allQuestions.length} Terjawab Benar`;
 
+      // Kirim hasil ujian ke Firebase supaya muncul di dashboard admin
       const nilaiAkhir = Math.round((score / allQuestions.length) * 100);
       simpanHasilUjian("bindo", nilaiAkhir, score, wrongCount, allQuestions.length);
     }
 
+    // Reset Jawaban
     function resetQuiz() {
       userAnswers = {};
       document.getElementById("score-text").innerText = "Status: Belum Diperiksa";
@@ -655,6 +859,7 @@
       });
     }
 
+    // Tab Navigation
     function showTab(tabId, element) {
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -663,6 +868,7 @@
       element.classList.add('active');
     }
 
+    // Paket A / B Sub-Navigation
     function switchPaket(paketId, element) {
       document.querySelectorAll('.paket-container').forEach(p => p.style.display = 'none');
       document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
