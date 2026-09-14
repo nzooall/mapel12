@@ -33,7 +33,7 @@
       position: relative;
       z-index: 1;
       width: 100%;
-      max-width: 420px;
+      max-width: 440px;
       padding: 40px;
       background: rgba(255, 255, 255, 0.07);
       backdrop-filter: blur(16px);
@@ -55,18 +55,49 @@
     .login-header h2 { font-size: 24px; font-weight: 700; letter-spacing: 0.5px; }
     .login-header p { font-size: 13px; color: #94a3b8; margin-top: 6px; }
 
-    /* Peringatan Maintenance */
+    /* Peringatan Maintenance (Diperbesar & Dibuat Mencolok) */
     .maintenance-alert {
       display: none;
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      color: #fca5a5;
-      padding: 12px 16px;
-      border-radius: 12px;
-      font-size: 13px;
-      margin-bottom: 20px;
+      background: rgba(239, 68, 68, 0.25);
+      border: 2px solid #ef4444;
+      color: #ffffff;
+      padding: 16px 20px;
+      border-radius: 16px;
+      font-size: 14px;
+      margin-bottom: 24px;
       text-align: center;
-      line-height: 1.5;
+      line-height: 1.6;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+      animation: pulseAlert 2s infinite alternate;
+    }
+
+    .maintenance-alert .alert-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fca5a5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .maintenance-alert .alert-title i {
+      font-size: 20px;
+      color: #f87171;
+    }
+
+    @keyframes pulseAlert {
+      0% {
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+        border-color: #ef4444;
+      }
+      100% {
+        box-shadow: 0 0 30px rgba(239, 68, 68, 0.8);
+        border-color: #f87171;
+      }
     }
 
     .input-group { margin-bottom: 20px; }
@@ -112,8 +143,11 @@
 
     <!-- Banner Peringatan Maintenance -->
     <div id="maintenanceAlert" class="maintenance-alert">
-      <i class="fa-solid fa-triangle-exclamation"></i> <b>Website Sedang Maintenance!</b><br>
-      Akses login hanya diperbolehkan untuk Administrator.
+      <div class="alert-title">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>Website Sedang Maintenance!</span>
+      </div>
+      Akses login saat ini <b>dikunci</b> dan hanya diperbolehkan untuk Administrator.
     </div>
 
     <div id="errorMsg" class="error-msg">Akun tidak terdaftar atau password salah!</div>
