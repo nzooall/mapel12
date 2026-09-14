@@ -17,7 +17,6 @@
       flex-direction: column;
     }
 
-    /* Top Navigation Bar */
     .navbar {
       background: #111827;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -45,7 +44,41 @@
       gap: 12px;
     }
 
-    /* Badge Pembeda Role User vs Admin */
+    /* Switch Maintenance khusus Admin */
+    .maintenance-control {
+      display: none;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 20px;
+    }
+
+    .switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #64748b; transition: .3s; border-radius: 20px;
+    }
+
+    .slider:before {
+      position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px;
+      background-color: white; transition: .3s; border-radius: 50%;
+    }
+
+    input:checked + .slider { background-color: #ef4444; }
+    input:checked + .slider:before { transform: translateX(18px); }
+
     .user-badge {
       padding: 8px 16px;
       border-radius: 20px;
@@ -54,7 +87,6 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.3s ease;
     }
 
     .badge-admin {
@@ -82,7 +114,6 @@
     }
     .btn-logout:hover { background: #f43f5e; color: #fff; }
 
-    /* Main Container */
     .container {
       max-width: 1280px;
       margin: 30px auto;
@@ -91,7 +122,6 @@
       flex: 1;
     }
 
-    /* Banner Pemberitahuan Hak Akses */
     .role-banner {
       padding: 14px 20px;
       border-radius: 12px;
@@ -114,7 +144,6 @@
       color: #38bdf8;
     }
 
-    /* Section Header */
     .section-group { margin-bottom: 40px; }
     .section-header {
       display: flex;
@@ -128,7 +157,6 @@
     .color-productive { color: #f43f5e; }
     .color-general { color: #10b981; }
 
-    /* Layout Grids */
     .grid-produktif {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -141,7 +169,6 @@
       gap: 20px;
     }
 
-    /* Kartu Modul */
     .card-item {
       background: #1e293b;
       border: 1px solid rgba(255, 255, 255, 0.05);
@@ -160,9 +187,7 @@
     }
 
     .card-item::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
+      content: ''; position: absolute; top: 0; left: 0;
       width: 100%; height: 4px;
     }
     .productive-card::before { background: #f43f5e; }
@@ -174,13 +199,8 @@
     }
 
     .card-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; font-size: 18px;
     }
     .productive-card .card-icon { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
     .general-card .card-icon { background: rgba(16, 185, 129, 0.15); color: #34d399; }
@@ -189,171 +209,74 @@
     .card-subtitle { font-size: 12px; color: #94a3b8; margin-top: 2px; }
 
     .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      margin-top: auto;
-      padding-top: 10px;
-      font-size: 12px;
-      color: #64748b;
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; margin-top: auto; padding-top: 10px;
+      font-size: 12px; color: #64748b;
     }
 
-    /* Tombol Kunci/Buka Akses Khusus Admin */
     .lock-btn {
-      position: absolute;
-      top: 16px; right: 16px;
+      position: absolute; top: 16px; right: 16px;
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #94a3b8;
-      width: 34px; height: 34px;
-      border-radius: 8px;
-      cursor: pointer;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      transition: 0.2s;
-      z-index: 10;
+      color: #94a3b8; width: 34px; height: 34px;
+      border-radius: 8px; cursor: pointer; display: none;
+      align-items: center; justify-content: center; transition: 0.2s; z-index: 10;
     }
     .lock-btn:hover { background: #38bdf8; color: #0f172a; }
 
-    /* Indikator Status Terkunci bagi User */
     .card-item.is-locked {
-      background: #0f172a;
-      border-color: rgba(239, 68, 68, 0.25);
-      opacity: 0.55;
+      background: #0f172a; border-color: rgba(239, 68, 68, 0.25); opacity: 0.55;
     }
-    .card-item.is-locked .lock-indicator {
-      display: inline-block;
-      color: #ef4444;
-      margin-left: 6px;
-    }
+    .card-item.is-locked .lock-indicator { display: inline-block; color: #ef4444; margin-left: 6px; }
 
-    /* Panel User Aktif (Khusus Admin) */
-    .active-users-panel {
-      background: #1e293b;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 16px;
-      padding: 20px 24px;
-      margin-bottom: 30px;
+    .active-users-panel, .results-panel {
+      background: #1e293b; border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px; padding: 20px 24px; margin-bottom: 30px;
     }
-    .active-users-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    .active-users-list { display: flex; flex-direction: column; gap: 10px; }
     .active-user-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #0f172a;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 10px;
-      padding: 10px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: #0f172a; border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px; padding: 10px 16px;
     }
-    .active-user-info {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 13px;
-    }
+    .active-user-info { display: flex; align-items: center; gap: 10px; font-size: 13px; }
     .active-user-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 8px rgba(34, 197, 94, 0.7);
-      flex-shrink: 0;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #22c55e; box-shadow: 0 0 8px rgba(34, 197, 94, 0.7); flex-shrink: 0;
     }
     .active-user-name { font-weight: 600; }
     .active-user-role {
-      font-size: 11px;
-      color: #94a3b8;
-      background: rgba(255, 255, 255, 0.06);
-      padding: 2px 8px;
-      border-radius: 20px;
+      font-size: 11px; color: #94a3b8; background: rgba(255, 255, 255, 0.06);
+      padding: 2px 8px; border-radius: 20px;
     }
     .btn-kick {
-      background: rgba(244, 63, 94, 0.15);
-      color: #fb7185;
-      border: 1px solid rgba(244, 63, 94, 0.3);
-      padding: 6px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 500;
-      transition: 0.2s;
+      background: rgba(244, 63, 94, 0.15); color: #fb7185;
+      border: 1px solid rgba(244, 63, 94, 0.3); padding: 6px 12px;
+      border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 500; transition: 0.2s;
     }
     .btn-kick:hover { background: #f43f5e; color: #fff; }
-    .active-users-empty {
-      font-size: 13px;
-      color: #64748b;
-      text-align: center;
-      padding: 10px 0;
-    }
+    .active-users-empty { font-size: 13px; color: #64748b; text-align: center; padding: 10px 0; }
 
-    /* Panel Hasil Ujian Siswa (Khusus Admin) */
-    .results-panel {
-      background: #1e293b;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 16px;
-      padding: 20px 24px;
-      margin-bottom: 30px;
-    }
-    .results-tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-    }
+    .results-tabs { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
     .results-tab-btn {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #cbd5e1;
-      padding: 6px 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 600;
-      transition: 0.2s;
+      background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1; padding: 6px 16px; border-radius: 8px; cursor: pointer;
+      font-size: 12px; font-weight: 600; transition: 0.2s;
     }
-    .results-tab-btn.active {
-      background: #38bdf8;
-      color: #0f172a;
-      border-color: #38bdf8;
-    }
+    .results-tab-btn.active { background: #38bdf8; color: #0f172a; border-color: #38bdf8; }
     .results-table-wrap { overflow-x: auto; }
-    .results-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-    }
+    .results-table { width: 100%; border-collapse: collapse; font-size: 13px; }
     .results-table th, .results-table td {
-      text-align: left;
-      padding: 10px 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: left; padding: 10px 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     }
-    .results-table th {
-      color: #94a3b8;
-      font-weight: 600;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .score-pill {
-      display: inline-block;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-weight: 700;
-      font-size: 12px;
-    }
+    .results-table th { color: #94a3b8; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .score-pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-weight: 700; font-size: 12px; }
     .score-high { background: rgba(34, 197, 94, 0.15); color: #4ade80; }
     .score-mid { background: rgba(234, 179, 8, 0.15); color: #facc15; }
     .score-low { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
 
-    /* Responsif untuk Layar Tablet/HP */
     @media (max-width: 1024px) {
-      .grid-umum { grid-template-columns: repeat(2, 1fr); }
-      .grid-produktif { grid-template-columns: repeat(2, 1fr); }
+      .grid-umum, .grid-produktif { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 640px) {
       .grid-produktif, .grid-umum { grid-template-columns: repeat(1, 1fr); }
@@ -364,13 +287,22 @@
 </head>
 <body>
 
-  <!-- Top Bar Navbar -->
   <nav class="navbar">
     <div class="navbar-brand">
       <i class="fa-solid fa-server"></i>
       <span>MikroTik Portal</span>
     </div>
     <div class="user-profile">
+      
+      <!-- Tombol Switch Kunci Website (Khusus Admin) -->
+      <div id="maintenanceCtrl" class="maintenance-control">
+        <span><i class="fa-solid fa-lock"></i> Kunci Web</span>
+        <label class="switch">
+          <input type="checkbox" id="maintenanceToggle" onchange="toggleSiteMaintenance(this.checked)">
+          <span class="slider"></span>
+        </label>
+      </div>
+
       <div id="userBadge" class="user-badge badge-user">
         <i class="fa-solid fa-user" id="userIcon"></i>
         <span id="userName">User</span>
@@ -382,11 +314,8 @@
   </nav>
 
   <div class="container">
-    
-    <!-- Banner Informasi Berdasarkan Sistem Login -->
     <div id="roleBanner" class="role-banner"></div>
 
-    <!-- PANEL USER AKTIF (hanya tampil untuk admin) -->
     <div id="activeUsersPanel" class="active-users-panel" style="display:none;">
       <div class="section-header">
         <i class="fa-solid fa-users color-productive"></i>
@@ -397,7 +326,6 @@
       </div>
     </div>
 
-    <!-- PANEL HASIL UJIAN SISWA (hanya tampil untuk admin) -->
     <div id="resultsPanel" class="results-panel" style="display:none;">
       <div class="section-header">
         <i class="fa-solid fa-chart-simple color-general"></i>
@@ -408,8 +336,6 @@
         <button class="results-tab-btn" data-modul="asj" onclick="pilihModulHasil('asj')">ASJ</button>
         <button class="results-tab-btn" data-modul="tlj" onclick="pilihModulHasil('tlj')">TLJ</button>
         <button class="results-tab-btn" data-modul="bindo" onclick="pilihModulHasil('bindo')">BINDO</button>
-        <button class="results-tab-btn" data-modul="pkn" onclick="pilihModulHasil('pkn')">PKN</button>
-        <button class="results-tab-btn" data-modul="pkk" onclick="pilihModulHasil('pkk')">PKK</button>
       </div>
       <div class="results-table-wrap">
         <table class="results-table">
@@ -429,7 +355,6 @@
       </div>
     </div>
 
-    <!-- MAPEL PRODUKTIF (3 Kartu) -->
     <div class="section-group">
       <div class="section-header">
         <i class="fa-solid fa-laptop-code color-productive"></i>
@@ -478,7 +403,6 @@
       </div>
     </div>
 
-    <!-- MAPEL UMUM (7 Kartu) -->
     <div class="section-group">
       <div class="section-header">
         <i class="fa-solid fa-book-open color-general"></i>
@@ -582,43 +506,32 @@
   </div>
 
   <script>
-    // 1. DAFTAR FILE HTML MODUL YANG TERSEDIA
     const availableModules = {
-      "aij": "aij.html", // Mengarah ke file aij.html
-      "tlj": "tlj.html", // Mengarah ke file tlj.html
-      "asj": "asj.html", // Mengarah ke file asj.html
-      "bindo": "bindo.html", // Mengarah ke file bindo.html
-      "pkn": "pkn.html", // Mengarah ke file pkn.html
-      "pkk": "pkk.html" //Mengarah ke file pkk.html 
+      "aij": "aij.html",
+      "tlj": "tlj.html",
+      "asj": "asj.html",
+      "bindo": "bindo.html",
     };
 
     const moduleNames = {
-      "aij": "AIJ LANJUTAN",
-      "asj": "ASJ LANJUTAN",
-      "tlj": "TLJ",
-      "bindo": "B.INDO",
-      "bing": "B.ING",
-      "pkk": "PKK",
-      "agama": "AGAMA",
-      "bjepang": "B.JEPANG",
-      "mtk": "MTK",
-      "pkn": "PKN"
+      "aij": "AIJ LANJUTAN", "asj": "ASJ LANJUTAN", "tlj": "TLJ",
+      "bindo": "B.INDO", "bing": "B.ING", "pkk": "PKK",
+      "agama": "AGAMA", "bjepang": "B.JEPANG", "mtk": "MTK", "pkn": "PKN"
     };
 
-    // 2. CEK SESI LOGIN DENGAN AMAN
     let currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-    // Jika dibuka langsung tanpa login, buat akun User sementara (biar tidak layar putih)
     if (!currentUser) {
       currentUser = { name: "Siswa", role: "user" };
       localStorage.setItem("currentUser", JSON.stringify(currentUser));
     }
 
-    // 3. ATUR TAMPILAN PERAN/ROLE (USER ATAU ADMIN)
     const userBadge = document.getElementById("userBadge");
     const userName = document.getElementById("userName");
     const userIcon = document.getElementById("userIcon");
     const roleBanner = document.getElementById("roleBanner");
+    const maintenanceCtrl = document.getElementById("maintenanceCtrl");
+    const maintenanceToggle = document.getElementById("maintenanceToggle");
 
     if (currentUser.role === "admin") {
       if (userBadge) userBadge.className = "user-badge badge-admin";
@@ -627,8 +540,9 @@
 
       if (roleBanner) {
         roleBanner.className = "role-banner banner-admin";
-        roleBanner.innerHTML = `<i class="fa-solid fa-user-shield"></i> Anda masuk sebagai <b>Admin</b>. Klik ikon gembok pada modul untuk mengunci/membuka akses bagi user.`;
+        roleBanner.innerHTML = `<i class="fa-solid fa-user-shield"></i> Anda masuk sebagai <b>Admin</b>. Gunakan sakelar di atas untuk mengunci website, atau klik gembok untuk mengunci modul spesifik.`;
       }
+      if (maintenanceCtrl) maintenanceCtrl.style.display = "flex";
     } else {
       if (userBadge) userBadge.className = "user-badge badge-user";
       if (userIcon) userIcon.className = "fa-solid fa-user";
@@ -640,16 +554,49 @@
       }
     }
 
-    // 4. KONEKSI KE FIREBASE REALTIME DATABASE
-    // GANTI URL DI BAWAH INI DENGAN URL DATABASE FIREBASE KAMU SENDIRI
-    // Contoh: "https://mapel12-dashboard-default-rtdb.asia-southeast1.firebasedatabase.app"
     const FIREBASE_URL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
     const LOCK_ENDPOINT = FIREBASE_URL + "/lockedModules.json";
+    const MAINTENANCE_ENDPOINT = FIREBASE_URL + "/siteConfig/maintenance.json";
 
-    // Status kunci disimpan di variabel ini setelah diambil dari Firebase
     let lockedModules = {};
 
-    // Ambil status kunci terbaru dari Firebase (dipanggil saat halaman dibuka/refresh)
+    // Cek Status Maintenance Website
+    async function checkSiteMaintenance() {
+      try {
+        const res = await fetch(MAINTENANCE_ENDPOINT);
+        const isMaintenance = await res.json();
+        
+        if (currentUser.role === "admin") {
+          if (maintenanceToggle) maintenanceToggle.checked = (isMaintenance === true);
+        } else {
+          if (isMaintenance === true) {
+            alert("Website sedang dikunci / maintenance oleh Admin. Anda akan dikeluarkan.");
+            await removePresence();
+            localStorage.removeItem("currentUser");
+            window.location.href = "index.html";
+          }
+        }
+      } catch (err) {
+        console.error("Gagal mengecek status maintenance:", err);
+      }
+    }
+
+    // Ubah Status Kunci Web oleh Admin
+    async function toggleSiteMaintenance(status) {
+      if (currentUser.role !== "admin") return;
+      try {
+        await fetch(MAINTENANCE_ENDPOINT, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(status)
+        });
+        alert(status ? "Website BERHASIL DIKUNCI (Siswa tidak bisa login/akses)." : "Website BERHASIL DIBUKA kembali.");
+      } catch (err) {
+        console.error("Gagal mengubah status maintenance:", err);
+        alert("Gagal memperbarui status ke Firebase!");
+      }
+    }
+
     async function fetchLockedModules() {
       try {
         const res = await fetch(LOCK_ENDPOINT);
@@ -662,7 +609,6 @@
       renderModules();
     }
 
-    // Simpan perubahan status kunci ke Firebase supaya semua orang bisa lihat perubahannya
     async function saveLockedModules() {
       try {
         await fetch(LOCK_ENDPOINT, {
@@ -676,7 +622,6 @@
       }
     }
 
-    // 5. RENDER TAMPILAN KARTU
     function renderModules() {
       document.querySelectorAll(".card-item").forEach(card => {
         const id = card.getAttribute("data-id");
@@ -701,17 +646,15 @@
       });
     }
 
-    // 6. FUNGSI TOGGLE LOCK ADMIN (langsung kirim ke Firebase)
     async function toggleLock(event, id) {
       event.stopPropagation();
       if (currentUser.role !== "admin") return;
 
       lockedModules[id] = !lockedModules[id];
-      renderModules(); // update tampilan langsung biar terasa responsif
-      await saveLockedModules(); // kirim ke server supaya semua orang lihat perubahan
+      renderModules();
+      await saveLockedModules();
     }
 
-    // 7. FUNGSI MASUK KE MODUL / PERINGATAN
     function openModule(event, id) {
       if (lockedModules[id] && currentUser.role !== "admin") {
         alert("Akses ditolak: Modul ini sedang dikunci oleh Administrator!");
@@ -726,21 +669,17 @@
       }
     }
 
-    // 8. FUNGSI LOGOUT
     async function logout() {
       await removePresence();
       localStorage.removeItem("currentUser");
       window.location.href = "index.html";
     }
 
-    // 9. SISTEM PELACAKAN USER AKTIF & FITUR KICK
-    // currentUser.username dipakai sebagai kunci unik di Firebase
     const myUsername = currentUser.username || currentUser.name.toLowerCase();
     const PRESENCE_ENDPOINT = FIREBASE_URL + "/activeUsers/" + myUsername + ".json";
     const ALL_PRESENCE_ENDPOINT = FIREBASE_URL + "/activeUsers.json";
-    const ONLINE_THRESHOLD_MS = 20000; // dianggap online kalau heartbeat < 20 detik terakhir (buffer 4x dari interval 5 detik)
+    const ONLINE_THRESHOLD_MS = 15000;
 
-    // Daftarkan diri sebagai "aktif" saat dashboard dibuka (reset flag kicked)
     async function registerPresence() {
       try {
         await fetch(PRESENCE_ENDPOINT, {
@@ -758,7 +697,6 @@
       }
     }
 
-    // Hapus data diri dari daftar aktif (dipanggil saat logout)
     async function removePresence() {
       try {
         await fetch(PRESENCE_ENDPOINT, { method: "DELETE" });
@@ -767,7 +705,6 @@
       }
     }
 
-    // Kirim heartbeat + cek apakah diri sendiri sedang dikick admin
     async function heartbeatAndCheckKicked() {
       try {
         const res = await fetch(PRESENCE_ENDPOINT);
@@ -781,7 +718,6 @@
           return;
         }
 
-        // Perbarui waktu aktif terakhir
         await fetch(PRESENCE_ENDPOINT, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -792,7 +728,6 @@
       }
     }
 
-    // Ambil & tampilkan daftar user aktif (khusus tampilan admin)
     async function fetchAndRenderActiveUsers() {
       const panel = document.getElementById("activeUsersPanel");
       const listEl = document.getElementById("activeUsersList");
@@ -844,7 +779,6 @@
       }
     }
 
-    // Tandai user tertentu sebagai "kicked" di Firebase
     async function kickUser(username, displayName) {
       if (!confirm(`Kick user "${displayName}" sekarang?`)) return;
 
@@ -861,7 +795,6 @@
       }
     }
 
-    // 10. PANEL HASIL UJIAN SISWA (khusus admin)
     let modulHasilTerpilih = "aij";
 
     function pilihModulHasil(modulId) {
@@ -884,8 +817,7 @@
       return d.toLocaleString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
     }
 
-    // Hasil ujian otomatis dianggap kadaluarsa setelah sekian jam, supaya data tidak menumpuk
-    const HASIL_UJIAN_EXPIRY_MS = 6 * 60 * 60 * 1000; // 6 jam
+    const HASIL_UJIAN_EXPIRY_MS = 6 * 60 * 60 * 1000;
 
     async function fetchAndRenderResults() {
       const panel = document.getElementById("resultsPanel");
@@ -899,7 +831,6 @@
         const data = await res.json() || {};
         const now = Date.now();
 
-        // Pisahkan data yang masih berlaku dan yang sudah kadaluarsa
         const entriesValid = [];
         const usernameKadaluarsa = [];
 
@@ -911,7 +842,6 @@
           }
         });
 
-        // Hapus data yang sudah kadaluarsa dari database (berjalan di latar belakang)
         usernameKadaluarsa.forEach(uname => {
           fetch(FIREBASE_URL + "/examResults/" + modulHasilTerpilih + "/" + uname + ".json", { method: "DELETE" })
             .catch(err => console.error("Gagal menghapus hasil kadaluarsa:", err));
@@ -922,7 +852,6 @@
           return;
         }
 
-        // Urutkan dari nilai tertinggi ke terendah
         entriesValid.sort((a, b) => (b.nilai || 0) - (a.nilai || 0));
 
         tbody.innerHTML = "";
@@ -940,25 +869,22 @@
       } catch (err) {
         console.error("Gagal mengambil data hasil ujian:", err);
         tbody.innerHTML = '<tr><td colspan="5" style="color:#64748b; text-align:center; padding:16px;">Gagal memuat data.</td></tr>';
-
       }
     }
 
-    // Jalankan sistem presence: daftar begitu halaman dibuka
     registerPresence();
 
-    // Loop berkala: cek status kunci mapel, heartbeat, daftar user aktif, dan hasil ujian (khusus admin)
     setInterval(() => {
+      checkSiteMaintenance();
       fetchLockedModules();
       heartbeatAndCheckKicked();
       fetchAndRenderActiveUsers();
       fetchAndRenderResults();
     }, 5000);
 
-    // Render pertama kali saat halaman dibuka
+    checkSiteMaintenance();
     fetchAndRenderActiveUsers();
     fetchAndRenderResults();
-
     fetchLockedModules();
   </script>
 </body>
