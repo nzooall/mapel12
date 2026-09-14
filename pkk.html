@@ -27,9 +27,89 @@
       border-color: #ef4444 !important;
       color: #991b1b !important;
     }
+
+    /* Modal Pengumuman */
+    .announcement-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(4px);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 9999;
+      opacity: 0; visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .announcement-modal-overlay.active {
+      opacity: 1; visibility: visible;
+    }
+
+    .announcement-card {
+      background: #ffffff;
+      width: 90%; max-width: 500px;
+      border-radius: 20px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      transform: scale(0.9);
+      transition: all 0.3s ease;
+      border: 1px solid #e2e8f0;
+    }
+
+    .announcement-modal-overlay.active .announcement-card {
+      transform: scale(1);
+    }
+
+    .announcement-header {
+      background: #0284c7;
+      color: #ffffff;
+      padding: 16px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: 700; font-size: 16px;
+    }
+
+    .announcement-body {
+      padding: 20px;
+      color: #334155;
+      font-size: 14.5px;
+      line-height: 1.6;
+      max-height: 350px;
+      overflow-y: auto;
+    }
+
+    .announcement-footer {
+      padding: 12px 20px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      display: flex; justify-content: flex-end;
+    }
+
+    .announcement-btn {
+      background: #0284c7;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 min-h-screen py-6 px-3 sm:px-6">
+
+  <!-- Modal Pengumuman -->
+  <div id="announcementModal" class="announcement-modal-overlay">
+    <div class="announcement-card">
+      <div class="announcement-header">
+        <span id="announcementTitle">📢 Pengumuman</span>
+      </div>
+      <div class="announcement-body" id="announcementContent">
+        Memuat pengumuman...
+      </div>
+      <div class="announcement-footer">
+        <button class="announcement-btn" onclick="closeAnnouncement()">Saya Mengerti</button>
+      </div>
+    </div>
+  </div>
 
   <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200/80">
     
@@ -203,6 +283,29 @@
   </div>
 
   <script>
+    const FIREBASE_URL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
+
+    // Fitur Pengumuman Otomatis
+    async function checkAnnouncement() {
+      try {
+        const res = await fetch(FIREBASE_URL + "/announcement.json");
+        const data = await res.json();
+        if (data && data.active) {
+          document.getElementById("announcementTitle").innerText = data.title || "📢 Pengumuman";
+          document.getElementById("announcementContent").innerText = data.message || "Tidak ada pesan.";
+          document.getElementById("announcementModal").classList.add("active");
+        }
+      } catch (err) {
+        console.error("Gagal memuat pengumuman:", err);
+      }
+    }
+
+    function closeAnnouncement() {
+      document.getElementById("announcementModal").classList.remove("active");
+    }
+
+    window.addEventListener("DOMContentLoaded", checkAnnouncement);
+
     function switchTab(tab) {
       const materi = document.getElementById('kotak-materi');
       const soal = document.getElementById('kotak-soal');
@@ -237,177 +340,73 @@
       { q: "Dalam laporan Neraca, posisi keuangan yang disusun pada sisi Pasiva terdiri dari...", options: ["Kas dan Piutang", "Liabilitas (Utang) dan Ekuitas (Modal)", "Peralatan dan Perlengkapan", "Pendapatan dan Beban"], ans: 1 },
       { q: "Jika diketahui Total Liabilitas suatu usaha Rp 5.000.000,00 dan Ekuitas Modal sebesar Rp 15.000.000,00, maka besarnya Total Aset adalah...", options: ["Rp 10.000.000,00", "Rp 20.000.000,00", "Rp 15.000.000,00", "Rp 25.000.000,00"], ans: 1 },
       { q: "Pencatatan akun Peralatan dan Kendaraan dalam Neraca dikelompokkan ke dalam kategori...", options: ["Aset Tetap", "Aset Lancar", "Liabilitas Jangka Pendek", "Ekuitas Pemilik"], ans: 0 },
-      { q: "Laporan yang menunjukkan perincian kas masuk dan kas keluar dari aktivitas operasional, investasi, dan pendanaan dinamakan...", options: ["Laporan Arus Kas", "Laporan Perubahan Modal", "Laporan Neraca", "Jurnal Penyesuaian"], ans: 0 },
-      { q: "Suatu usaha membeli perlengkapan kantor senilai Rp 2.000.000,00 secara tunai. Pengaruh transaksi ini pada persamaan akuntansi adalah...", options: ["Aset Perlengkapan bertambah, Aset Kas berkurang", "Aset bertambah, Utang bertambah", "Modal bertambah, Kas berkurang", "Utang berkurang, Kas berkurang"], ans: 0 },
-      { q: "Membeli peralatan toko sebesar Rp 5.000.000,00 secara kredit (belum dibayar). Pengaruh transaksinya adalah...", options: ["Peralatan (+), Kas (-)", "Peralatan (+), Utang Usaha (+)", "Peralatan (+), Modal (+)", "Utang (+), Modal (-)"], ans: 1 },
-      { q: "Manakah di bawah ini yang bukan merupakan tujuan utama dibuatnya laporan keuangan?", options: ["Mengetahui kondisi kesehatan keuangan perusahaan", "Sebagai alat pertanggungjawaban pengelolaan usaha", "Untuk menyembunyikan kewajiban pajak usaha", "Memudahkan investor menilai kelayakan investasi"], ans: 2 },
-      { q: "Komponen Neraca harus selalu seimbang (balance), artinya...", options: ["Total Pendapatan = Total Beban", "Total Aset = Total Liabilitas + Total Ekuitas", "Modal Awal = Modal Akhir", "Kas Masuk = Kas Keluar"], ans: 1 },
-      { q: "Apabila perusahaan mengalami kerugian bersih sebesar Rp 2.000.000,00 dan pemilik tidak melakukan prive, maka modal akhir perusahaan akan...", options: ["Bertambah Rp 2.000.000,00", "Berkurang Rp 2.000.000,00", "Tetap tidak berubah", "Menjadi nol"], ans: 1 },
-      { q: "Di bawah ini yang termasuk dalam kategori Beban Usaha adalah...", options: ["Beban Gaji, Beban Listrik, dan Beban Sewa", "Kas dan Piutang", "Modal Usaha dan Prive", "Utang Bank dan Utang Dagang"], ans: 0 },
-      { q: "Tagihan uang kepada pelanggan atas barang/jasa yang telah kita jual tetapi belum dibayar oleh pelanggan disebut...", options: ["Utang Usaha", "Piutang Usaha", "Kas Tunai", "Beban Terutang"], ans: 1 },
-      { q: "Kewajiban finansial perusahaan kepada pihak luar yang harus dilunasi pada jangka waktu tertentu dikelompokkan sebagai...", options: ["Aset", "Liabilitas (Utang)", "Ekuitas", "Pendapatan"], ans: 1 },
-      { q: "Sebuah bengkel memiliki Aset sebesar Rp 50.000.000,00 dan Modal sebesar Rp 35.000.000,00. Berapakah jumlah Utang (Liabilitas) bengkel tersebut?", options: ["Rp 15.000.000,00", "Rp 85.000.000,00", "Rp 35.000.000,00", "Rp 20.000.000,00"], ans: 0 },
-      { q: "Pendapatan Jasa sebesar Rp 8.000.000,00, Beban Gaji Rp 2.500.000,00, Beban Sewa Rp 1.000.000,00, dan Beban Perlengkapan Rp 500.000,00. Hitunglah Laba Bersih usaha tersebut!", options: ["Rp 4.000.000,00", "Rp 4.500.000,00", "Rp 3.000.000,00", "Rp 8.000.000,00"], ans: 0 },
-      { q: "Data usaha: Modal Awal Rp 20.000.000, Laba Rp 6.000.000, Prive Rp 1.000.000. Berapa Modal Akhir usaha tersebut?", options: ["Rp 25.000.000,00", "Rp 27.000.000,00", "Rp 26.000.000,00", "Rp 19.000.000,00"], ans: 0 },
-      { q: "Berikut ini transaksi yang dapat mengurangi Modal Pemilik dalam laporan perubahan modal adalah...", options: ["Penyetoran modal tambahan dan Laba", "Pengambilan Prive dan Kerugian usaha", "Pembayaran Utang Bank", "Pembelian Aset secara tunai"], ans: 1 },
-      { q: "Laporan yang menunjukkan posisi keuangan (Aset, Utang, dan Modal) pada tanggal atau penutupan periode tertentu adalah...", options: ["Laporan Neraca", "Laporan Laba Rugi", "Laporan Arus Kas", "Buku Kas Harian"], ans: 0 },
-      { q: "Pengelompokan barang habis pakai seperti kertas, tinta printer, dan plastik pembungkus dalam akuntansi dimasukkan ke akun...", options: ["Peralatan", "Perlengkapan", "Aset Tetap", "Beban Lain-lain"], ans: 1 },
-      { q: "Aset perusahaan yang memiliki masa guna/manfaat lebih dari satu tahun serta nilainya cukup besar dinamakan...", options: ["Aset Lancar", "Aset Tetap", "Utang Jangka Pendek", "Modal Kerja"], ans: 1 },
-      { q: "Jika Pendapatan Rp 12.000.000, Total Beban Rp 14.000.000, maka hasil laporan laba rugi usaha adalah...", options: ["Laba Rp 2.000.000", "Rugi Rp 2.000.000", "Laba Rp 26.000.000", "Impas (0)"], ans: 1 },
-      { q: "Menerima pelunasan piutang dari pelanggan sebesar Rp 1.000.000,00. Pengaruh pencatatannya pada Aset adalah...", options: ["Kas (+), Piutang (-)", "Kas (+), Utang (+)", "Piutang (+), Modal (+)", "Kas (-), Piutang (+)"], ans: 0 },
-      { q: "Pihak eksternal yang memerlukan laporan keuangan usaha untuk memberikan pinjaman modal adalah...", options: ["Karyawan Usaha", "Manajer Operasional", "Bank / Pihak Kreditur", "Pemilik Usaha"], ans: 2 },
-      { q: "Pemilik menyetorkan uang tunai sebesar Rp 10.000.000,00 sebagai modal awal usaha. Transaksi ini menambah...", options: ["Kas dan Modal", "Kas dan Utang", "Peralatan dan Modal", "Piutang dan Kas"], ans: 0 },
-      { q: "Penyusunan laporan keuangan usaha secara rapi dan akurat bermanfaat untuk...", options: ["Membuat laporan menjadi rumit", "Memudahkan evaluasi perkembangan bisnis dan perhitungan pajak", "Menghabiskan waktu operasional", "Meningkatkan harga jual barang tanpa alasan"], ans: 1 }
+      { q: "Laporan yang menunjukkan perincian kas masuk dan kas keluar dari aktivitas operasional, investasi, dan pendanaan dinamakan...", options: ["Laporan Arus Kas", "Laporan Perubahan Modal", "Laporan Laba Rugi", "Neraca Saldo"], ans: 0 }
     ];
 
-    function renderQuiz() {
+    function renderQuestions() {
       const container = document.getElementById('questions-container');
       container.innerHTML = '';
-
-      quizData.forEach((data, qIdx) => {
-        const qCard = document.createElement('div');
-        qCard.className = 'bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm space-y-3';
-        
+      quizData.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'p-5 bg-slate-50 border border-slate-200 rounded-2xl space-y-3';
         let optionsHTML = '';
-        data.options.forEach((opt, optIdx) => {
+        item.options.forEach((opt, optIndex) => {
           optionsHTML += `
-            <label id="opt-label-${qIdx}-${optIdx}" class="flex items-center p-3.5 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-sky-50/80 hover:border-sky-300 transition text-sm font-medium">
-              <input type="radio" name="q${qIdx}" value="${optIdx}" class="mr-3 accent-sky-800 w-4 h-4">
-              <span><strong class="text-slate-500 mr-1.5">${String.fromCharCode(65 + optIdx)}.</strong> ${opt}</span>
+            <label class="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-100 transition option-label-${index}">
+              <input type="radio" name="q-${index}" value="${optIndex}" class="w-4 h-4 text-sky-600 focus:ring-sky-500">
+              <span class="text-xs sm:text-sm text-slate-700 font-medium">${opt}</span>
             </label>
           `;
         });
-
-        qCard.innerHTML = `
-          <p class="font-bold text-slate-900 text-sm sm:text-base leading-relaxed">
-            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-sky-100 text-sky-900 font-mono text-xs mr-2">${qIdx + 1}</span> ${data.q}
-          </p>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
-            ${optionsHTML}
-          </div>
+        div.innerHTML = `
+          <p class="font-bold text-slate-800 text-sm sm:text-base">${index + 1}. ${item.q}</p>
+          <div class="space-y-2">${optionsHTML}</div>
         `;
-        container.appendChild(qCard);
+        container.appendChild(div);
       });
     }
+
+    renderQuestions();
 
     function checkAnswers() {
       let score = 0;
-
-      quizData.forEach((data, qIdx) => {
-        const selectedOpt = document.querySelector(`input[name="q${qIdx}"]:checked`);
-        const userAns = selectedOpt ? parseInt(selectedOpt.value) : -1;
-
-        const allRadios = document.querySelectorAll(`input[name="q${qIdx}"]`);
-        allRadios.forEach(radio => radio.disabled = true);
-
-        data.options.forEach((_, optIdx) => {
-          const label = document.getElementById(`opt-label-${qIdx}-${optIdx}`);
+      quizData.forEach((item, index) => {
+        const selected = document.querySelector(`input[name="q-${index}"]:checked`);
+        const labels = document.querySelectorAll(`.option-label-${index}`);
+        labels.forEach(label => {
           label.classList.remove('correct-ans', 'wrong-ans');
-          label.classList.add('cursor-not-allowed');
         });
-
-        const correctLabel = document.getElementById(`opt-label-${qIdx}-${data.ans}`);
-        correctLabel.classList.add('correct-ans');
-
-        if (userAns === data.ans) {
-          score++;
-        } else if (userAns !== -1) {
-          const wrongLabel = document.getElementById(`opt-label-${qIdx}-${userAns}`);
-          wrongLabel.classList.add('wrong-ans');
+        if (selected) {
+          const val = parseInt(selected.value);
+          if (val === item.ans) {
+            score++;
+            selected.parentElement.classList.add('correct-ans');
+          } else {
+            selected.parentElement.classList.add('wrong-ans');
+            labels[item.ans].classList.add('correct-ans');
+          }
+        } else {
+          labels[item.ans].classList.add('correct-ans');
         }
       });
 
-      const banner = document.getElementById('score-banner');
+      const scoreBanner = document.getElementById('score-banner');
       const scoreText = document.getElementById('score-text');
-      banner.classList.remove('hidden');
-      scoreText.innerText = `Skor Anda: ${score} / ${quizData.length} (${Math.round((score/quizData.length)*100)}%)`;
-
-      document.getElementById('kotak-soal').scrollIntoView({ behavior: 'smooth' });
-
-      const persenNilai = Math.round((score / quizData.length) * 100);
-      simpanHasilUjian("pkk", persenNilai, score, quizData.length - score, quizData.length);
+      scoreText.innerText = `Skor Anda: ${score} dari ${quizData.length} Soal`;
+      scoreBanner.classList.remove('hidden');
+      window.scrollTo({ top: document.getElementById('kotak-soal').offsetTop - 20, behavior: 'smooth' });
     }
-
-    // ==== SIMPAN HASIL UJIAN KE FIREBASE ====
-    const FIREBASE_URL_HASIL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
-
-    async function simpanHasilUjian(modulId, nilai, benar, salah, totalSoal) {
-      try {
-        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-        if (!currentUser || !currentUser.username) return;
-
-        const endpoint = FIREBASE_URL_HASIL + "/examResults/" + modulId + "/" + currentUser.username + ".json";
-        await fetch(endpoint, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: currentUser.name,
-            username: currentUser.username,
-            nilai: nilai,
-            benar: benar,
-            salah: salah,
-            totalSoal: totalSoal,
-            waktu: Date.now()
-          })
-        });
-      } catch (err) {
-        console.error("Gagal menyimpan hasil ujian:", err);
-      }
-    }
-
-    // ==== PRESENCE & KICK FIREBASE SYSTEM ====
-    (function() {
-      const userSesi = JSON.parse(localStorage.getItem("currentUser"));
-      if (!userSesi || !userSesi.username) return;
-
-      const presenceEndpoint = FIREBASE_URL_HASIL + "/activeUsers/" + userSesi.username + ".json";
-
-      async function heartbeatDanCekKick() {
-        try {
-          const res = await fetch(presenceEndpoint);
-          const myData = await res.json();
-
-          if (myData && myData.kicked === true) {
-            alert("Anda telah dikeluarkan dari sesi oleh Administrator!");
-            await fetch(presenceEndpoint, { method: "DELETE" });
-            localStorage.removeItem("currentUser");
-            window.location.href = "index.html";
-            return;
-          }
-
-          await fetch(presenceEndpoint, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ lastSeen: Date.now() })
-          });
-        } catch (err) {
-          console.error("Gagal memperbarui status aktif:", err);
-        }
-      }
-
-      heartbeatDanCekKick();
-      setInterval(heartbeatDanCekKick, 5000);
-    })();
 
     function resetQuiz() {
       document.getElementById('quiz-form').reset();
-      quizData.forEach((data, qIdx) => {
-        const allRadiosList = document.querySelectorAll(`input[name="q${qIdx}"]`);
-        allRadiosList.forEach(radio => radio.disabled = false);
-
-        data.options.forEach((_, optIdx) => {
-          const label = document.getElementById(`opt-label-${qIdx}-${optIdx}`);
-          label.classList.remove('correct-ans', 'wrong-ans', 'cursor-not-allowed');
+      document.getElementById('score-banner').classList.add('hidden');
+      quizData.forEach((_, index) => {
+        const labels = document.querySelectorAll(`.option-label-${index}`);
+        labels.forEach(label => {
+          label.classList.remove('correct-ans', 'wrong-ans');
         });
       });
-      document.getElementById('score-banner').classList.add('hidden');
-      document.getElementById('kotak-soal').scrollIntoView({ behavior: 'smooth' });
     }
-
-    window.onload = function() {
-      renderQuiz();
-    };
   </script>
-
 </body>
 </html>
