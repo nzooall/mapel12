@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modul Praktikum & Simulasi Ujian PKK / KIK</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .tab-active {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%) !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px 0 rgba(3, 105, 161, 0.39);
+    }
+    .correct-ans {
+      background-color: #d1fae5 !important;
+      border-color: #10b981 !important;
+      color: #065f46 !important;
+      font-weight: 700;
+    }
+    .wrong-ans {
+      background-color: #fee2e2 !important;
+      border-color: #ef4444 !important;
+      color: #991b1b !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 min-h-screen py-6 px-3 sm:px-6">
+
+  <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200/80">
+    
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-sky-900 via-blue-900 to-slate-950 text-white py-10 px-6 text-center relative overflow-hidden">
+      <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-sky-500/10 rounded-full blur-2xl"></div>
+      <div class="absolute -left-10 -top-10 w-40 h-40 bg-blue-500/10 rounded-full blur-2xl"></div>
+      
+      <div class="relative z-10">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-sky-500/20 text-sky-200 border border-sky-400/30 mb-3">
+          <i class="fa-solid fa-coins text-yellow-400"></i> Modul Pembelajaran Interaktif PKK / KIK
+        </span>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight">
+          Modul Laporan & Pencatatan Keuangan Usaha
+        </h1>
+        <p class="text-sky-100/80 mt-2 text-sm sm:text-base max-w-2xl mx-auto font-normal">
+          Pengenalan Laporan Keuangan, Rumus Akuntansi, Laba Rugi, Perubahan Modal, dan Neraca
+        </p>
+      </div>
+    </div>
+
+    <!-- Navigasi Tab -->
+    <div class="p-4 sm:p-6 bg-slate-50 border-b border-slate-200">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-3xl mx-auto">
+        <button id="btn-materi" onclick="switchTab('materi')" class="py-3.5 px-6 rounded-2xl font-bold text-slate-600 bg-white hover:bg-slate-100 border border-slate-200/80 transition-all duration-200 shadow-sm tab-active flex items-center justify-center gap-2.5">
+          <i class="fa-solid fa-book-bookmark text-lg"></i> Bagian 1: Rangkuman Materi
+        </button>
+        <button id="btn-soal" onclick="switchTab('soal')" class="py-3.5 px-6 rounded-2xl font-bold text-slate-600 bg-white hover:bg-slate-100 border border-slate-200/80 transition-all duration-200 shadow-sm flex items-center justify-center gap-2.5">
+          <i class="fa-solid fa-pen-to-square text-lg"></i> Bagian 2: Simulasi 35 Soal
+        </button>
+      </div>
+    </div>
+
+    <!-- KOTAK 1: MATERI -->
+    <div id="kotak-materi" class="p-5 sm:p-10 space-y-8">
+      
+      <!-- Point 1 & 2 -->
+      <div class="bg-gradient-to-r from-sky-50 to-blue-50 border-l-4 border-sky-700 p-6 rounded-r-2xl shadow-sm space-y-3">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-sky-950 flex items-center gap-2.5">
+          <i class="fa-solid fa-file-invoice-dollar text-sky-700"></i> 1 & 2. Pengertian & Tujuan Laporan Keuangan
+        </h2>
+        <p class="text-slate-800 leading-relaxed text-sm sm:text-base">
+          <strong>Laporan Keuangan</strong> adalah catatan informasi keuangan suatu perusahaan atau usaha pada suatu periode akuntansi yang menggambarkan kinerja, posisi keuangan, dan arus kas usaha tersebut.
+        </p>
+        <div class="bg-white p-4 rounded-xl border border-sky-200 text-sm text-slate-700 space-y-2">
+          <p class="font-bold text-sky-900">Tujuan Utama Laporan Keuangan:</p>
+          <ul class="list-disc list-inside space-y-1">
+            <li>Menyediakan informasi posisi keuangan (aktiva, kewajiban, dan modal) yang akurat.</li>
+            <li>Menilai kinerja dan tingkat profitabilitas (keuntungan) usaha.</li>
+            <li>Sebagai bahan pengambilan keputusan strategis oleh pemilik usaha, investor, bank, dan pemerintah (pajak).</li>
+            <li>Memantau efisiensi penggunaan arus kas dan operasional usaha.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Point 3 -->
+      <div>
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
+          <i class="fa-solid fa-layer-group text-sky-700"></i> 3. Empat Komponen Utama Laporan Keuangan
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="border border-slate-200 p-5 rounded-2xl bg-white shadow-sm">
+            <h4 class="font-bold text-sky-900 text-base mb-1.5"><i class="fa-solid fa-chart-line text-emerald-600 mr-1.5"></i>1. Laporan Laba Rugi</h4>
+            <p class="text-xs sm:text-sm text-slate-600">Menyajikan seluruh pendapatan dan beban usaha untuk mengetahui apakah usaha mengalami keuntungan (laba) atau kerugian pada periode tertentu.</p>
+          </div>
+          <div class="border border-slate-200 p-5 rounded-2xl bg-white shadow-sm">
+            <h4 class="font-bold text-sky-900 text-base mb-1.5"><i class="fa-solid fa-arrows-rotate text-amber-600 mr-1.5"></i>2. Laporan Perubahan Modal</h4>
+            <p class="text-xs sm:text-sm text-slate-600">Menunjukkan perubahan modal pemilik akibat adanya laba/rugi bersih, penambahan investasi, dan pengambilan pribadi (prive).</p>
+          </div>
+          <div class="border border-slate-200 p-5 rounded-2xl bg-white shadow-sm">
+            <h4 class="font-bold text-sky-900 text-base mb-1.5"><i class="fa-solid fa-scale-balanced text-indigo-600 mr-1.5"></i>3. Neraca (Balance Sheet)</h4>
+            <p class="text-xs sm:text-sm text-slate-600">Menggambarkan posisi keuangan perusahaan meliputi Harta (Aset), Utang (Liabilitas), dan Modal (Ekuitas) pada tanggal tertentu.</p>
+          </div>
+          <div class="border border-slate-200 p-5 rounded-2xl bg-white shadow-sm">
+            <h4 class="font-bold text-sky-900 text-base mb-1.5"><i class="fa-solid fa-money-bill-transfer text-teal-600 mr-1.5"></i>4. Laporan Arus Kas</h4>
+            <p class="text-xs sm:text-sm text-slate-600">Rincian penerimaan dan pengeluaran kas berdasarkan kegiatan Operasional, Investasi, dan Pendanaan (Financing).</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Point 4 & 6 -->
+      <div>
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
+          <i class="fa-solid fa-calculator text-sky-700"></i> 4 & 6. Pengelompokan & Rumus Persamaan Dasar Akuntansi
+        </h3>
+        <div class="bg-slate-900 text-white p-6 rounded-2xl space-y-4">
+          <p class="text-xs sm:text-sm text-slate-300">
+            Rumus dasar yang digunakan dalam pencatatan sistem akuntansi (*double-entry*) adalah:
+          </p>
+          <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 text-center font-mono font-bold text-lg sm:text-xl text-yellow-300">
+            ASET (HARTA) = LIABILITAS (UTANG) + EKUITAS (MODAL)
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs sm:text-sm pt-2">
+            <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700">
+              <span class="font-bold text-sky-400">Aset (Harta):</span> Kas, Piutang Usaha, Perlengkapan, Peralatan, Bangunan, Kendaraan.
+            </div>
+            <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700">
+              <span class="font-bold text-sky-400">Liabilitas (Utang):</span> Utang Usaha, Utang Bank, Utang Gaji, Beban terutang.
+            </div>
+            <div class="bg-slate-800/80 p-3 rounded-lg border border-slate-700">
+              <span class="font-bold text-sky-400">Ekuitas (Modal):</span> Modal Pemilik, Laba Ditahan, Penyetoran Modal.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Point 5, 7 & 8 -->
+      <div>
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
+          <i class="fa-solid fa-square-root-variable text-sky-700"></i> 5, 7 & 8. Rumus Perhitungan Laba Rugi, Perubahan Modal, dan Neraca
+        </h3>
+        <div class="space-y-4">
+          <!-- Rumus Laba Rugi -->
+          <div class="border border-emerald-200 bg-emerald-50/50 p-5 rounded-2xl">
+            <h4 class="font-bold text-emerald-950 text-base mb-1">1. Menghitung Laba / Rugi Bersih</h4>
+            <div class="font-mono text-sm font-semibold text-emerald-900 bg-white p-3 rounded-xl border border-emerald-200 mb-2">
+              Laba / Rugi = Total Pendapatan – Total Beban Usaha
+            </div>
+            <p class="text-xs text-slate-600">• Jika Pendapatan > Beban = <strong>LABA</strong> | Jika Pendapatan < Beban = <strong>RUGI</strong></p>
+          </div>
+
+          <!-- Rumus Perubahan Modal -->
+          <div class="border border-amber-200 bg-amber-50/50 p-5 rounded-2xl">
+            <h4 class="font-bold text-amber-950 text-base mb-1">2. Menghitung Modal Akhir (Perubahan Modal)</h4>
+            <div class="font-mono text-sm font-semibold text-amber-900 bg-white p-3 rounded-xl border border-amber-200 mb-2">
+              Modal Akhir = Modal Awal + Laba Bersih – Prive (Pengambilan Pribadi)
+            </div>
+            <p class="text-xs text-slate-600">*Catatan: Jika mengalami rugi, maka rumus menjadi: <span class="font-mono font-bold">Modal Awal – Rugi Bersih – Prive</span>.</p>
+          </div>
+
+          <!-- Rumus Neraca -->
+          <div class="border border-indigo-200 bg-indigo-50/50 p-5 rounded-2xl">
+            <h4 class="font-bold text-indigo-950 text-base mb-1">3. Menghitung Keseimbangan Neraca</h4>
+            <div class="font-mono text-sm font-semibold text-indigo-900 bg-white p-3 rounded-xl border border-indigo-200 mb-2">
+              Total Aktiva (Aset) = Total Pasiva (Utang + Modal Akhir)
+            </div>
+            <p class="text-xs text-slate-600">• Neraca harus seimbang (balance) antara Sisi Kiri (Aset) dan Sisi Kanan (Kewajiban & Modal Akhir).</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- KOTAK 2: SIMULASI 35 SOAL -->
+    <div id="kotak-soal" class="p-5 sm:p-10 space-y-6 hidden">
+      <div id="score-banner" class="hidden bg-gradient-to-r from-sky-900 to-blue-900 text-white p-6 rounded-2xl text-center space-y-2 shadow-lg">
+        <div class="w-12 h-12 rounded-full bg-yellow-400 text-sky-950 mx-auto flex items-center justify-center font-black text-xl mb-1">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <h3 class="text-xl sm:text-2xl font-black">HASIL SIMULASI UJIAN PKK / KIK</h3>
+        <p id="score-text" class="text-lg sm:text-2xl font-extrabold text-yellow-300"></p>
+        <p class="text-xs text-sky-100 max-w-lg mx-auto">Jawaban benar ditandai warna <span class="bg-emerald-500 text-white px-1.5 py-0.5 rounded font-bold">HIJAU</span>. Jawaban salah ditandai warna <span class="bg-rose-500 text-white px-1.5 py-0.5 rounded font-bold">MERAH</span>.</p>
+      </div>
+
+      <form id="quiz-form" class="space-y-6">
+        <div id="questions-container" class="space-y-4">
+          <!-- Soal di-render oleh JavaScript -->
+        </div>
+
+        <div class="pt-8 border-t border-slate-200 flex flex-col sm:flex-row justify-center gap-4">
+          <button type="button" id="btn-cek-hasil" onclick="checkAnswers()" class="w-full sm:w-auto px-8 py-3.5 bg-sky-600 hover:bg-sky-700 active:scale-95 text-white font-bold rounded-2xl shadow-lg shadow-sky-600/30 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-circle-check"></i> Cek Hasil Simulasi Ujian
+          </button>
+          <button type="button" onclick="resetQuiz()" class="w-full sm:w-auto px-8 py-3.5 bg-rose-600 hover:bg-rose-700 active:scale-95 text-white font-bold rounded-2xl shadow-lg shadow-rose-600/30 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-rotate-right"></i> Kerjakan Ulang
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <script>
+    function switchTab(tab) {
+      const materi = document.getElementById('kotak-materi');
+      const soal = document.getElementById('kotak-soal');
+      const btnMateri = document.getElementById('btn-materi');
+      const btnSoal = document.getElementById('btn-soal');
+
+      if (tab === 'materi') {
+        materi.classList.remove('hidden');
+        soal.classList.add('hidden');
+        btnMateri.classList.add('tab-active');
+        btnSoal.classList.remove('tab-active');
+      } else {
+        soal.classList.remove('hidden');
+        materi.classList.add('hidden');
+        btnSoal.classList.add('tab-active');
+        btnMateri.classList.remove('tab-active');
+      }
+    }
+
+    const quizData = [
+      { q: "Catatan ringkas informasi keuangan suatu usaha pada suatu periode akuntansi yang menggambarkan kinerja perusahaan disebut...", options: ["Laporan Keuangan", "Jurnal Penyesuaian", "Nota Penjualan", "Kuitansi Pembayaran"], ans: 0 },
+      { q: "Tujuan utama dari penyusunan laporan keuangan bagi pemilik usaha adalah...", options: ["Menghindari pemeriksaan pihak kepolisian", "Menilai kinerja dan posisi keuangan usaha untuk pengambilan keputusan", "Menambah jumlah karyawan usaha", "Memperbesar utang kepada bank"], ans: 1 },
+      { q: "Empat komponen utama dalam laporan keuangan yang baku terdiri dari...", options: ["Laba Rugi, Perubahan Modal, Neraca, Arus Kas", "Jurnal Umum, Buku Besar, Neraca Saldo, Kuitansi", "Nota Kas, Faktur, Bilyet Giro, Cek", "Pendapatan, Modal, Beban, Pajak"], ans: 0 },
+      { q: "Laporan keuangan yang menyajikan informasi mengenai seluruh pendapatan dan beban usaha untuk mengetahui tingkat keuntungan disebut...", options: ["Laporan Neraca", "Laporan Arus Kas", "Laporan Laba Rugi", "Laporan Perubahan Modal"], ans: 2 },
+      { q: "Rumus dasar dari Persamaan Akuntansi yang benar adalah...", options: ["Aset = Liabilitas - Ekuitas", "Aset = Liabilitas + Ekuitas", "Liabilitas = Aset + Ekuitas", "Ekuitas = Liabilitas - Aset"], ans: 1 },
+      { q: "Berikut ini yang termasuk dalam kelompok Aset (Harta) Lancar adalah...", options: ["Bangunan dan Tanah", "Kas, Piutang Usaha, dan Perlengkapan", "Utang Bank dan Utang Usaha", "Modal Pemilik dan Prive"], ans: 1 },
+      { q: "Sebuah usaha konveksi memperoleh pendapatan sebesar Rp 15.000.000,00 dan total beban operasional sebesar Rp 9.000.000,00. Berapakah laba bersihnya?", options: ["Rp 6.000.000,00", "Rp 24.000.000,00", "Rp 5.000.000,00", "Rp 9.000.000,00"], ans: 0 },
+      { q: "Jika Total Pendapatan usaha lebih kecil daripada Total Beban Usaha, maka kondisi perusahaan tersebut mengalami...", options: ["Laba Bersih", "Rugi Bersih", "Impas (Break Even Point)", "Peningkatan Modal"], ans: 1 },
+      { q: "Rumus yang digunakan untuk menghitung Modal Akhir pada Laporan Perubahan Modal adalah...", options: ["Modal Awal + Total Pendapatan", "Modal Awal + Laba Bersih – Prive", "Total Aset – Total Beban", "Utang + Kas – Prive"], ans: 1 },
+      { q: "Pengambilan uang tunai atau aset perusahaan oleh pemilik untuk kepentingan pribadi dinamakan...", options: ["Beban Gaji", "Investasi", "Prive (Withdrawal)", "Utang Usaha"], ans: 2 },
+      { q: "Pak Budi memiliki usaha bakso. Modal awal Rp 10.000.000,00. Selama sebulan memperoleh laba Rp 3.000.000,00 dan mengambil prive Rp 500.000,00. Modal akhir Pak Budi adalah...", options: ["Rp 12.500.000,00", "Rp 13.500.000,00", "Rp 12.000.000,00", "Rp 9.500.000,00"], ans: 0 },
+      { q: "Dalam laporan Neraca, posisi keuangan yang disusun pada sisi Pasiva terdiri dari...", options: ["Kas dan Piutang", "Liabilitas (Utang) dan Ekuitas (Modal)", "Peralatan dan Perlengkapan", "Pendapatan dan Beban"], ans: 1 },
+      { q: "Jika diketahui Total Liabilitas suatu usaha Rp 5.000.000,00 dan Ekuitas Modal sebesar Rp 15.000.000,00, maka besarnya Total Aset adalah...", options: ["Rp 10.000.000,00", "Rp 20.000.000,00", "Rp 15.000.000,00", "Rp 25.000.000,00"], ans: 1 },
+      { q: "Pencatatan akun Peralatan dan Kendaraan dalam Neraca dikelompokkan ke dalam kategori...", options: ["Aset Tetap", "Aset Lancar", "Liabilitas Jangka Pendek", "Ekuitas Pemilik"], ans: 0 },
+      { q: "Laporan yang menunjukkan perincian kas masuk dan kas keluar dari aktivitas operasional, investasi, dan pendanaan dinamakan...", options: ["Laporan Arus Kas", "Laporan Perubahan Modal", "Laporan Neraca", "Jurnal Penyesuaian"], ans: 0 },
+      { q: "Suatu usaha membeli perlengkapan kantor senilai Rp 2.000.000,00 secara tunai. Pengaruh transaksi ini pada persamaan akuntansi adalah...", options: ["Aset Perlengkapan bertambah, Aset Kas berkurang", "Aset bertambah, Utang bertambah", "Modal bertambah, Kas berkurang", "Utang berkurang, Kas berkurang"], ans: 0 },
+      { q: "Membeli peralatan toko sebesar Rp 5.000.000,00 secara kredit (belum dibayar). Pengaruh transaksinya adalah...", options: ["Peralatan (+), Kas (-)", "Peralatan (+), Utang Usaha (+)", "Peralatan (+), Modal (+)", "Utang (+), Modal (-)"], ans: 1 },
+      { q: "Manakah di bawah ini yang bukan merupakan tujuan utama dibuatnya laporan keuangan?", options: ["Mengetahui kondisi kesehatan keuangan perusahaan", "Sebagai alat pertanggungjawaban pengelolaan usaha", "Untuk menyembunyikan kewajiban pajak usaha", "Memudahkan investor menilai kelayakan investasi"], ans: 2 },
+      { q: "Komponen Neraca harus selalu seimbang (balance), artinya...", options: ["Total Pendapatan = Total Beban", "Total Aset = Total Liabilitas + Total Ekuitas", "Modal Awal = Modal Akhir", "Kas Masuk = Kas Keluar"], ans: 1 },
+      { q: "Apabila perusahaan mengalami kerugian bersih sebesar Rp 2.000.000,00 dan pemilik tidak melakukan prive, maka modal akhir perusahaan akan...", options: ["Bertambah Rp 2.000.000,00", "Berkurang Rp 2.000.000,00", "Tetap tidak berubah", "Menjadi nol"], ans: 1 },
+      { q: "Di bawah ini yang termasuk dalam kategori Beban Usaha adalah...", options: ["Beban Gaji, Beban Listrik, dan Beban Sewa", "Kas dan Piutang", "Modal Usaha dan Prive", "Utang Bank dan Utang Dagang"], ans: 0 },
+      { q: "Tagihan uang kepada pelanggan atas barang/jasa yang telah kita jual tetapi belum dibayar oleh pelanggan disebut...", options: ["Utang Usaha", "Piutang Usaha", "Kas Tunai", "Beban Terutang"], ans: 1 },
+      { q: "Kewajiban finansial perusahaan kepada pihak luar yang harus dilunasi pada jangka waktu tertentu dikelompokkan sebagai...", options: ["Aset", "Liabilitas (Utang)", "Ekuitas", "Pendapatan"], ans: 1 },
+      { q: "Sebuah bengkel memiliki Aset sebesar Rp 50.000.000,00 dan Modal sebesar Rp 35.000.000,00. Berapakah jumlah Utang (Liabilitas) bengkel tersebut?", options: ["Rp 15.000.000,00", "Rp 85.000.000,00", "Rp 35.000.000,00", "Rp 20.000.000,00"], ans: 0 },
+      { q: "Pendapatan Jasa sebesar Rp 8.000.000,00, Beban Gaji Rp 2.500.000,00, Beban Sewa Rp 1.000.000,00, dan Beban Perlengkapan Rp 500.000,00. Hitunglah Laba Bersih usaha tersebut!", options: ["Rp 4.000.000,00", "Rp 4.500.000,00", "Rp 3.000.000,00", "Rp 8.000.000,00"], ans: 0 },
+      { q: "Data usaha: Modal Awal Rp 20.000.000, Laba Rp 6.000.000, Prive Rp 1.000.000. Berapa Modal Akhir usaha tersebut?", options: ["Rp 25.000.000,00", "Rp 27.000.000,00", "Rp 26.000.000,00", "Rp 19.000.000,00"], ans: 0 },
+      { q: "Berikut ini transaksi yang dapat mengurangi Modal Pemilik dalam laporan perubahan modal adalah...", options: ["Penyetoran modal tambahan dan Laba", "Pengambilan Prive dan Kerugian usaha", "Pembayaran Utang Bank", "Pembelian Aset secara tunai"], ans: 1 },
+      { q: "Laporan yang menunjukkan posisi keuangan (Aset, Utang, dan Modal) pada tanggal atau penutupan periode tertentu adalah...", options: ["Laporan Neraca", "Laporan Laba Rugi", "Laporan Arus Kas", "Buku Kas Harian"], ans: 0 },
+      { q: "Pengelompokan barang habis pakai seperti kertas, tinta printer, dan plastik pembungkus dalam akuntansi dimasukkan ke akun...", options: ["Peralatan", "Perlengkapan", "Aset Tetap", "Beban Lain-lain"], ans: 1 },
+      { q: "Aset perusahaan yang memiliki masa guna/manfaat lebih dari satu tahun serta nilainya cukup besar dinamakan...", options: ["Aset Lancar", "Aset Tetap", "Utang Jangka Pendek", "Modal Kerja"], ans: 1 },
+      { q: "Jika Pendapatan Rp 12.000.000, Total Beban Rp 14.000.000, maka hasil laporan laba rugi usaha adalah...", options: ["Laba Rp 2.000.000", "Rugi Rp 2.000.000", "Laba Rp 26.000.000", "Impas (0)"], ans: 1 },
+      { q: "Menerima pelunasan piutang dari pelanggan sebesar Rp 1.000.000,00. Pengaruh pencatatannya pada Aset adalah...", options: ["Kas (+), Piutang (-)", "Kas (+), Utang (+)", "Piutang (+), Modal (+)", "Kas (-), Piutang (+)"], ans: 0 },
+      { q: "Pihak eksternal yang memerlukan laporan keuangan usaha untuk memberikan pinjaman modal adalah...", options: ["Karyawan Usaha", "Manajer Operasional", "Bank / Pihak Kreditur", "Pemilik Usaha"], ans: 2 },
+      { q: "Pemilik menyetorkan uang tunai sebesar Rp 10.000.000,00 sebagai modal awal usaha. Transaksi ini menambah...", options: ["Kas dan Modal", "Kas dan Utang", "Peralatan dan Modal", "Piutang dan Kas"], ans: 0 },
+      { q: "Penyusunan laporan keuangan usaha secara rapi dan akurat bermanfaat untuk...", options: ["Membuat laporan menjadi rumit", "Memudahkan evaluasi perkembangan bisnis dan perhitungan pajak", "Menghabiskan waktu operasional", "Meningkatkan harga jual barang tanpa alasan"], ans: 1 }
+    ];
+
+    function renderQuiz() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      quizData.forEach((data, qIdx) => {
+        const qCard = document.createElement('div');
+        qCard.className = 'bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm space-y-3';
+        
+        let optionsHTML = '';
+        data.options.forEach((opt, optIdx) => {
+          optionsHTML += `
+            <label id="opt-label-${qIdx}-${optIdx}" class="flex items-center p-3.5 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-sky-50/80 hover:border-sky-300 transition text-sm font-medium">
+              <input type="radio" name="q${qIdx}" value="${optIdx}" class="mr-3 accent-sky-800 w-4 h-4">
+              <span><strong class="text-slate-500 mr-1.5">${String.fromCharCode(65 + optIdx)}.</strong> ${opt}</span>
+            </label>
+          `;
+        });
+
+        qCard.innerHTML = `
+          <p class="font-bold text-slate-900 text-sm sm:text-base leading-relaxed">
+            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-sky-100 text-sky-900 font-mono text-xs mr-2">${qIdx + 1}</span> ${data.q}
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+            ${optionsHTML}
+          </div>
+        `;
+        container.appendChild(qCard);
+      });
+    }
+
+    function checkAnswers() {
+      let score = 0;
+
+      quizData.forEach((data, qIdx) => {
+        const selectedOpt = document.querySelector(`input[name="q${qIdx}"]:checked`);
+        const userAns = selectedOpt ? parseInt(selectedOpt.value) : -1;
+
+        const allRadios = document.querySelectorAll(`input[name="q${qIdx}"]`);
+        allRadios.forEach(radio => radio.disabled = true);
+
+        data.options.forEach((_, optIdx) => {
+          const label = document.getElementById(`opt-label-${qIdx}-${optIdx}`);
+          label.classList.remove('correct-ans', 'wrong-ans');
+          label.classList.add('cursor-not-allowed');
+        });
+
+        const correctLabel = document.getElementById(`opt-label-${qIdx}-${data.ans}`);
+        correctLabel.classList.add('correct-ans');
+
+        if (userAns === data.ans) {
+          score++;
+        } else if (userAns !== -1) {
+          const wrongLabel = document.getElementById(`opt-label-${qIdx}-${userAns}`);
+          wrongLabel.classList.add('wrong-ans');
+        }
+      });
+
+      const banner = document.getElementById('score-banner');
+      const scoreText = document.getElementById('score-text');
+      banner.classList.remove('hidden');
+      scoreText.innerText = `Skor Anda: ${score} / ${quizData.length} (${Math.round((score/quizData.length)*100)}%)`;
+
+      document.getElementById('kotak-soal').scrollIntoView({ behavior: 'smooth' });
+
+      const persenNilai = Math.round((score / quizData.length) * 100);
+      simpanHasilUjian("pkk", persenNilai, score, quizData.length - score, quizData.length);
+    }
+
+    // ==== SIMPAN HASIL UJIAN KE FIREBASE ====
+    const FIREBASE_URL_HASIL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
+
+    async function simpanHasilUjian(modulId, nilai, benar, salah, totalSoal) {
+      try {
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        if (!currentUser || !currentUser.username) return;
+
+        const endpoint = FIREBASE_URL_HASIL + "/examResults/" + modulId + "/" + currentUser.username + ".json";
+        await fetch(endpoint, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: currentUser.name,
+            username: currentUser.username,
+            nilai: nilai,
+            benar: benar,
+            salah: salah,
+            totalSoal: totalSoal,
+            waktu: Date.now()
+          })
+        });
+      } catch (err) {
+        console.error("Gagal menyimpan hasil ujian:", err);
+      }
+    }
+
+    // ==== PRESENCE & KICK FIREBASE SYSTEM ====
+    (function() {
+      const userSesi = JSON.parse(localStorage.getItem("currentUser"));
+      if (!userSesi || !userSesi.username) return;
+
+      const presenceEndpoint = FIREBASE_URL_HASIL + "/activeUsers/" + userSesi.username + ".json";
+
+      async function heartbeatDanCekKick() {
+        try {
+          const res = await fetch(presenceEndpoint);
+          const myData = await res.json();
+
+          if (myData && myData.kicked === true) {
+            alert("Anda telah dikeluarkan dari sesi oleh Administrator!");
+            await fetch(presenceEndpoint, { method: "DELETE" });
+            localStorage.removeItem("currentUser");
+            window.location.href = "index.html";
+            return;
+          }
+
+          await fetch(presenceEndpoint, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ lastSeen: Date.now() })
+          });
+        } catch (err) {
+          console.error("Gagal memperbarui status aktif:", err);
+        }
+      }
+
+      heartbeatDanCekKick();
+      setInterval(heartbeatDanCekKick, 5000);
+    })();
+
+    function resetQuiz() {
+      document.getElementById('quiz-form').reset();
+      quizData.forEach((data, qIdx) => {
+        const allRadiosList = document.querySelectorAll(`input[name="q${qIdx}"]`);
+        allRadiosList.forEach(radio => radio.disabled = false);
+
+        data.options.forEach((_, optIdx) => {
+          const label = document.getElementById(`opt-label-${qIdx}-${optIdx}`);
+          label.classList.remove('correct-ans', 'wrong-ans', 'cursor-not-allowed');
+        });
+      });
+      document.getElementById('score-banner').classList.add('hidden');
+      document.getElementById('kotak-soal').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    window.onload = function() {
+      renderQuiz();
+    };
+  </script>
+
+</body>
+</html>
