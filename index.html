@@ -162,6 +162,22 @@
     // Domain palsu supaya username bisa dipakai sebagai "email" login Firebase
     const EMAIL_DOMAIN = "@mapel12.app";
 
+    // Coba ulang otomatis kalau gagal karena koneksi (bukan karena password salah),
+    // supaya lag sesaat pas banyak orang login bareng tidak langsung dianggap error.
+    async function fetchWithRetry(url, options, maxRetry = 2) {
+      let lastErr;
+      for (let i = 0; i <= maxRetry; i++) {
+        try {
+          const res = await fetch(url, options);
+          return res;
+        } catch (err) {
+          lastErr = err;
+          if (i < maxRetry) await new Promise(r => setTimeout(r, 600 * (i + 1)));
+        }
+      }
+      throw lastErr;
+    }
+
     // 3. PROSES LOGIN
     const loginForm = document.getElementById("loginForm");
     const btnSubmit = document.getElementById("btnSubmit");
@@ -177,18 +193,50 @@
       btnSubmit.disabled = true;
       btnSubmit.innerText = "Memproses...";
 
-      try {
-        // Login ke Firebase Authentication (password dicek di server Firebase, bukan di kode ini)
-        await auth.signInWithEmailAndPassword(userVal + EMAIL_DOMAIN, passVal);
+      // Coba sign-in sampai 2x kalau gagal karena jaringan (bukan karena kredensial salah)
+      let signInSukses = false;
+      let authError = null;
 
-        // Kalau berhasil, ambil data nama & role dari Realtime Database
-        const res = await fetch(firebaseConfig.databaseURL + "/userProfiles/" + userVal + ".json");
+      for (let percobaan = 0; percobaan <= 2 && !signInSukses; percobaan++) {
+        try {
+          await auth.signInWithEmailAndPassword(userVal + EMAIL_DOMAIN, passVal);
+          signInSukses = true;
+        } catch (err) {
+          authError = err;
+          // auth/network-request-failed = masalah koneksi, layak dicoba ulang.
+          // Selain itu (password salah, akun tidak ada, terlalu banyak percobaan) tidak perlu diulang.
+          if (err.code !== "auth/network-request-failed" || percobaan === 2) break;
+          await new Promise(r => setTimeout(r, 700 * (percobaan + 1)));
+        }
+      }
+
+      if (!signInSukses) {
+        errorMsg.style.display = "block";
+        if (authError && authError.code === "auth/too-many-requests") {
+          errorMsg.innerText = "Terlalu banyak percobaan login gagal pada akun ini. Tunggu beberapa menit lalu coba lagi (bukan error sistem, ini proteksi keamanan otomatis).";
+        } else if (authError && authError.code === "auth/network-request-failed") {
+          errorMsg.innerText = "Koneksi internet sedang lambat/terputus. Periksa jaringan lalu coba lagi.";
+        } else if (authError && (authError.code === "auth/user-not-found" || authError.code === "auth/wrong-password" || authError.code === "auth/invalid-credential")) {
+          errorMsg.innerText = "Akun tidak terdaftar atau password salah!";
+        } else {
+          errorMsg.innerText = "Gagal login. Coba lagi dalam beberapa saat.";
+        }
+        btnSubmit.disabled = false;
+        btnSubmit.innerHTML = 'Masuk <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>';
+        return;
+      }
+
+      // Sign-in berhasil, sekarang ambil profil (nama & role) dengan retry juga
+      try {
+        const res = await fetchWithRetry(firebaseConfig.databaseURL + "/userProfiles/" + userVal + ".json", {}, 2);
         const profile = await res.json();
 
         if (!profile) {
           errorMsg.style.display = "block";
           errorMsg.innerText = "Akun ditemukan tapi profil belum diatur admin. Hubungi admin.";
           await auth.signOut();
+          btnSubmit.disabled = false;
+          btnSubmit.innerHTML = 'Masuk <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>';
           return;
         }
 
@@ -203,8 +251,7 @@
       } catch (err) {
         console.error(err);
         errorMsg.style.display = "block";
-        errorMsg.innerText = "Akun tidak terdaftar atau password salah!";
-      } finally {
+        errorMsg.innerText = "Login berhasil, tapi gagal mengambil data profil (koneksi lambat). Coba klik Masuk sekali lagi.";
         btnSubmit.disabled = false;
         btnSubmit.innerHTML = 'Masuk <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>';
       }
