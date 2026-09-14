@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modul Praktikum & Simulasi Ujian PPKn</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .tab-active {
+      background: linear-gradient(135deg, #065f46 0%, #047857 100%) !important;
+      color: #ffffff !important;
+      box-shadow: 0 4px 14px 0 rgba(4, 120, 87, 0.39);
+    }
+    .correct-ans {
+      background-color: #d1fae5 !important;
+      border-color: #10b981 !important;
+      color: #065f46 !important;
+      font-weight: 700;
+    }
+    .wrong-ans {
+      background-color: #fee2e2 !important;
+      border-color: #ef4444 !important;
+      color: #991b1b !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 min-h-screen py-6 px-3 sm:px-6">
+
+  <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200/80">
+    
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-emerald-900 via-teal-900 to-emerald-950 text-white py-10 px-6 text-center relative overflow-hidden">
+      <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl"></div>
+      <div class="absolute -left-10 -top-10 w-40 h-40 bg-teal-500/10 rounded-full blur-2xl"></div>
+      
+      <div class="relative z-10">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 mb-3">
+          <i class="fa-solid fa-landmark text-yellow-400"></i> Modul Pembelajaran Interaktif PPKn
+        </span>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight">
+          Modul Praktikum & Simulasi Ujian PPKn
+        </h1>
+        <p class="text-emerald-100/80 mt-2 text-sm sm:text-base max-w-2xl mx-auto font-normal">
+          Pancasila, Sejarah BPUPKI/PPKI, serta Hak & Kewajiban Warga Negara Menurut UUD NRI 1945
+        </p>
+      </div>
+    </div>
+
+    <!-- Navigasi 2 Kotak / Tab -->
+    <div class="p-4 sm:p-6 bg-slate-50 border-b border-slate-200">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-3xl mx-auto">
+        <button id="btn-materi" onclick="switchTab('materi')" class="py-3.5 px-6 rounded-2xl font-bold text-slate-600 bg-white hover:bg-slate-100 border border-slate-200/80 transition-all duration-200 shadow-sm tab-active flex items-center justify-center gap-2.5">
+          <i class="fa-solid fa-book-bookmark text-lg"></i> Bagian 1: Rangkuman Materi
+        </button>
+        <button id="btn-soal" onclick="switchTab('soal')" class="py-3.5 px-6 rounded-2xl font-bold text-slate-600 bg-white hover:bg-slate-100 border border-slate-200/80 transition-all duration-200 shadow-sm flex items-center justify-center gap-2.5">
+          <i class="fa-solid fa-pen-to-square text-lg"></i> Bagian 2: Simulasi 40 Soal
+        </button>
+      </div>
+    </div>
+
+    <!-- KOTAK 1: MATERI -->
+    <div id="kotak-materi" class="p-5 sm:p-10 space-y-8">
+      
+      <!-- Section 1 -->
+      <div class="bg-gradient-to-r from-emerald-50 to-teal-50 border-l-4 border-emerald-800 p-6 rounded-r-2xl shadow-sm">
+        <h2 class="text-xl sm:text-2xl font-extrabold text-emerald-950 flex items-center gap-2.5">
+          <i class="fa-solid fa-scale-balanced text-emerald-800"></i> 1. Pancasila Sebagai Dasar & Ideologi Negara
+        </h2>
+        <p class="text-slate-800 mt-3 leading-relaxed text-base sm:text-lg">
+          Pancasila merupakan dasar negara, pandangan hidup, dan <strong>jati diri bangsa Indonesia</strong> yang memberikan corak khas yang membedakan bangsa Indonesia dari bangsa lain. Jika Pancasila tidak lagi diimplementasikan dalam kehidupan berbangsa dan bernegara, dampak paling signifikan adalah timbulnya <strong>kekosongan pedoman fundamental</strong> yang berpotensi memicu fragmentasi sosial dan konflik kepentingan antarkelompok.
+        </p>
+      </div>
+
+      <!-- Section 2 -->
+      <div>
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
+          <i class="fa-solid fa-history text-emerald-700"></i> Sejarah Pembentukan BPUPKI dan PPKI
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="border border-slate-200 p-6 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+            <h4 class="font-bold text-emerald-900 text-base mb-2">BPUPKI (Dokuritsu Junbi Cosakai)</h4>
+            <ul class="text-sm text-slate-700 space-y-2">
+              <li><strong>• Pembentukan:</strong> Diumumkan 1 Maret 1945, dibentuk resmi 29 April 1945.</li>
+              <li><strong>• Tugas Utama:</strong> Membahas dan menyusun Rancangan UUD serta Dasar Negara.</li>
+              <li><strong>• Sidang I (29 Mei – 1 Juni 1945):</strong> Membahas Dasar Negara (Tokoh: Muhammad Yamin, Soepomo, Ir. Soekarno).</li>
+              <li><strong>• Sidang II (10 – 17 Juli 1945):</strong> Membahas Rancangan UUD dan wilayah negara.</li>
+              <li><strong>• Pembubaran:</strong> Dibubarkan pada 7 Agustus 1945 karena dianggap telah menyelesaikan tugasnya.</li>
+            </ul>
+          </div>
+          
+          <div class="border border-slate-200 p-6 rounded-2xl bg-white shadow-sm hover:shadow-md transition">
+            <h4 class="font-bold text-teal-900 text-base mb-2">PPKI (Dokuritsu Junbi Inkai)</h4>
+            <ul class="text-sm text-slate-700 space-y-2">
+              <li><strong>• Pembentukan:</strong> Dibentuk pada 7 Agustus 1945 setelah BPUPKI dibubarkan.</li>
+              <li><strong>• Tugas & Kewenangan:</strong> Menetapkan UUD 1945 serta Memilih Presiden dan Wakil Presiden (Ir. Soekarno & Drs. Mohammad Hatta).</li>
+              <li><strong>• Sidang Perdana:</strong> 18 Agustus 1945 (Mengesahkan UUD 1945 dan mengubah sila 1 Piagam Jakarta).</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section 3 -->
+      <div>
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
+          <i class="fa-solid fa-scroll text-emerald-700"></i> Piagam Jakarta & Perubahan Sila Pertama
+        </h3>
+        <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-3">
+          <p class="text-sm text-slate-700 leading-relaxed">
+            Pada tanggal <strong>22 Juni 1945</strong>, Panitia Sembilan menghasilkan dokumen historis yang dikenal sebagai <strong>Piagam Jakarta (Jakarta Charter)</strong>.
+          </p>
+          <div class="bg-white p-4 rounded-xl border border-slate-200 text-sm">
+            <p class="font-bold text-emerald-900 mb-1">Rumusan Sila Pertama Piagam Jakarta:</p>
+            <p class="italic text-slate-700">"Ketuhanan dengan kewajiban menjalankan syariat Islam bagi pemeluk-pemeluknya."</p>
+          </div>
+          <p class="text-sm text-slate-700 leading-relaxed">
+            Demi menjaga <strong>persatuan dan kesatuan bangsa</strong> Indonesia yang beraneka ragam, rumusan tersebut diubah pada 18 Agustus 1945 melalui proses musyawarah dan kompromi politik menjadi: <strong>"Ketuhanan Yang Maha Esa"</strong>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Section 4 Table -->
+      <div>
+        <h3 class="text-lg sm:text-xl font-bold text-slate-900 mb-4 flex items-center gap-2 border-b border-slate-200 pb-2">
+          <i class="fa-solid fa-gavel text-emerald-700"></i> Rincian Pasal UUD NRI 1945 Terkait Hak & Kewajiban
+        </h3>
+        <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+          <table class="w-full text-sm text-left border-collapse">
+            <thead>
+              <tr class="bg-slate-900 text-white">
+                <th class="p-3.5 border-b border-slate-800">Pasal / Ayat</th>
+                <th class="p-3.5 border-b border-slate-800">Inti / Subtansi Kebijakan & Ketentuan</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 bg-white text-slate-800">
+              <tr class="hover:bg-slate-50">
+                <td class="p-3.5 font-bold text-emerald-900">Pasal 1 Ayat (3)</td>
+                <td class="p-3.5">Negara Indonesia adalah negara hukum.</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="p-3.5 font-bold text-emerald-900">Pasal 27 Ayat (1)</td>
+                <td class="p-3.5">Segala warga negara bersamaan kedudukannya di dalam hukum dan pemerintahan dan wajib menjunjung hukum dan pemerintahan itu dengan tidak ada kecualinya.</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="p-3.5 font-bold text-emerald-900">Pasal 27 Ayat (3)</td>
+                <td class="p-3.5">Setiap warga negara berhak dan wajib ikut serta dalam upaya pembelaan negara.</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="p-3.5 font-bold text-emerald-900">Pasal 28A</td>
+                <td class="p-3.5">Setiap orang berhak untuk hidup serta berhak mempertahankan hidup dan kehidupannya.</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="p-3.5 font-bold text-emerald-900">Pasal 29 Ayat (1) & (2)</td>
+                <td class="p-3.5">Negara berdasar atas Ketuhanan Yang Maha Esa; Negara menjamin kemerdekaan tiap-tiap penduduk untuk memeluk agamanya masing-masing dan untuk beribadat menurut agamanya dan kepercayaannya itu.</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="p-3.5 font-bold text-emerald-900">Pasal 31 Ayat (1)</td>
+                <td class="p-3.5">Setiap warga negara berhak mendapat pendidikan.</td>
+              </tr>
+              <tr class="hover:bg-slate-50">
+                <td class="p-3.5 font-bold text-emerald-900">Pasal 32 Ayat (1) & (2)</td>
+                <td class="p-3.5">Negara memajukan kebudayaan nasional Indonesia serta menghormati dan memelihara bahasa daerah sebagai kekayaan budaya nasional.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- KOTAK 2: SIMULASI 40 SOAL -->
+    <div id="kotak-soal" class="p-5 sm:p-10 space-y-6 hidden">
+      <div id="score-banner" class="hidden bg-gradient-to-r from-emerald-900 to-teal-900 text-white p-6 rounded-2xl text-center space-y-2 shadow-lg">
+        <div class="w-12 h-12 rounded-full bg-yellow-400 text-emerald-950 mx-auto flex items-center justify-center font-black text-xl mb-1">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <h3 class="text-xl sm:text-2xl font-black">HASIL SIMULASI UJIAN PPKn</h3>
+        <p id="score-text" class="text-lg sm:text-2xl font-extrabold text-yellow-300"></p>
+        <p class="text-xs text-emerald-100 max-w-lg mx-auto">Jawaban benar ditandai warna <span class="bg-emerald-500 text-white px-1.5 py-0.5 rounded font-bold">HIJAU</span>. Jawaban salah ditandai warna <span class="bg-rose-500 text-white px-1.5 py-0.5 rounded font-bold">MERAH</span>. Pilihan jawaban telah dikunci.</p>
+      </div>
+
+      <form id="quiz-form" class="space-y-6">
+        <div id="questions-container" class="space-y-4">
+          <!-- Soal di-render oleh JavaScript -->
+        </div>
+
+        <!-- Tombol Aksi di Paling Bawah -->
+        <div class="pt-8 border-t border-slate-200 flex flex-col sm:flex-row justify-center gap-4">
+          <button type="button" id="btn-cek-hasil" onclick="checkAnswers()" class="w-full sm:w-auto px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold rounded-2xl shadow-lg shadow-emerald-600/30 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-circle-check"></i> Cek Hasil Simulasi Ujian
+          </button>
+          <button type="button" onclick="resetQuiz()" class="w-full sm:w-auto px-8 py-3.5 bg-rose-600 hover:bg-rose-700 active:scale-95 text-white font-bold rounded-2xl shadow-lg shadow-rose-600/30 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-rotate-right"></i> Kerjakan Ulang
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <script>
+    function switchTab(tab) {
+      const materi = document.getElementById('kotak-materi');
+      const soal = document.getElementById('kotak-soal');
+      const btnMateri = document.getElementById('btn-materi');
+      const btnSoal = document.getElementById('btn-soal');
+
+      if (tab === 'materi') {
+        materi.classList.remove('hidden');
+        soal.classList.add('hidden');
+        btnMateri.classList.add('tab-active');
+        btnSoal.classList.remove('tab-active');
+      } else {
+        soal.classList.remove('hidden');
+        materi.classList.add('hidden');
+        btnSoal.classList.add('tab-active');
+        btnMateri.classList.remove('tab-active');
+      }
+    }
+
+    const quizData = [
+      { q: "Pancasila sebagai dasar negara diibaratkan sebagai kompas penunjuk arah bangsa. Jika Pancasila tidak lagi diimplementasikan, dampak paling signifikan adalah...", options: ["Perekonomian nasional langsung merosot", "Terjadi kekosongan pedoman fundamental yang berpotensi memiliki fragmentasi sosial dan konflik kepentingan antar kelompok", "Sistem pemerintahan berganti menjadi monarki", "Indonesia tidak diakui oleh PBB"], ans: 1 },
+      { q: "Ir. Soekarno mengusulkan lima prinsip dasar negara pada tanggal...", options: ["29 Mei 1945", "1 Juni 1945", "22 Juni 1945", "17 Agustus 1945"], ans: 1 },
+      { q: "Panitia Sembilan berhasil merumuskan naskah Piagam Jakarta pada tanggal...", options: ["29 April 1945", "1 Juni 1945", "22 Juni 1945", "18 Agustus 1945"], ans: 2 },
+      { q: "Pernyataan bahwa Piagam Jakarta langsung disahkan menjadi UUD pada tanggal 1 Juni 1945 adalah...", options: ["Setuju", "Tidak Setuju", "Sesuai", "Benar"], ans: 1 },
+      { q: "Perubahan sila pertama dari Piagam Jakarta menjadi Pancasila bertujuan untuk...", options: ["Menyenangkan pihak Jepang", "Menjaga persatuan bangsa", "Mempercepat proklamasi", "Mengikuti UUD negara lain"], ans: 1 },
+      { q: "Perbedaan bunyi sila pertama menunjukkan bahwa perumusan Pancasila melibatkan proses...", options: ["Otoriter", "Musyawarah dan kompromi politik", "Pemungutan suara ketat", "Intervensi asing"], ans: 1 },
+      { q: "BPUPKI dibentuk oleh pemerintah pendudukan Jepang pada tanggal...", options: ["1 Maret 1945", "29 April 1945", "29 Mei 1945", "7 Agustus 1945"], ans: 1 },
+      { q: "BPUPKI dibubarkan pada tanggal 7 Agustus 1945 karena...", options: ["Tugasnya telah selesai dan digantikan oleh PPKI", "Pemberontakan internal", "Jepang kalah perang", "Dibatalkan oleh Sukarno"], ans: 0 },
+      { q: "BPUPKI mengadakan sidang resmi sebanyak...", options: ["Satu kali", "Dua kali", "Tiga kali", "Empat kali"], ans: 1 },
+      { q: "Kewenangan untuk menetapkan UUD 1945 serta memilih Presiden dan Wakil Presiden dimiliki oleh...", options: ["BPUPKI", "PPKI", "Panitia Sembilan", "KNIP"], ans: 1 },
+      { q: "Pokok pikiran yang disampaikan oleh Muhammad Yamin pada sidang pertama BPUPKI mencakup...", options: ["Perikebangsaan, Perikemanusiaan, Periketohanan", "Persatuan, Kekeluargaan, Keseimbangan", "Mufakat, Demokrasi, Kesejahteraan", "Kebangsaan, Internasionalisme, Keadilan"], ans: 0 },
+      { q: "Salah satu janji Jepang atas kemerdekaan Indonesia adalah dengan membentuk BPUPKI pada tanggal 29 April 1945. Pembentukannya diumumkan pada...", options: ["1 Maret 1945", "28 Maret 1950", "29 April 1945", "27 Mei 1945"], ans: 0 },
+      { q: "Pada sidang pertama BPUPKI tanggal 29 Mei 1945 terutama membahas mengenai...", options: ["Rancangan Undang-Undang Dasar", "Dasar Negara", "Bentuk Negara", "Lambang Negara"], ans: 1 },
+      { q: "Pancasila berfungsi sebagai hal yang memberikan corak khas bangsa Indonesia dan menjadi pembeda dengan bangsa lain. Dalam hal ini Pancasila berfungsi sebagai...", options: ["Dasar Negara", "Pandangan Hidup", "Jati Diri Bangsa", "Filsafat Negara"], ans: 2 },
+      { q: "Setelah sidang pertama BPUPKI, dibentuk Panitia Kecil yang terdiri dari 9 orang yang dikenal sebagai...", options: ["Panitia Tujuh", "Panitia Delapan", "Panitia Sembilan", "Panitia Enam"], ans: 2 },
+      { q: "Dalam praktik penyelenggaraan pemerintahan Negara, kebijakan pemerintah yang sesuai dengan nilai Pancasila Pasal 28A UUD 1945 mengatur bahwa...", options: ["Setiap orang berhak untuk hidup serta berhak mempertahankan hidup dan kehidupannya", "Negara berdasar atas Ketuhanan Yang Maha Esa", "Fakir miskin dipelihara negara", "Pendidikan adalah hak setiap warga negara"], ans: 0 },
+      { q: "Pasal 32 ayat (1) UUD 1945 mengatur tentang...", options: ["Kebudayaan nasional Indonesia", "Bela negara", "Sistem pertahanan", "Pendidikan nasional"], ans: 0 },
+      { q: "Perhatikan pernyataan: 1) Hak warga negara merupakan hak asasi, 2) Hak asasi bersifat universal, 3) Hak asasi berkaitan dengan status kewarganegaraan seseorang. Pernyataan yang benar adalah...", options: ["1 dan 2", "1 dan 3", "2 dan 3", "Semua benar"], ans: 2 },
+      { q: "Contoh hak warga negara dalam aspek politik antara lain...", options: ["Hak dipilih dan memilih serta mendirikan organisasi bermasyarakat", "Hak mengembangkan iptek", "Hak perlindungan hukum", "Hak mendapat pekerjaan"], ans: 0 },
+      { q: "Perilaku masyarakat yang mendahulukan kewajiban baru menuntut hak merupakan cerminan dari...", options: ["Pelaksanaan kewajiban warga negara yang seimbang", "Pelanggaran hak", "Pengabaian hukum", "Penindasan hak asasi"], ans: 0 },
+      { q: "Dasar Negara Indonesia adalah Pancasila, sedangkan Kontitusi Negara Indonesia adalah UUD 1945. Hubungan antara keduanya adalah...", options: ["Pancasila merupakan sumber bagi dasar negara dan UUD 1945 merupakan penjabaran daripadanya", "UUD lebih tinggi dari Pancasila", "Keduanya tidak ada hubungan", "Pancasila bagian dari UUD"], ans: 0 },
+      { q: "Setiap warga negara berhak dan wajib ikut serta dalam Upaya bela Negara. Hal ini termuat dalam UUD 1945 pasal...", options: ["27 ayat 3", "29 ayat 1", "31 ayat 1", "32 ayat 2"], ans: 0 },
+      { q: "Pengguna jalan raya harus menghormati pengguna jalan lain yang memiliki hak sama. Pernyataan tersebut menunjukkan pelaksanaan hak yang sesuai dengan...", options: ["Mengutamakan hak", "Sesuai keinginan pribadi", "Mengutamakan kewajiban dan menghormati hak orang lain", "Bebas tanpa batas"], ans: 2 },
+      { q: "Pengunjuk rasa membakar ban dan melakukan blokade jalan hingga macet. Tindakan tersebut merupakan bentuk...", options: ["Penggunaan hak yang melanggar hukum dan mengganggu hak orang lain", "Upaya membela negara", "Kemerdekaan berpendapat yang mutlak", "Pelaksanaan kewajiban"], ans: 0 },
+      { q: "Pelanggaran terhadap hak warga negara terjadi karena...", options: ["Pengingkaran kewajiban baik oleh pemerintah maupun warga negara", "Tingginya kesadaran hukum", "Toleransi yang kuat", "Tegasnya aparat hukum"], ans: 0 },
+      { q: "Berikut ini yang merupakan contoh pengingkaran kewajiban warga negara adalah...", options: ["Tidak membayar pajak dan melanggar lalu lintas", "Ikut serta ronda malam", "Mengikuti pemilu", "Membayar retribusi"], ans: 0 },
+      { q: "Mengakui persamaan derajat, hak, dan kewajiban antara sesama manusia merupakan implementasi Pancasila khususnya sila...", options: ["Pertama", "Kedua", "Ketiga", "Keempat"], ans: 1 },
+      { q: "Negara berkewajiban memberi jaminan kepada warga negara untuk beribadah sesuai agamanya termuat dalam Pasal...", options: ["27 ayat 1", "28A", "29 ayat 2", "30 ayat 1"], ans: 2 },
+      { q: "Isi dari UUD NRI Tahun 1945 Pasal 1 ayat (3) adalah...", options: ["Indonesia menganut prinsip pembagian kekuasaan", "Negara Indonesia adalah negara hukum", "Lambang negara adalah Burung Garuda", "Presiden memegang kekuasaan pemerintahan"], ans: 1 },
+      { q: "Untuk menilai perbuatan seseorang yang menjunjung tinggi harkat dan martabat manusia dapat dilihat dari...", options: ["Tanggung jawabnya dalam bertindak dan menghormati orang lain", "Kekayaannya", "Jabatan yang dimiliki", "Tingkat pendidikannya saja"], ans: 0 },
+      { q: "Setiap warga negara bersamaan kedudukannya di dalam hukum dan pemerintahan termaktub dalam UUD 1945 pasal...", options: ["27 ayat 1", "27 ayat 3", "28", "30"], ans: 0 },
+      { q: "Salah satu prinsip yang terkandung dalam Pancasila dan UUD 1945 adalah menjunjung tinggi hak asasi manusia. Prinsip tersebut mempunyai makna bahwa...", options: ["Negara menjamin, melindungi, dan mengabdi hak asasi manusia", "Hak asasi boleh dilanggar demi kepentingan tertentu", "Hak asasi hanya untuk warga negara kaya", "Hak asasi bersifat terbatas"], ans: 0 },
+      { q: "Bentuk penyelenggaraan keikutsertaan warga negara dalam upaya pembelaan negara bagi siswa terutama melalui...", options: ["Pendidikan Kewarganegaraan", "Pelatihan militer wajib", "Pengabdian sebagai TNI", "Ikut perang"], ans: 0 },
+      { q: "Rian belum cukup umur (17 tahun) tetapi naik motor ke sekolah tanpa helm. Tindakan Rian merupakan bentuk...", options: ["Pelanggaran aturan lalu lintas dan kewajiban hukum", "Bela negara", "Hak anak muda", "Ketertiban lalu lintas"], ans: 0 },
+      { q: "Pasal dalam UUD 1945 yang mengatur tentang hak warga negara mendapat pendidikan adalah...", options: ["Pasal 31 Ayat (1)", "Pasal 30 Ayat (1)", "Pasal 27 Ayat (2)", "Pasal 33 Ayat (1)"], ans: 0 },
+      { q: "Sidang pertama BPUPKI berlangsung pada tanggal...", options: ["29 Mei - 1 Juni 1945", "10 - 17 Juli 1945", "18 Agustus 1945", "22 Juni 1945"], ans: 0 },
+      { q: "Ketua BPUPKI adalah...", options: ["Dr. K.R.T. Radjiman Wedyodiningrat", "Ir. Soekarno", "Drs. Mohammad Hatta", "Mr. Soepomo"], ans: 0 },
+      { q: "Perubahan kalimat pada sila pertama Piagam Jakarta dilakukan atas usulan para tokoh untuk menjaga persatuan, yang digagas antara lain oleh...", options: ["Drs. Mohammad Hatta setelah menerima aspirasi tokoh Indonesia Timur", "Jepang", "Ir. Soekarno secara memihak", "Sutan Sjahrir"], ans: 0 },
+      { q: "Salah satu contoh pelanggaran hak warga negara oleh negara adalah...", options: ["Penangkapan sewenang-wenang tanpa proses hukum yang sah", "Pembangunan jalan umum", "Pemberian beasiswa pendidikan", "Penyediaan fasilitas kesehatan"], ans: 0 },
+      { q: "Subjek utama yang memiliki kewajiban untuk menjamin hak asasi warga negara menurut konstitusi adalah...", options: ["Pemerintah / Negara", "LSM", "Negara Tetangga", "Perusahaan Swasta"], ans: 0 }
+    ];
+
+    function renderQuiz() {
+      const container = document.getElementById('questions-container');
+      container.innerHTML = '';
+
+      quizData.forEach((data, qIdx) => {
+        const qCard = document.createElement('div');
+        qCard.className = 'bg-white border border-slate-200/80 p-5 rounded-2xl shadow-sm space-y-3';
+        
+        let optionsHTML = '';
+        data.options.forEach((opt, optIdx) => {
+          optionsHTML += `
+            <label id="opt-label-${qIdx}-${optIdx}" class="flex items-center p-3.5 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:bg-emerald-50/80 hover:border-emerald-300 transition text-sm font-medium">
+              <input type="radio" name="q${qIdx}" value="${optIdx}" class="mr-3 accent-emerald-800 w-4 h-4">
+              <span><strong class="text-slate-500 mr-1.5">${String.fromCharCode(65 + optIdx)}.</strong> ${opt}</span>
+            </label>
+          `;
+        });
+
+        qCard.innerHTML = `
+          <p class="font-bold text-slate-900 text-sm sm:text-base leading-relaxed">
+            <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-100 text-emerald-900 font-mono text-xs mr-2">${qIdx + 1}</span> ${data.q}
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+            ${optionsHTML}
+          </div>
+        `;
+        container.appendChild(qCard);
+      });
+    }
+
+    function checkAnswers() {
+      let score = 0;
+
+      quizData.forEach((data, qIdx) => {
+        const selectedOpt = document.querySelector(`input[name="q${qIdx}"]:checked`);
+        const userAns = selectedOpt ? parseInt(selectedOpt.value) : -1;
+
+        // Kunci semua opsi agar tidak bisa diklik lagi setelah diperiksa
+        const allRadios = document.querySelectorAll(`input[name="q${qIdx}"]`);
+        allRadios.forEach(radio => radio.disabled = true);
+
+        data.options.forEach((_, optIdx) => {
+          const label = document.getElementById(`opt-label-${qIdx}-${optIdx}`);
+          label.classList.remove('correct-ans', 'wrong-ans');
+          label.classList.add('cursor-not-allowed');
+        });
+
+        const correctLabel = document.getElementById(`opt-label-${qIdx}-${data.ans}`);
+        correctLabel.classList.add('correct-ans');
+
+        if (userAns === data.ans) {
+          score++;
+        } else if (userAns !== -1) {
+          const wrongLabel = document.getElementById(`opt-label-${qIdx}-${userAns}`);
+          wrongLabel.classList.add('wrong-ans');
+        }
+      });
+
+      const banner = document.getElementById('score-banner');
+      const scoreText = document.getElementById('score-text');
+      banner.classList.remove('hidden');
+      scoreText.innerText = `Skor Anda: ${score} / ${quizData.length} (${Math.round((score/quizData.length)*100)}%)`;
+
+      document.getElementById('kotak-soal').scrollIntoView({ behavior: 'smooth' });
+
+      // Simpan hasil ke database supaya admin bisa lihat nilainya
+      const persenNilai = Math.round((score / quizData.length) * 100);
+      simpanHasilUjian("ppkn", persenNilai, score, quizData.length - score, quizData.length);
+    }
+
+    // ==== SIMPAN HASIL UJIAN KE FIREBASE (biar admin bisa pantau nilai siswa) ====
+    const FIREBASE_URL_HASIL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
+
+    async function simpanHasilUjian(modulId, nilai, benar, salah, totalSoal) {
+      try {
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        if (!currentUser || !currentUser.username) return; // tidak login, tidak disimpan
+
+        const endpoint = FIREBASE_URL_HASIL + "/examResults/" + modulId + "/" + currentUser.username + ".json";
+        await fetch(endpoint, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: currentUser.name,
+            username: currentUser.username,
+            nilai: nilai,
+            benar: benar,
+            salah: salah,
+            totalSoal: totalSoal,
+            waktu: Date.now()
+          })
+        });
+      } catch (err) {
+        console.error("Gagal menyimpan hasil ujian:", err);
+      }
+    }
+
+    // ==== JAGA STATUS "AKTIF" TETAP HIDUP SELAMA DI DALAM MODUL + CEK KICK ADMIN ====
+    (function() {
+      const userSesi = JSON.parse(localStorage.getItem("currentUser"));
+      if (!userSesi || !userSesi.username) return;
+
+      const presenceEndpoint = FIREBASE_URL_HASIL + "/activeUsers/" + userSesi.username + ".json";
+
+      async function heartbeatDanCekKick() {
+        try {
+          const res = await fetch(presenceEndpoint);
+          const myData = await res.json();
+
+          if (myData && myData.kicked === true) {
+            alert("Anda telah dikeluarkan dari sesi oleh Administrator!");
+            await fetch(presenceEndpoint, { method: "DELETE" });
+            localStorage.removeItem("currentUser");
+            window.location.href = "index.html";
+            return;
+          }
+
+          await fetch(presenceEndpoint, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ lastSeen: Date.now() })
+          });
+        } catch (err) {
+          console.error("Gagal memperbarui status aktif:", err);
+        }
+      }
+
+      heartbeatDanCekKick();
+      setInterval(heartbeatDanCekKick, 5000);
+    })();
+
+    function resetQuiz() {
+      document.getElementById('quiz-form').reset();
+      quizData.forEach((data, qIdx) => {
+        const allRadiosList = document.querySelectorAll(`input[name="q${qIdx}"]`);
+        allRadiosList.forEach(radio => radio.disabled = false);
+
+        data.options.forEach((_, optIdx) => {
+          const label = document.getElementById(`opt-label-${qIdx}-${optIdx}`);
+          label.classList.remove('correct-ans', 'wrong-ans', 'cursor-not-allowed');
+        });
+      });
+      document.getElementById('score-banner').classList.add('hidden');
+      document.getElementById('kotak-soal').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    window.onload = function() {
+      renderQuiz();
+    };
+  </script>
+
+</body>
+</html>
