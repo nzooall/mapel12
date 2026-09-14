@@ -309,9 +309,89 @@
       font-weight: bold;
       color: var(--primary);
     }
+
+    /* Modal Pengumuman */
+    .announcement-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(4px);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 9999;
+      opacity: 0; visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .announcement-modal-overlay.active {
+      opacity: 1; visibility: visible;
+    }
+
+    .announcement-card {
+      background: #ffffff;
+      width: 90%; max-width: 500px;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+      overflow: hidden;
+      transform: scale(0.9);
+      transition: all 0.3s ease;
+      border: 1px solid #cbd5e1;
+    }
+
+    .announcement-modal-overlay.active .announcement-card {
+      transform: scale(1);
+    }
+
+    .announcement-header {
+      background: #2563eb;
+      color: #ffffff;
+      padding: 16px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: bold; font-size: 16px;
+    }
+
+    .announcement-body {
+      padding: 20px;
+      color: #334155;
+      font-size: 14.5px;
+      line-height: 1.6;
+      max-height: 350px;
+      overflow-y: auto;
+    }
+
+    .announcement-footer {
+      padding: 12px 20px;
+      background: #f8fafc;
+      border-top: 1px solid #e2e8f0;
+      display: flex; justify-content: flex-end;
+    }
+
+    .announcement-btn {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Modal Pengumuman -->
+  <div id="announcementModal" class="announcement-modal-overlay">
+    <div class="announcement-card">
+      <div class="announcement-header">
+        <span id="announcementTitle">📢 Pengumuman</span>
+      </div>
+      <div class="announcement-body" id="announcementContent">
+        Memuat pengumuman...
+      </div>
+      <div class="announcement-footer">
+        <button class="announcement-btn" onclick="closeAnnouncement()">Saya Mengerti</button>
+      </div>
+    </div>
+  </div>
 
   <div class="container">
     <!-- Top Bar -->
@@ -630,13 +710,33 @@
   </div>
 
   <script>
-    // ==================== SIMPAN HASIL UJIAN KE FIREBASE (biar admin bisa pantau nilai siswa) ====================
     const FIREBASE_URL_HASIL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
+
+    // Fitur Pengumuman Otomatis
+    async function checkAnnouncement() {
+      try {
+        const res = await fetch(FIREBASE_URL_HASIL + "/announcement.json");
+        const data = await res.json();
+        if (data && data.active) {
+          document.getElementById("announcementTitle").innerText = data.title || "📢 Pengumuman";
+          document.getElementById("announcementContent").innerText = data.message || "Tidak ada pesan.";
+          document.getElementById("announcementModal").classList.add("active");
+        }
+      } catch (err) {
+        console.error("Gagal memuat pengumuman:", err);
+      }
+    }
+
+    function closeAnnouncement() {
+      document.getElementById("announcementModal").classList.remove("active");
+    }
+
+    window.addEventListener("DOMContentLoaded", checkAnnouncement);
 
     async function simpanHasilUjian(modulId, nilai, benar, salah, totalSoal) {
       try {
         const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-        if (!currentUser || !currentUser.username) return; // tidak login, tidak disimpan
+        if (!currentUser || !currentUser.username) return;
 
         const endpoint = FIREBASE_URL_HASIL + "/examResults/" + modulId + "/" + currentUser.username + ".json";
         await fetch(endpoint, {
@@ -657,7 +757,6 @@
       }
     }
 
-    // ==================== JAGA STATUS "AKTIF" TETAP HIDUP SELAMA DI DALAM MODUL + CEK KICK ADMIN ====================
     (function () {
       const userSesi = JSON.parse(localStorage.getItem("currentUser"));
       if (!userSesi || !userSesi.username) return;
@@ -691,7 +790,6 @@
       setInterval(heartbeatDanCekKick, 5000);
     })();
 
-    // Data Soal 1-50 Terkoneksi 100% dengan Kisi-Kisi Paket A & B
     const soalPaketA = [
       { id: 1, q: "1. Penulisan alamat surat lamaran pekerjaan yang tepat adalah ...", opt: ["A. Kepada Yth. Bapak Direktur PT Mulia, Jalan Melati No. 4, Jakarta.", "B. Yth. Direktur PT Mulia\nJalan Melati No. 4\nJakarta", "C. Yth. Direktur PT Mulia, Jl. Melati No. 4, Jakarta.", "D. Kepada Direktur PT Mulia, Jalan Melati No. 4, Jakarta", "E. YTH: Direktur PT Mulia Jalan Melati No 4 Jakarta"], ans: 1 },
       { id: 2, q: "2. Berikut ini contoh penulisan bagian surat lamaran yang SALAH adalah ...", opt: ["A. Yth. Kepala HRD PT Sentosa", "B. Dengan hormat,", "C. Hormat saya,", "D. Kepada Yth. Bapak Kepala HRD PT Sentosa.", "E. Jakarta, 12 September 2026"], ans: 3 },
@@ -750,7 +848,6 @@
 
     let userAnswers = {};
 
-    // Render Soal ke HTML
     function renderQuiz(data, containerId) {
       const container = document.getElementById(containerId);
       container.innerHTML = "";
@@ -773,11 +870,9 @@
       });
     }
 
-    // Eksekusi Render
     renderQuiz(soalPaketA, "paketA");
     renderQuiz(soalPaketB, "paketB");
 
-    // Pilih Jawaban
     function selectOption(qId, optIdx) {
       userAnswers[qId] = optIdx;
 
@@ -791,7 +886,6 @@
       if(selectedBtn) selectedBtn.classList.add("selected");
     }
 
-    // Cek Hasil & Munculkan Jawaban Benar Jika Salah
     function checkAnswers() {
       let score = 0;
       let wrongCount = 0;
@@ -833,12 +927,10 @@
 
       document.getElementById("score-text").innerText = `Hasil Skor Total: ${score} / ${allQuestions.length} Terjawab Benar`;
 
-      // Kirim hasil ujian ke Firebase supaya muncul di dashboard admin
       const nilaiAkhir = Math.round((score / allQuestions.length) * 100);
       simpanHasilUjian("bindo", nilaiAkhir, score, wrongCount, allQuestions.length);
     }
 
-    // Reset Jawaban
     function resetQuiz() {
       userAnswers = {};
       document.getElementById("score-text").innerText = "Status: Belum Diperiksa";
@@ -859,7 +951,6 @@
       });
     }
 
-    // Tab Navigation
     function showTab(tabId, element) {
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -868,7 +959,6 @@
       element.classList.add('active');
     }
 
-    // Paket A / B Sub-Navigation
     function switchPaket(paketId, element) {
       document.querySelectorAll('.paket-container').forEach(p => p.style.display = 'none');
       document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
