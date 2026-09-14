@@ -275,6 +275,71 @@
     .score-mid { background: rgba(234, 179, 8, 0.15); color: #facc15; }
     .score-low { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
 
+    /* Modal Pengumuman */
+    .announcement-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(11, 17, 32, 0.85);
+      backdrop-filter: blur(4px);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 9999;
+      opacity: 0; visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .announcement-modal-overlay.active {
+      opacity: 1; visibility: visible;
+    }
+
+    .announcement-card {
+      background: #1e293b;
+      width: 90%; max-width: 500px;
+      border-radius: 16px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      transform: scale(0.9);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .announcement-modal-overlay.active .announcement-card {
+      transform: scale(1);
+    }
+
+    .announcement-header {
+      background: #38bdf8;
+      color: #0f172a;
+      padding: 16px 20px;
+      display: flex; justify-content: space-between; align-items: center;
+      font-weight: 700; font-size: 16px;
+    }
+
+    .announcement-body {
+      padding: 20px;
+      color: #f8fafc;
+      font-size: 14px;
+      line-height: 1.6;
+      max-height: 350px;
+      overflow-y: auto;
+    }
+
+    .announcement-footer {
+      padding: 12px 20px;
+      background: #0f172a;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex; justify-content: flex-end;
+    }
+
+    .announcement-btn {
+      background: #38bdf8;
+      color: #0f172a;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
     @media (max-width: 1024px) {
       .grid-umum, .grid-produktif { grid-template-columns: repeat(2, 1fr); }
     }
@@ -286,6 +351,21 @@
   </style>
 </head>
 <body>
+
+  <!-- Modal Pengumuman -->
+  <div id="announcementModal" class="announcement-modal-overlay">
+    <div class="announcement-card">
+      <div class="announcement-header">
+        <span id="announcementTitle">📢 Pengumuman</span>
+      </div>
+      <div class="announcement-body" id="announcementContent">
+        Memuat pengumuman...
+      </div>
+      <div class="announcement-footer">
+        <button class="announcement-btn" onclick="closeAnnouncement()">Saya Mengerti</button>
+      </div>
+    </div>
+  </div>
 
   <nav class="navbar">
     <div class="navbar-brand">
@@ -426,7 +506,7 @@
         </div>
 
         <div class="card-item general-card" data-id="bing" onclick="openModule(event, 'bing')">
-          <button class="lock-btn" onclick="toggleLock(event, 'bing')"><i class="fa-solid fa-lock-open"></i></button>
+          <button class="lock-btn" onclick="toggleLock(event, 'bing')"><i class="fa-solid fa-globe"></i></button>
           <div class="card-icon"><i class="fa-solid fa-globe"></i></div>
           <div>
             <div class="card-title">B.ING <span class="lock-indicator"></span></div>
@@ -508,6 +588,29 @@
   </div>
 
   <script>
+    const FIREBASE_URL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
+
+    // Fitur Pengumuman Otomatis
+    async function checkAnnouncement() {
+      try {
+        const res = await fetch(FIREBASE_URL + "/announcement.json");
+        const data = await res.json();
+        if (data && data.active) {
+          document.getElementById("announcementTitle").innerText = data.title || "📢 Pengumuman";
+          document.getElementById("announcementContent").innerText = data.message || "Tidak ada pesan.";
+          document.getElementById("announcementModal").classList.add("active");
+        }
+      } catch (err) {
+        console.error("Gagal memuat pengumuman:", err);
+      }
+    }
+
+    function closeAnnouncement() {
+      document.getElementById("announcementModal").classList.remove("active");
+    }
+
+    window.addEventListener("DOMContentLoaded", checkAnnouncement);
+
     const availableModules = {
       "aij": "aij.html",
       "tlj": "tlj.html",
@@ -558,13 +661,11 @@
       }
     }
 
-    const FIREBASE_URL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
     const LOCK_ENDPOINT = FIREBASE_URL + "/lockedModules.json";
     const MAINTENANCE_ENDPOINT = FIREBASE_URL + "/siteConfig/maintenance.json";
 
     let lockedModules = {};
 
-    // Cek Status Maintenance Website
     async function checkSiteMaintenance() {
       try {
         const res = await fetch(MAINTENANCE_ENDPOINT);
@@ -585,7 +686,6 @@
       }
     }
 
-    // Ubah Status Kunci Web oleh Admin
     async function toggleSiteMaintenance(status) {
       if (currentUser.role !== "admin") return;
       try {
