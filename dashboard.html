@@ -734,7 +734,7 @@
     const myUsername = currentUser.username || currentUser.name.toLowerCase();
     const PRESENCE_ENDPOINT = FIREBASE_URL + "/activeUsers/" + myUsername + ".json";
     const ALL_PRESENCE_ENDPOINT = FIREBASE_URL + "/activeUsers.json";
-    const ONLINE_THRESHOLD_MS = 15000; // dianggap online kalau heartbeat < 15 detik terakhir
+    const ONLINE_THRESHOLD_MS = 20000; // dianggap online kalau heartbeat < 20 detik terakhir (buffer 4x dari interval 5 detik)
 
     // Daftarkan diri sebagai "aktif" saat dashboard dibuka (reset flag kicked)
     async function registerPresence() {
