@@ -43,7 +43,7 @@
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
       color: #fff;
     }
-    .login-header { text-align: center; margin-bottom: 32px; }
+    .login-header { text-align: center; margin-bottom: 24px; }
     .login-header .icon-box {
       width: 60px; height: 60px;
       background: linear-gradient(135deg, #6366f1, #a855f7);
@@ -54,6 +54,20 @@
     }
     .login-header h2 { font-size: 24px; font-weight: 700; letter-spacing: 0.5px; }
     .login-header p { font-size: 13px; color: #94a3b8; margin-top: 6px; }
+
+    /* Peringatan Maintenance */
+    .maintenance-alert {
+      display: none;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      text-align: center;
+      line-height: 1.5;
+    }
 
     .input-group { margin-bottom: 20px; }
     .input-group label { display: block; font-size: 13px; font-weight: 500; color: #cbd5e1; margin-bottom: 8px; }
@@ -96,12 +110,18 @@
       <p>Login terlebih dahulu sebelum masuk ke dashboard</p>
     </div>
 
+    <!-- Banner Peringatan Maintenance -->
+    <div id="maintenanceAlert" class="maintenance-alert">
+      <i class="fa-solid fa-triangle-exclamation"></i> <b>Website Sedang Maintenance!</b><br>
+      Akses login hanya diperbolehkan untuk Administrator.
+    </div>
+
     <div id="errorMsg" class="error-msg">Akun tidak terdaftar atau password salah!</div>
 
     <form id="loginForm">
       <div class="input-group">
         <label for="username">Username</label>
-        <small style="color:#ccc;">keterangan: Untuk isi username dibawah, masukkan nama kalian sendiri</small>
+        <small style="color:#ccc;">Keterangan: Masukkan username/nama Anda</small>
         <div class="input-wrapper">
           <i class="fa-solid fa-user"></i>
           <input type="text" id="username" placeholder="Masukkan Username" required autocomplete="off">
@@ -110,7 +130,7 @@
 
       <div class="input-group">
         <label for="password">Password</label>
-        <small style="color:#ccc;">Keterangan: Untuk isi password dibawah ini, masukkan NIS kalian. Contoh: 2412345</small>
+        <small style="color:#ccc;">Keterangan: Masukkan NIS Anda</small>
         <div class="input-wrapper">
           <i class="fa-solid fa-lock"></i>
           <input type="password" id="password" placeholder="Masukkan Password" required>
@@ -123,12 +143,10 @@
     </form>
   </div>
 
-  <!-- Firebase SDK (compat, tidak perlu build tool) -->
   <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
 
   <script>
-    // 1. DILARANG INSPECT ELEMENT / KLIK KANAN / F12
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('keydown', e => {
       if (
@@ -141,11 +159,6 @@
       }
     });
 
-    // ======================================================================
-    // 2. KONFIGURASI FIREBASE
-    // GANTI SEMUA NILAI DI BAWAH INI DENGAN firebaseConfig ASLI DARI
-    // Firebase Console > Project Settings > Your apps (lihat Langkah 1 panduan)
-    // ======================================================================
     const firebaseConfig = {
       apiKey: "AIzaSyC8aotAwiHfV_G23WAIuAjKhP_sXftzNCY",
       authDomain: "mapel12-website.firebaseapp.com",
@@ -158,31 +171,36 @@
 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-
-    // Domain palsu supaya username bisa dipakai sebagai "email" login Firebase
     const EMAIL_DOMAIN = "@mapel12.app";
 
-    // Coba ulang otomatis kalau gagal karena koneksi (bukan karena password salah),
-    // supaya lag sesaat pas banyak orang login bareng tidak langsung dianggap error.
-    async function fetchWithRetry(url, options, maxRetry = 2) {
-      let lastErr;
-      for (let i = 0; i <= maxRetry; i++) {
-        try {
-          const res = await fetch(url, options);
-          return res;
-        } catch (err) {
-          lastErr = err;
-          if (i < maxRetry) await new Promise(r => setTimeout(r, 600 * (i + 1)));
-        }
-      }
-      throw lastErr;
-    }
-
-    // 3. PROSES LOGIN
     const loginForm = document.getElementById("loginForm");
     const btnSubmit = document.getElementById("btnSubmit");
     const errorMsg = document.getElementById("errorMsg");
+    const maintenanceAlert = document.getElementById("maintenanceAlert");
 
+    let isMaintenance = false;
+
+    // Cek status maintenance dari Firebase
+    async function checkMaintenanceStatus() {
+      try {
+        const res = await fetch(firebaseConfig.databaseURL + "/siteConfig/maintenance.json");
+        const data = await res.json();
+        isMaintenance = data === true;
+        
+        if (isMaintenance) {
+          maintenanceAlert.style.display = "block";
+        } else {
+          maintenanceAlert.style.display = "none";
+        }
+      } catch (err) {
+        console.error("Gagal memeriksa status maintenance:", err);
+      }
+    }
+
+    checkMaintenanceStatus();
+    setInterval(checkMaintenanceStatus, 5000);
+
+    // Proses Login
     loginForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
@@ -193,54 +211,27 @@
       btnSubmit.disabled = true;
       btnSubmit.innerText = "Memproses...";
 
-      // Coba sign-in sampai 2x kalau gagal karena jaringan (bukan karena kredensial salah)
-      let signInSukses = false;
-      let authError = null;
-
-      for (let percobaan = 0; percobaan <= 2 && !signInSukses; percobaan++) {
-        try {
-          await auth.signInWithEmailAndPassword(userVal + EMAIL_DOMAIN, passVal);
-          signInSukses = true;
-        } catch (err) {
-          authError = err;
-          // auth/network-request-failed = masalah koneksi, layak dicoba ulang.
-          // Selain itu (password salah, akun tidak ada, terlalu banyak percobaan) tidak perlu diulang.
-          if (err.code !== "auth/network-request-failed" || percobaan === 2) break;
-          await new Promise(r => setTimeout(r, 700 * (percobaan + 1)));
-        }
-      }
-
-      if (!signInSukses) {
-        errorMsg.style.display = "block";
-        if (authError && authError.code === "auth/too-many-requests") {
-          errorMsg.innerText = "Terlalu banyak percobaan login gagal pada akun ini. Tunggu beberapa menit lalu coba lagi (bukan error sistem, ini proteksi keamanan otomatis).";
-        } else if (authError && authError.code === "auth/network-request-failed") {
-          errorMsg.innerText = "Koneksi internet sedang lambat/terputus. Periksa jaringan lalu coba lagi.";
-        } else if (authError && (authError.code === "auth/user-not-found" || authError.code === "auth/wrong-password" || authError.code === "auth/invalid-credential")) {
-          errorMsg.innerText = "Akun tidak terdaftar atau password salah!";
-        } else {
-          errorMsg.innerText = "Gagal login. Coba lagi dalam beberapa saat.";
-        }
-        btnSubmit.disabled = false;
-        btnSubmit.innerHTML = 'Masuk <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>';
-        return;
-      }
-
-      // Sign-in berhasil, sekarang ambil profil (nama & role) dengan retry juga
       try {
-        const res = await fetchWithRetry(firebaseConfig.databaseURL + "/userProfiles/" + userVal + ".json", {}, 2);
+        await auth.signInWithEmailAndPassword(userVal + EMAIL_DOMAIN, passVal);
+
+        const res = await fetch(firebaseConfig.databaseURL + "/userProfiles/" + userVal + ".json");
         const profile = await res.json();
 
         if (!profile) {
           errorMsg.style.display = "block";
-          errorMsg.innerText = "Akun ditemukan tapi profil belum diatur admin. Hubungi admin.";
+          errorMsg.innerText = "Akun ditemukan tetapi profil belum diatur Admin.";
           await auth.signOut();
-          btnSubmit.disabled = false;
-          btnSubmit.innerHTML = 'Masuk <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>';
           return;
         }
 
-        // Simpan sesi ke localStorage, sama seperti sebelumnya
+        // Kunci jika maintenance dan bukan admin
+        if (isMaintenance && profile.role !== "admin") {
+          errorMsg.style.display = "block";
+          errorMsg.innerText = "Akses ditolak: Website sedang dikunci/maintenance oleh Admin!";
+          await auth.signOut();
+          return;
+        }
+
         localStorage.setItem("currentUser", JSON.stringify({
           username: userVal,
           name: profile.name,
@@ -251,12 +242,12 @@
       } catch (err) {
         console.error(err);
         errorMsg.style.display = "block";
-        errorMsg.innerText = "Login berhasil, tapi gagal mengambil data profil (koneksi lambat). Coba klik Masuk sekali lagi.";
+        errorMsg.innerText = "Akun tidak terdaftar atau password salah!";
+      } finally {
         btnSubmit.disabled = false;
         btnSubmit.innerHTML = 'Masuk <i class="fa-solid fa-arrow-right" style="margin-left: 8px;"></i>';
       }
     });
   </script>
-
 </body>
 </html>
