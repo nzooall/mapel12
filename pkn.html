@@ -191,14 +191,14 @@
         </h3>
         <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-3">
           <p class="text-sm text-slate-700 leading-relaxed">
-            Pada tanggal <strong>22 Juni 1945</strong>, Panitia Sembilan menghasilkan dokumen historis yang dikenal sebagai <strong>Piagam Jakarta (Jakarta Charter)</strong>.
+            Pada tanggal <strong>22 Juni 1945</strong>, Panitia Sembilan berhasil merumuskan naskah historis yang dikenal sebagai <strong>Piagam Jakarta (Jakarta Charter)</strong>.
           </p>
           <div class="bg-white p-4 rounded-xl border border-slate-200 text-sm">
             <p class="font-bold text-emerald-900 mb-1">Rumusan Sila Pertama Piagam Jakarta:</p>
             <p class="italic text-slate-700">"Ketuhanan dengan kewajiban menjalankan syariat Islam bagi pemeluk-pemeluknya."</p>
           </div>
           <p class="text-sm text-slate-700 leading-relaxed">
-            Demi menjaga <strong>persatuan dan kesatuan bangsa</strong> Indonesia yang beraneka ragam, rumusan tersebut diubah pada 18 Agustus 1945 melalui proses musyawarah dan kompromi politik menjadi: <strong>"Ketuhanan Yang Maha Esa"</strong>.
+            Demi menjaga <strong>persatuan dan kesatuan bangsa</strong> Indonesia yang heterogen, rumusan tersebut disepakati untuk diubah pada 18 Agustus 1945 melalui musyawarah kompromi politik menjadi: <strong>"Ketuhanan Yang Maha Esa"</strong>.
           </p>
         </div>
       </div>
@@ -268,7 +268,6 @@
           <!-- Soal di-render oleh JavaScript -->
         </div>
 
-        <!-- Tombol Aksi di Paling Bawah -->
         <div class="pt-8 border-t border-slate-200 flex flex-col sm:flex-row justify-center gap-4">
           <button type="button" id="btn-cek-hasil" onclick="checkAnswers()" class="w-full sm:w-auto px-8 py-3.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold rounded-2xl shadow-lg shadow-emerald-600/30 transition flex items-center justify-center gap-2">
             <i class="fa-solid fa-circle-check"></i> Cek Hasil Simulasi Ujian
@@ -285,26 +284,39 @@
   <script>
     const FIREBASE_URL_ANNOUNCEMENT = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
 
-    // Fitur Pengumuman Otomatis
-    async function checkAnnouncement() {
-      try {
-        const res = await fetch(FIREBASE_URL_ANNOUNCEMENT + "/announcement.json");
-        const data = await res.json();
-        if (data && data.active) {
-          document.getElementById("announcementTitle").innerText = data.title || "📢 Pengumuman";
-          document.getElementById("announcementContent").innerText = data.message || "Tidak ada pesan.";
-          document.getElementById("announcementModal").classList.add("active");
+    // Fitur Realtime Stream Pengumuman (Tampil Instan Tanpa Refresh)
+    function listenAnnouncementRealtime() {
+      const eventSource = new EventSource(FIREBASE_URL_ANNOUNCEMENT + "/announcement.json");
+
+      eventSource.onmessage = function(event) {
+        if (!event.data) return;
+
+        try {
+          const parsed = JSON.parse(event.data);
+          const data = parsed.data !== undefined ? parsed.data : parsed;
+
+          if (data && data.active) {
+            document.getElementById("announcementTitle").innerText = data.title || "📢 Pengumuman";
+            document.getElementById("announcementContent").innerText = data.message || "Tidak ada pesan.";
+            document.getElementById("announcementModal").classList.add("active");
+          } else {
+            closeAnnouncement();
+          }
+        } catch (err) {
+          console.error("Error parsing realtime announcement:", err);
         }
-      } catch (err) {
-        console.error("Gagal memuat pengumuman:", err);
-      }
+      };
+
+      eventSource.onerror = function(err) {
+        console.error("Koneksi Realtime terputus, merebut kembali koneksi...", err);
+      };
     }
 
     function closeAnnouncement() {
       document.getElementById("announcementModal").classList.remove("active");
     }
 
-    window.addEventListener("DOMContentLoaded", checkAnnouncement);
+    window.addEventListener("DOMContentLoaded", listenAnnouncementRealtime);
 
     function switchTab(tab) {
       const materi = document.getElementById('kotak-materi');
@@ -405,7 +417,6 @@
         const selectedOpt = document.querySelector(`input[name="q${qIdx}"]:checked`);
         const userAns = selectedOpt ? parseInt(selectedOpt.value) : -1;
 
-        // Kunci semua opsi agar tidak bisa diklik lagi setelah diperiksa
         const allRadios = document.querySelectorAll(`input[name="q${qIdx}"]`);
         allRadios.forEach(radio => radio.disabled = true);
 
@@ -433,18 +444,16 @@
 
       document.getElementById('kotak-soal').scrollIntoView({ behavior: 'smooth' });
 
-      // Simpan hasil ke database supaya admin bisa lihat nilainya
       const persenNilai = Math.round((score / quizData.length) * 100);
       simpanHasilUjian("pkn", persenNilai, score, quizData.length - score, quizData.length);
     }
 
-    // ==== SIMPAN HASIL UJIAN KE FIREBASE (biar admin bisa pantau nilai siswa) ====
     const FIREBASE_URL_HASIL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
 
     async function simpanHasilUjian(modulId, nilai, benar, salah, totalSoal) {
       try {
         const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-        if (!currentUser || !currentUser.username) return; // tidak login, tidak disimpan
+        if (!currentUser || !currentUser.username) return;
 
         const endpoint = FIREBASE_URL_HASIL + "/examResults/" + modulId + "/" + currentUser.username + ".json";
         await fetch(endpoint, {
@@ -465,7 +474,6 @@
       }
     }
 
-    // ==== JAGA STATUS "AKTIF" TETAP HIDUP SELAMA DI DALAM MODUL + CEK KICK ADMIN ====
     (function() {
       const userSesi = JSON.parse(localStorage.getItem("currentUser"));
       if (!userSesi || !userSesi.username) return;
