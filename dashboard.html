@@ -122,6 +122,81 @@
       flex: 1;
     }
 
+    /* FITUR ADMIN PANEL UNTUK ISI PENGUMUMAN */
+    .announcement-admin-box {
+      display: none;
+      background: #1e293b;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+    }
+
+    .announcement-admin-title {
+      color: #38bdf8;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .announcement-admin-form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .announcement-admin-form input, 
+    .announcement-admin-form textarea {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 13px;
+    }
+
+    .announcement-admin-form textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    .announcement-admin-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: #cbd5e1;
+      cursor: pointer;
+    }
+
+    .btn-publish-announcement {
+      background: #38bdf8;
+      color: #0f172a;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-publish-announcement:hover {
+      background: #0284c7;
+      color: #fff;
+    }
+
     .role-banner {
       padding: 14px 20px;
       border-radius: 12px;
@@ -394,6 +469,28 @@
   </nav>
 
   <div class="container">
+    
+    <!-- KOTAK EDIT PENGUMUMAN (KHUSUS ADMIN) -->
+    <div id="announcementAdminBox" class="announcement-admin-box">
+      <div class="announcement-admin-title">
+        <i class="fa-solid fa-bullhorn"></i>
+        <span>Pengaturan Pengumuman (Admin)</span>
+      </div>
+      <div class="announcement-admin-form">
+        <input type="text" id="adminAnnTitle" placeholder="Judul Pengumuman (Misal: 📢 Informasi Ujian)">
+        <textarea id="adminAnnMessage" placeholder="Tuliskan pesan/isi pengumuman di sini..."></textarea>
+        <div class="announcement-admin-actions">
+          <label class="checkbox-label">
+            <input type="checkbox" id="adminAnnActive" checked>
+            <span>Tampilkan Pop-up Pengumuman ke Siswa</span>
+          </label>
+          <button class="btn-publish-announcement" onclick="saveAnnouncement()">
+            <i class="fa-solid fa-paper-plane"></i> Simpan & Kirim
+          </button>
+        </div>
+      </div>
+    </div>
+
     <div id="roleBanner" class="role-banner"></div>
 
     <div id="activeUsersPanel" class="active-users-panel" style="display:none;">
@@ -589,12 +686,22 @@
 
   <script>
     const FIREBASE_URL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
+    const ANNOUNCEMENT_ENDPOINT = FIREBASE_URL + "/announcement.json";
 
     // Fitur Pengumuman Otomatis
     async function checkAnnouncement() {
       try {
-        const res = await fetch(FIREBASE_URL + "/announcement.json");
+        const res = await fetch(ANNOUNCEMENT_ENDPOINT);
         const data = await res.json();
+        
+        // Isi form editor khusus admin jika sedang login sebagai admin
+        if (currentUser.role === "admin" && data) {
+          if (document.getElementById("adminAnnTitle")) document.getElementById("adminAnnTitle").value = data.title || "";
+          if (document.getElementById("adminAnnMessage")) document.getElementById("adminAnnMessage").value = data.message || "";
+          if (document.getElementById("adminAnnActive")) document.getElementById("adminAnnActive").checked = (data.active === true);
+        }
+
+        // Tampilkan modal jika aktif
         if (data && data.active) {
           document.getElementById("announcementTitle").innerText = data.title || "📢 Pengumuman";
           document.getElementById("announcementContent").innerText = data.message || "Tidak ada pesan.";
@@ -602,6 +709,34 @@
         }
       } catch (err) {
         console.error("Gagal memuat pengumuman:", err);
+      }
+    }
+
+    // Simpan Pengumuman ke Firebase (Khusus Admin)
+    async function saveAnnouncement() {
+      if (currentUser.role !== "admin") return;
+      
+      const title = document.getElementById("adminAnnTitle").value;
+      const message = document.getElementById("adminAnnMessage").value;
+      const active = document.getElementById("adminAnnActive").checked;
+
+      const payload = {
+        title: title || "📢 Pengumuman",
+        message: message || "",
+        active: active
+      };
+
+      try {
+        await fetch(ANNOUNCEMENT_ENDPOINT, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        alert("Pengumuman berhasil diperbarui di server!");
+        checkAnnouncement();
+      } catch (err) {
+        console.error("Gagal menyimpan pengumuman:", err);
+        alert("Gagal memperbarui pengumuman. Periksa koneksi internet!");
       }
     }
 
@@ -639,6 +774,7 @@
     const roleBanner = document.getElementById("roleBanner");
     const maintenanceCtrl = document.getElementById("maintenanceCtrl");
     const maintenanceToggle = document.getElementById("maintenanceToggle");
+    const announcementAdminBox = document.getElementById("announcementAdminBox");
 
     if (currentUser.role === "admin") {
       if (userBadge) userBadge.className = "user-badge badge-admin";
@@ -650,6 +786,7 @@
         roleBanner.innerHTML = `<i class="fa-solid fa-user-shield"></i> Anda masuk sebagai <b>Admin</b>. Gunakan sakelar di atas untuk mengunci website, atau klik gembok untuk mengunci modul spesifik.`;
       }
       if (maintenanceCtrl) maintenanceCtrl.style.display = "flex";
+      if (announcementAdminBox) announcementAdminBox.style.display = "block";
     } else {
       if (userBadge) userBadge.className = "user-badge badge-user";
       if (userIcon) userIcon.className = "fa-solid fa-user";
@@ -659,6 +796,7 @@
         roleBanner.className = "role-banner banner-user";
         roleBanner.innerHTML = `<i class="fa-solid fa-circle-info"></i> Selamat Datang, <b>${currentUser.name}</b>! Silakan pilih modul pelajaran di bawah ini.`;
       }
+      if (announcementAdminBox) announcementAdminBox.style.display = "none";
     }
 
     const LOCK_ENDPOINT = FIREBASE_URL + "/lockedModules.json";
