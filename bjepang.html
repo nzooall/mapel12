@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pembelajaran Bahasa Jepang - Bab 21 & 22</title>
+    <title>Modul Bahasa Jepang - Bab 21, 22 & Hiragana</title>
     
     <!-- Firebase SDK v8 -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -26,86 +26,215 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; padding: 20px; }
-        .container { max-width: 1000px; margin: 0 auto; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); }
-        header { text-align: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 3px solid var(--primary); }
-        header h1 { color: var(--primary); font-size: 1.8rem; margin-bottom: 5px; }
         
-        .login-box { max-width: 400px; margin: 50px auto; padding: 25px; background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .login-box input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; }
-        .login-box button { width: 100%; padding: 10px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        /* Container dibuat melayang dengan radius & shadow persis seperti di gambar */
+        .container { 
+            max-width: 950px; 
+            margin: 20px auto; 
+            background: var(--card-bg); 
+            padding: 35px; 
+            border-radius: 16px; 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); 
+        }
 
-        .nav-tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
-        .tab-btn { flex: 1; padding: 12px; border: none; background-color: #e2e8f0; color: var(--secondary); font-size: 1rem; font-weight: 600; cursor: pointer; border-radius: 8px; transition: all 0.3s ease; }
-        .tab-btn.active { background-color: var(--primary); color: #ffffff; }
+        /* Top Auth Bar (Input Nama/Password Sederhana di Atas Container) */
+        .auth-bar {
+            max-width: 950px;
+            margin: 0 auto 10px auto;
+            display: flex;
+            gap: 5px;
+        }
+        .auth-bar input { padding: 4px 8px; border: 1px solid #ccc; border-radius: 3px; font-size: 0.9rem; }
+        .auth-bar button { padding: 4px 10px; background: #e2e8f0; border: 1px solid #cbd5e1; border-radius: 3px; cursor: pointer; }
+
+        /* Header Style Mirip Gambar */
+        header { text-align: center; margin-bottom: 30px; position: relative; }
+        .header-title-container { display: flex; align-items: center; justify-content: center; gap: 8px; }
+        header h1 { color: var(--primary); font-size: 2rem; font-weight: 700; }
+        header p { color: #64748b; font-size: 1rem; margin-top: 6px; }
+        
+        .btn-logout { 
+            position: absolute; 
+            right: 0; 
+            top: 10px; 
+            background-color: #dc2626; 
+            color: white; 
+            border: none; 
+            padding: 6px 14px; 
+            border-radius: 6px; 
+            font-weight: 600; 
+            cursor: pointer; 
+        }
+
+        .divider { border: 0; height: 2px; background-color: var(--primary); margin: 20px 0 25px 0; }
+
+        /* Nav Tab Pill Style */
+        .nav-tabs { display: flex; gap: 15px; margin-bottom: 25px; }
+        .tab-btn { 
+            flex: 1; 
+            padding: 14px; 
+            border: none; 
+            background-color: #e2e8f0; 
+            color: var(--secondary); 
+            font-size: 1rem; 
+            font-weight: 600; 
+            cursor: pointer; 
+            border-radius: 10px; 
+            transition: all 0.2s ease; 
+        }
+        .tab-btn.active { background-color: #1e40af; color: #ffffff; }
+
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        h2 { color: var(--primary); background: #eff6ff; padding: 10px 15px; border-left: 5px solid var(--primary); border-radius: 4px; margin: 25px 0 15px 0; font-size: 1.3rem; }
+        h2 { color: var(--primary); background: #eff6ff; padding: 10px 15px; border-left: 5px solid var(--primary); border-radius: 4px; margin: 25px 0 15px 0; font-size: 1.2rem; }
+        
+        /* Table Styling */
         table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        th, td { border: 1px solid var(--border-color); padding: 10px; text-align: left; }
-        th { background-color: var(--primary); color: white; }
+        th, td { border: 1px solid var(--border-color); padding: 10px 12px; text-align: left; }
+        th { background-color: #f8fafc; color: var(--secondary); font-weight: 600; }
+        .kana-char { font-size: 1.3rem; font-weight: bold; color: var(--primary); text-align: center; }
 
-        .question-card { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 18px; margin-bottom: 15px; }
+        /* Question Cards */
+        .question-card { background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; padding: 18px; margin-bottom: 15px; }
         .question-text { font-weight: 600; color: var(--secondary); margin-bottom: 12px; }
         .options { list-style: none; }
         .options li { margin-bottom: 8px; }
-        .options label { display: block; padding: 10px; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; }
+        .options label { display: block; padding: 10px; background: #f8fafc; border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; }
         .options label.correct-opt { background-color: var(--correct-bg) !important; border-color: var(--correct-border) !important; color: #14532d; font-weight: bold; }
         .options label.wrong-opt { background-color: var(--wrong-bg) !important; border-color: var(--wrong-border) !important; color: #7f1d1d; font-weight: bold; }
         .answer-key { display: none; background-color: #dcfce7; border: 1px solid #86efac; color: #166534; padding: 10px; border-radius: 6px; margin-top: 10px; font-weight: bold; }
 
-        .btn-submit { width: 100%; padding: 14px; background-color: #16a34a; color: white; border: none; border-radius: 8px; font-size: 1.05rem; font-weight: bold; cursor: pointer; }
+        .btn-submit { width: 100%; padding: 14px; background-color: #16a34a; color: white; border: none; border-radius: 8px; font-size: 1.05rem; font-weight: bold; cursor: pointer; margin-top: 15px; }
         .result-box { display: none; background: #eff6ff; border: 2px solid var(--primary-light); border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 25px; }
     </style>
 </head>
 <body>
 
-<!-- FORM LOGIN -->
-<div id="login-section" class="login-box">
-    <h2 style="text-align: center; margin-top:0;">Login Siswa</h2>
-    <input type="text" id="username" placeholder="Masukkan Nama/NISN">
-    <button onclick="loginUser()">Masuk Jaringan</button>
+<!-- Bar Login di Luar Main Card (Sesuai Referensi Gambar) -->
+<div class="auth-bar" id="login-bar">
+    <input type="text" id="username" placeholder="Nama / User ID">
+    <button onclick="loginUser()">Masuk</button>
 </div>
 
-<!-- KONTEN UTAMA MODUL -->
-<div id="app-section" class="container" style="display: none;">
+<div class="container">
     <header>
-        <h1 id="user-display">🌸 Modul Bahasa Jepang Bab 21 & 22</h1>
+        <button class="btn-logout" id="btn-logout" onclick="logoutUser()" style="display: none;">Keluar</button>
+        <div class="header-title-container">
+            <span style="font-size: 1.8rem;">🌸</span>
+            <h1 id="header-user">Modul Bahasa Jepang</h1>
+        </div>
         <p>Keberadaan Benda di Rumah & Deskripsi Kamar (Uchi ni terebi ga arimasu ka / Maria-san no heya)</p>
-        <button onclick="logoutUser()" style="float: right; margin-top: -30px; background:#dc2626; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Keluar</button>
     </header>
 
+    <hr class="divider">
+
     <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('rangkuman')">📘 Rangkuman Materi</button>
-        <button class="tab-btn" onclick="switchTab('kuis')">📝 Simulasi 35 Soal</button>
+        <button class="tab-btn active" onclick="switchTab('rangkuman')">📘 Bagian 1: Rangkuman Materi</button>
+        <button class="tab-btn" onclick="switchTab('kuis')">📝 Bagian 2: Simulasi Soal</button>
     </div>
 
-    <!-- BAGIAN 1: RANGKUMAN MATERI -->
+    <!-- RANGKUMAN MATERI LENGKAP -->
     <div id="rangkuman" class="tab-content active">
-        <h2>🏠 Bab 21: Uchi ni Terebi ga Arimasu ka (うちにテレビがありますか)</h2>
+        
+        <h2>🈤 Materi 1: Huruf Hiragana Dasar (A - SO)</h2>
+        <p style="margin-bottom: 10px;">Berikut adalah 15 huruf dasar Hiragana yang wajib dihafalkan pada tahap awal pembelajaran Bahasa Jepang:</p>
+        
         <table>
-            <thead><tr><th>Kosakata Ruangan</th><th>Bahasa Jepang</th><th>Kosakata Perabot/Elektronik</th><th>Bahasa Jepang</th></tr></thead>
+            <thead>
+                <tr>
+                    <th style="text-align: center;">Baris</th>
+                    <th style="text-align: center;">Kana</th>
+                    <th style="text-align: center;">Romaji</th>
+                    <th style="text-align: center;">Kana</th>
+                    <th style="text-align: center;">Romaji</th>
+                    <th style="text-align: center;">Kana</th>
+                    <th style="text-align: center;">Romaji</th>
+                    <th style="text-align: center;">Kana</th>
+                    <th style="text-align: center;">Romaji</th>
+                    <th style="text-align: center;">Kana</th>
+                    <th style="text-align: center;">Romaji</th>
+                </tr>
+            </thead>
             <tbody>
-                <tr><td>Rumah</td><td>Uchi (うち)</td><td>Televisi / Komputer</td><td>Terebi / Konpyuutaa</td></tr>
-                <tr><td>Dapur</td><td>Daidokoro (だいどころ)</td><td>AC / Radio Kaset</td><td>Eakon / Rajikase</td></tr>
-                <tr><td>Ruang Tamu</td><td>Ima (いま)</td><td>Kulkas / Kipas Angin</td><td>Reizouko / Senpuuki</td></tr>
-                <tr><td>Kamar</td><td>Heya (へや)</td><td>Telepon / Rak Buku</td><td>Denwa / Hondana</td></tr>
-                <tr><td>Meja Belajar / Meja Makan</td><td>Tsukue / Teeburu</td><td>Sofa / Kasur</td><td>Sofa / Beddo</td></tr>
+                <tr>
+                    <td><b>Vokal (A)</b></td>
+                    <td class="kana-char">あ</td><td>a</td>
+                    <td class="kana-char">い</td><td>i</td>
+                    <td class="kana-char">う</td><td>u</td>
+                    <td class="kana-char">え</td><td>e</td>
+                    <td class="kana-char">お</td><td>o</td>
+                </tr>
+                <tr>
+                    <td><b>Baris K</b></td>
+                    <td class="kana-char">か</td><td>ka</td>
+                    <td class="kana-char">き</td><td>ki</td>
+                    <td class="kana-char">く</td><td>ku</td>
+                    <td class="kana-char">け</td><td>ke</td>
+                    <td class="kana-char">こ</td><td>ko</td>
+                </tr>
+                <tr>
+                    <td><b>Baris S</b></td>
+                    <td class="kana-char">さ</td><td>sa</td>
+                    <td class="kana-char">し</td><td>shi</td>
+                    <td class="kana-char">す</td><td>su</td>
+                    <td class="kana-char">せ</td><td>se</td>
+                    <td class="kana-char">そ</td><td>so</td>
+                </tr>
             </tbody>
         </table>
 
-        <h2>✨ Bab 22: Maria-san no Heya (マリアさんのへや)</h2>
-        <p><b>Kata Sifat Antonym (Berlawanan):</b></p>
+        <h2>🏠 Materi 2: Bab 21 — Uchi ni Terebi ga Arimasu ka (うちにテレビがありますか)</h2>
+        <p><b>A. Kosakata Ruangan & Perabot:</b></p>
+        <table>
+            <thead><tr><th>Kategori</th><th>Bahasa Jepang (Romaji)</th><th>Hiragana / Katakana</th><th>Bahasa Indonesia</th></tr></thead>
+            <tbody>
+                <tr><td rowspan="4"><b>Ruangan</b></td><td>Uchi</td><td>うち</td><td>Rumah</td></tr>
+                <tr><td>Heya</td><td>へや</td><td>Kamar</td></tr>
+                <tr><td>Ima</td><td>いま</td><td>Ruang Tamu</td></tr>
+                <tr><td>Daidokoro</td><td>だいどころ</td><td>Dapur</td></tr>
+                <tr><td rowspan="6"><b>Perabot & Elektronik</b></td><td>Terebi</td><td>テレビ</td><td>Televisi</td></tr>
+                <tr><td>Reizouko</td><td>れいぞうこ</td><td>Kulkas</td></tr>
+                <tr><td>Senpuuki</td><td>せんぷうき</td><td>Kipas Angin</td></tr>
+                <tr><td>Denwa</td><td>でんわ</td><td>Telepon</td></tr>
+                <tr><td>Hondana</td><td>ほんだな</td><td>Rak Buku</td></tr>
+                <tr><td>Beddo</td><td>ベッド</td><td>Kasur / Tempat Tidur</td></tr>
+            </tbody>
+        </table>
+
+        <p><b>B. Tata Bahasa (Grammar):</b></p>
         <ul>
-            <li><b>Ookii (Besar)</b> ↔ <b>Chiisai (Kecil)</b></li>
-            <li><b>Hiroi (Luas)</b> ↔ <b>Semai (Sempit)</b></li>
-            <li><b>Akarui (Terang)</b> ↔ <b>Kurai (Gelap)</b></li>
-            <li><b>Kirei (Bersih/Indah)</b> ↔ <b>Kitanai (Kotor)</b></li>
-            <li><b>Atarashii (Baru)</b> ↔ <b>Furui (Lama/Tua)</b></li>
+            <li><b>Pola Keberadaan Benda Mati:</b> <code>[Tempat] ni [Benda] ga arimasu.</code><br><i>Contoh:</i> Heya ni terebi ga arimasu. (Di kamar ada televisi).</li>
+            <li><b>Pertanyaan & Jawaban:</b><br>
+                Q: <code>Uchi ni reizouko ga arimasu ka.</code> (Apakah di rumah ada kulkas?)<br>
+                A (+): <code>Hai, arimasu.</code> (Ya, ada)<br>
+                A (-): <code>Iie, arimasen.</code> (Tidak, tidak ada)
+            </li>
+            <li><b>Partikel Penyambung Benda:</b> <code>to</code> (dan)<br><i>Contoh:</i> Beddo to hondana ga arimasu. (Ada kasur dan rak buku).</li>
+        </ul>
+
+        <h2>✨ Materi 3: Bab 22 — Maria-san no Heya (マリアさんのへや)</h2>
+        <p><b>A. Kata Sifat & Antonym (Lawan Kata):</b></p>
+        <table>
+            <thead><tr><th>Kata Sifat A</th><th>Artinya</th><th>Lawan Kata (Antonym)</th><th>Artinya</th></tr></thead>
+            <tbody>
+                <tr><td>Ookii (大きい)</td><td>Besar</td><td>Chiisai (小さい)</td><td>Kecil</td></tr>
+                <tr><td>Hiroi (広い)</td><td>Luas</td><td>Semai (狭い)</td><td>Sempit</td></tr>
+                <tr><td>Akarui (明るい)</td><td>Terang</td><td>Kurai (暗い)</td><td>Gelap</td></tr>
+                <tr><td>Kirei (きれい)</td><td>Bersih / Indah</td><td>Kitanai (汚い)</td><td>Kotor</td></tr>
+                <tr><td>Atarashii (新しい)</td><td>Baru</td><td>Furui (古い)</td><td>Lama / Tua</td></tr>
+            </tbody>
+        </table>
+
+        <p><b>B. Posisi Benda (Ue & Shita):</b></p>
+        <ul>
+            <li><b>Ue (上):</b> Atas</li>
+            <li><b>Shita (下):</b> Bawah</li>
+            <li><i>Pola:</i> <code>[Benda A] no [Posisi] ni [Benda B] ga arimasu.</code><br><i>Contoh:</i> Tsukue no ue ni konpyuutaa ga arimasu. (Di atas meja ada komputer).</li>
         </ul>
     </div>
 
-    <!-- BAGIAN 2: SIMULASI SOAL -->
+    <!-- KUIS SIMULASI -->
     <div id="kuis" class="tab-content">
         <div id="result-box" class="result-box">
             <h3 id="final-score">Nilai: 0 / 100</h3>
@@ -120,7 +249,7 @@
 </div>
 
 <script>
-    // 1. FIREBASE CONFIGURATION
+    // Config Firebase Realtime Database
     const firebaseConfig = {
         databaseURL: "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app"
     };
@@ -130,14 +259,12 @@
     let currentUser = null;
     let heartbeatInterval = null;
 
-    // 2. SISTEM LOGIN & PRESENSI ONLINE
     function loginUser() {
         const userIn = document.getElementById("username").value.trim();
         if (!userIn) return alert("Masukkan nama terlebih dahulu!");
 
         currentUser = { username: userIn };
         localStorage.setItem("currentUser", JSON.stringify(currentUser));
-        
         startApp();
     }
 
@@ -146,29 +273,22 @@
         if (saved) currentUser = JSON.parse(saved);
         if (!currentUser) return;
 
-        document.getElementById("login-section").style.display = "none";
-        document.getElementById("app-section").style.display = "block";
-        document.getElementById("user-display").innerText = "🌸 Halo, " + currentUser.username;
+        document.getElementById("login-bar").style.display = "none";
+        document.getElementById("btn-logout").style.display = "block";
+        document.getElementById("header-user").innerText = "Halo, " + currentUser.username;
 
-        // Bikin status online di Realtime Database
         const presenceRef = db.ref("activeUsers/" + currentUser.username);
-        
-        // Hapus otomatis jika browser ditutup/offline (onDisconnect)
         presenceRef.onDisconnect().remove();
-
-        // Heartbeat memperbarui timestamp & cek jika di-kick
         presenceRef.set({ username: currentUser.username, lastSeen: Date.now(), kicked: false });
 
         presenceRef.on("value", (snapshot) => {
             const data = snapshot.val();
-            // KALO DI-KICK / KUNCI DI DASHBOARD ADMIN:
             if (!data || data.kicked === true) {
                 alert("Akses Anda telah dikunci/dikeluarkan oleh Admin!");
                 logoutUser();
             }
         });
 
-        // Loop heartbeat setiap 3 detik
         heartbeatInterval = setInterval(() => {
             presenceRef.update({ lastSeen: Date.now() });
         }, 3000);
@@ -182,17 +302,17 @@
         }
         clearInterval(heartbeatInterval);
         localStorage.removeItem("currentUser");
-        document.getElementById("login-section").style.display = "block";
-        document.getElementById("app-section").style.display = "none";
+        location.reload();
     }
 
     window.onload = function() {
         if (localStorage.getItem("currentUser")) {
             startApp();
+        } else {
+            renderQuiz();
         }
     };
 
-    // 3. TAB NAVIGASI
     function switchTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -200,43 +320,48 @@
         event.currentTarget.classList.add('active');
     }
 
-    // 4. DATA 35 SOAL MATERI
+    // BANK SOAL LENGKAP TERMASUK HIRAGANA (A - SO)
     const questions = [
-        { q: "1. Apa arti kata 'daidokoro' (だいどころ) dalam bahasa Indonesia?", options: ["Kamar tidur", "Dapur", "Ruang tamu", "Halaman"], ans: "Dapur" },
-        { q: "2. Bahasa Jepang dari 'Ruang Tamu' adalah...", options: ["Heya", "Ima", "Uchi", "Niwa"], ans: "Ima" },
-        { q: "3. Kata 'Heya' (へや) memiliki arti...", options: ["Dapur", "Kamar", "Rumah", "Kamar Mandi"], ans: "Kamar" },
-        { q: "4. Perangkat 'Terebi' (テレビ) adalah...", options: ["Radio", "Televisi", "Telepon", "AC"], ans: "Televisi" },
-        { q: "5. Bahasa Jepang dari 'Kulkas' adalah...", options: ["Senpuuki", "Reizouko", "Eakon", "Rajikase"], ans: "Reizouko" },
-        { q: "6. Kata 'Senpuuki' (せんぷうき) berarti...", options: ["Kipas Angin", "Kulkas", "Mesin Cuci", "Lampu"], ans: "Kipas Angin" },
-        { q: "7. Alat komunikasi 'Denwa' (でんわ) berarti...", options: ["Televisi", "Telepon", "Komputer", "Radio"], ans: "Telepon" },
-        { q: "8. Perabot 'Hondana' (ほんだな) digunakan untuk menyimpan...", options: ["Pakaian", "Buku", "Makanan", "Sepatu"], ans: "Buku" },
-        { q: "9. Kata 'Beddo' (ベッド) berarti...", options: ["Meja Belajar", "Kursi", "Kasur / Tempat Tidur", "Lemari"], ans: "Kasur / Tempat Tidur" },
-        { q: "10. Perbedaan penggunaan 'tsukue' dan 'teeburu' adalah...", options: ["Tsukue untuk meja belajar/kerja, Teeburu untuk meja makan/sofa", "Tsukue untuk meja makan, Teeburu untuk meja kerja", "Sama saja tidak ada bedanya", "Tsukue perabot kayu, Teeburu perabot besi"], ans: "Tsukue untuk meja belajar/kerja, Teeburu untuk meja makan/sofa" },
-        { q: "11. Pola kalimat untuk menyatakan 'Di (tempat) ada (barang)' adalah...", options: ["KB (tempat) wa KB (barang) desu", "KB (tempat) ni KB (barang) ga arimasu", "KB (barang) ni KB (tempat) ga arimasu", "KB (tempat) de KB (barang) arimasu"], ans: "KB (tempat) ni KB (barang) ga arimasu" },
-        { q: "12. Terjemahan dari 'Watashi no heya ni terebi ga arimasu' adalah...", options: ["Di rumah saya ada televisi", "Di kamar saya ada televisi", "Televisi ada di ruang tamu", "Kamar saya ada televisinya"], ans: "Di kamar saya ada televisi" },
-        { q: "13. Jawaban positif untuk pertanyaan 'Uchi ni terebi ga arimasu ka' adalah...", options: ["Hai, arimasen", "Hai, arimasu", "Iie, arimasu", "Iie, arimasen"], ans: "Hai, arimasu" },
-        { q: "14. Jawaban negatif untuk pertanyaan 'Daidokoro ni denwa ga arimasu ka' adalah...", options: ["Hai, arimasu", "Iie, arimasen", "Iie, arimasu", "Hai, arimasen"], ans: "Iie, arimasen" },
-        { q: "15. Kata sambung 'dan' untuk menghubungkan benda (contoh: beddo ... hondana) menggunakan partikel...", options: ["ni", "wa", "to", "ga"], ans: "to" },
-        { q: "16. Arti dari 'Watashi no heya ni beddo to hondana ga arimasu' adalah...", options: ["Di kamar saya ada kasur dan rak buku", "Di rumah saya ada kasur dan meja", "Di kamar saya tidak ada kasur dan rak buku", "Di ruang tamu ada kasur dan rak buku"], ans: "Di kamar saya ada kasur dan rak buku" },
-        { q: "17. Kata tanya yang digunakan untuk menanyakan 'benda apa' adalah...", options: ["Doko", "Nani", "Dare", "Itsu"], ans: "Nani" },
-        { q: "18. Lawan kata dari 'Ookii' (besar) adalah...", options: ["Hiroi", "Chiisai", "Kurai", "Kitanai"], ans: "Chiisai" },
-        { q: "19. Lawan kata dari 'Hiroi' (luas) adalah...", options: ["Semai", "Chiisai", "Furui", "Kitanai"], ans: "Semai" },
-        { q: "20. Kata 'Akarui' memiliki arti...", options: ["Gelap", "Terang", "Bersih", "Baru"], ans: "Terang" },
-        { q: "21. Lawan kata dari 'Akarui' (terang) adalah...", options: ["Kitanai", "Kurai", "Semai", "Furui"], ans: "Kurai" },
-        { q: "22. Kata 'Kirei' (きれい) dalam konteks kamar berarti...", options: ["Kotor", "Bersih / Indah", "Luas", "Sempit"], ans: "Bersih / Indah" },
-        { q: "23. Lawan kata dari 'Kirei' adalah...", options: ["Kitanai", "Chiisai", "Kurai", "Semai"], ans: "Kitanai" },
-        { q: "24. Kata 'Atarashii' (あたらしい) memiliki arti...", options: ["Lama / Tua", "Baru", "Terang", "Kecil"], ans: "Baru" },
-        { q: "25. Terjemahan 'B-san no heya wa kirei desu' adalah...", options: ["Kamar B-san besar", "Kamar B-san bersih/indah", "Kamar B-san luas", "Kamar B-san baru"], ans: "Kamar B-san bersih/indah" },
-        { q: "26. Terjemahan 'Watashi no uchi wa ookii desu' adalah...", options: ["Rumah saya besar", "Kamar saya besar", "Rumah saya bersih", "Rumah saya baru"], ans: "Rumah saya besar" },
-        { q: "27. Apabila seseorang bertanya 'Maria-san no heya wa ookii desu ka' dan dijawab tidak, bentuknya adalah...", options: ["Hai, ookii desu", "Iie, chiisai desu", "Iie, ookii desu", "Hai, chiisai desu"], ans: "Iie, chiisai desu" },
-        { q: "28. Posisi 'atas' dalam bahasa Jepang disebut...", options: ["Shita", "Ue", "Naka", "Soto"], ans: "Ue" },
-        { q: "29. Posisi 'bawah' dalam bahasa Jepang disebut...", options: ["Ue", "Shita", "Naka", "Mae"], ans: "Shita" },
-        { q: "30. Terjemahan 'Tsukue no ue ni konpyuutaa ga arimasu' adalah...", options: ["Di bawah meja ada komputer", "Di atas meja ada komputer", "Di dalam meja ada komputer", "Di samping meja ada komputer"], ans: "Di atas meja ada komputer" },
-        { q: "31. Terjemahan 'Tsukue no shita ni gomibako ga arimasu' adalah...", options: ["Di atas meja ada tempat sampah", "Di bawah meja ada tempat sampah", "Di dalam meja ada tempat sampah", "Di luar kamar ada tempat sampah"], ans: "Di bawah meja ada tempat sampah" },
-        { q: "32. Tempat sampah dalam bahasa Jepang dinamakan...", options: ["Gomibako", "Hondana", "Kaban", "Tokei"], ans: "Gomibako" },
-        { q: "33. Pola untuk bertanya sifat suatu kamar (misal: Apakah luas?) adalah...", options: ["KB (tempat) wa KS desu ka", "KB (tempat) ni KS ga arimasu ka", "KB (tempat) no KS desu", "KB (tempat) ga KS desu ka"], ans: "KB (tempat) wa KS desu ka" },
-        { q: "34. Pilihan kata berikut yang merupakan kelompok kata perabot/elektronik adalah...", options: ["Heya, Ima, Uchi", "Terebi, Reizouko, Beddo", "Ookii, Hiroi, Kirei", "Ue, Shita, Naka"], ans: "Terebi, Reizouko, Beddo" },
-        { q: "35. Huruf Hiragana 'A' sampai 'So' berjumlah...", options: ["10 huruf", "15 huruf", "20 huruf", "25 huruf"], ans: "15 huruf" }
+        // Hiragana Questions
+        { q: "1. Huruf Hiragana 'あ' dibaca...", options: ["a", "i", "u", "e"], ans: "a" },
+        { q: "2. Huruf Hiragana untuk romaji 'u' adalah...", options: ["い", "う", "え", "お"], ans: "う" },
+        { q: "3. Huruf Hiragana 'か' dibaca...", options: ["ka", "ki", "ku", "ke"], ans: "ka" },
+        { q: "4. Huruf Hiragana 'き' dibaca...", options: ["ki", "sa", "shi", "ko"], ans: "ki" },
+        { q: "5. Huruf Hiragana untuk romaji 'ke' adalah...", options: ["く", "け", "こ", "せ"], ans: "け" },
+        { q: "6. Huruf Hiragana 'さ' dibaca...", options: ["sa", "shi", "su", "se"], ans: "sa" },
+        { q: "7. Huruf Hiragana untuk romaji 'shi' adalah...", options: ["さ", "し", "す", "そ"], ans: "し" },
+        { q: "8. Huruf Hiragana 'す' dibaca...", options: ["su", "se", "so", "u"], ans: "su" },
+        { q: "9. Huruf Hiragana 'そ' dibaca...", options: ["sa", "su", "se", "so"], ans: "so" },
+        { q: "10. Kata 'あさ' (a-sa) memiliki arti...", options: ["Pagi", "Malam", "Siang", "Sore"], ans: "Pagi" },
+        { q: "11. Kata 'かさ' (ka-sa) memiliki arti...", options: ["Payung", "Buku", "Sepatu", "Tas"], ans: "Payung" },
+        
+        // Bab 21 Questions
+        { q: "12. Apa arti kata 'daidokoro' (だいどころ)?", options: ["Kamar tidur", "Dapur", "Ruang tamu", "Halaman"], ans: "Dapur" },
+        { q: "13. Bahasa Jepang dari 'Ruang Tamu' adalah...", options: ["Heya", "Ima", "Uchi", "Niwa"], ans: "Ima" },
+        { q: "14. Kata 'Heya' (へや) memiliki arti...", options: ["Dapur", "Kamar", "Rumah", "Kamar Mandi"], ans: "Kamar" },
+        { q: "15. Perangkat 'Terebi' (テレビ) adalah...", options: ["Radio", "Televisi", "Telepon", "AC"], ans: "Televisi" },
+        { q: "16. Bahasa Jepang dari 'Kulkas' adalah...", options: ["Senpuuki", "Reizouko", "Eakon", "Rajikase"], ans: "Reizouko" },
+        { q: "17. Kata 'Senpuuki' (せんぷうき) berarti...", options: ["Kipas Angin", "Kulkas", "Mesin Cuci", "Lampu"], ans: "Kipas Angin" },
+        { q: "18. Alat komunikasi 'Denwa' (でんわ) berarti...", options: ["Televisi", "Telepon", "Komputer", "Radio"], ans: "Telepon" },
+        { q: "19. Perabot 'Hondana' (ほんだな) digunakan untuk menyimpan...", options: ["Pakaian", "Buku", "Makanan", "Sepatu"], ans: "Buku" },
+        { q: "20. Pola kalimat untuk menyatakan 'Di (tempat) ada (barang)' adalah...", options: ["KB (tempat) wa KB (barang) desu", "KB (tempat) ni KB (barang) ga arimasu", "KB (barang) ni KB (tempat) ga arimasu", "KB (tempat) de KB (barang) arimasu"], ans: "KB (tempat) ni KB (barang) ga arimasu" },
+        { q: "21. Terjemahan dari 'Watashi no heya ni terebi ga arimasu' adalah...", options: ["Di rumah saya ada televisi", "Di kamar saya ada televisi", "Televisi ada di ruang tamu", "Kamar saya ada televisinya"], ans: "Di kamar saya ada televisi" },
+        { q: "22. Jawaban positif untuk 'Uchi ni terebi ga arimasu ka' adalah...", options: ["Hai, arimasen", "Hai, arimasu", "Iie, arimasu", "Iie, arimasen"], ans: "Hai, arimasu" },
+        { q: "23. Jawaban negatif untuk 'Daidokoro ni denwa ga arimasu ka' adalah...", options: ["Hai, arimasu", "Iie, arimasen", "Iie, arimasu", "Hai, arimasen"], ans: "Iie, arimasen" },
+        { q: "24. Partikel penyambung kata benda yang berarti 'dan' adalah...", options: ["ni", "wa", "to", "ga"], ans: "to" },
+
+        // Bab 22 Questions
+        { q: "25. Lawan kata dari 'Ookii' (besar) adalah...", options: ["Hiroi", "Chiisai", "Kurai", "Kitanai"], ans: "Chiisai" },
+        { q: "26. Lawan kata dari 'Hiroi' (luas) adalah...", options: ["Semai", "Chiisai", "Furui", "Kitanai"], ans: "Semai" },
+        { q: "27. Kata 'Akarui' memiliki arti...", options: ["Gelap", "Terang", "Bersih", "Baru"], ans: "Terang" },
+        { q: "28. Lawan kata dari 'Akarui' (terang) adalah...", options: ["Kitanai", "Kurai", "Semai", "Furui"], ans: "Kurai" },
+        { q: "29. Kata 'Kirei' (きれい) dalam konteks kamar berarti...", options: ["Kotor", "Bersih / Indah", "Luas", "Sempit"], ans: "Bersih / Indah" },
+        { q: "30. Lawan kata dari 'Kirei' adalah...", options: ["Kitanai", "Chiisai", "Kurai", "Semai"], ans: "Kitanai" },
+        { q: "31. Kata 'Atarashii' (あたらしい) memiliki arti...", options: ["Lama / Tua", "Baru", "Terang", "Kecil"], ans: "Baru" },
+        { q: "32. Terjemahan 'B-san no heya wa kirei desu' adalah...", options: ["Kamar B-san besar", "Kamar B-san bersih/indah", "Kamar B-san luas", "Kamar B-san baru"], ans: "Kamar B-san bersih/indah" },
+        { q: "33. Posisi 'atas' dalam bahasa Jepang disebut...", options: ["Shita", "Ue", "Naka", "Soto"], ans: "Ue" },
+        { q: "34. Posisi 'bawah' dalam bahasa Jepang disebut...", options: ["Ue", "Shita", "Naka", "Mae"], ans: "Shita" },
+        { q: "35. Terjemahan 'Tsukue no ue ni konpyuutaa ga arimasu' adalah...", options: ["Di bawah meja ada komputer", "Di atas meja ada komputer", "Di dalam meja ada komputer", "Di samping meja ada komputer"], ans: "Di atas meja ada komputer" }
     ];
 
     function renderQuiz() {
@@ -257,7 +382,6 @@
         });
     }
 
-    // 5. PENILAIAN & SIMPAN HASIL KE FIREBASE
     async function submitQuiz() {
         let correct = 0;
         let wrong = 0;
@@ -282,7 +406,6 @@
         document.getElementById("details-count").innerText = `Benar: ${correct} | Salah: ${wrong}`;
         document.getElementById("result-box").style.display = "block";
 
-        // Simpan Hasil ke Firebase Database
         if (currentUser) {
             await db.ref("examResults/bahasaJepang/" + currentUser.username).set({
                 username: currentUser.username,
