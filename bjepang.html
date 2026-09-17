@@ -215,7 +215,7 @@
         <form id="quiz-form">
             <div id="quiz-container"></div>
             <div class="quiz-actions">
-                <button type="button" class="btn-submit" onclick="submitQuiz()">✅ Selesai & Kirim Nilai</button>
+                <button type="button" class="btn-submit" onclick="submitQuiz()">✅ Selesai & Cek Hasil</button>
                 <button type="button" class="btn-reset" onclick="resetQuiz()">🔄 Kerjakan Ulang</button>
             </div>
         </form>
@@ -225,7 +225,6 @@
 <script>
     const FIREBASE_URL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
 
-    // 1. MANAJEMEN USER & SESI LOGIN (PERSIS AIJ)
     function checkUserSession() {
         const currentUser = JSON.parse(localStorage.getItem("currentUser"));
         if (currentUser && currentUser.username) {
@@ -260,43 +259,42 @@
         event.currentTarget.classList.add('active');
     }
 
-    // 2. DATA SOAL MATERI
     const questions = [
-        { q: "1. Huruf Hiragana 'あ' dibaca...", options: ["a", "i", "u", "e"], ans: "a" },
-        { q: "2. Huruf Hiragana untuk romaji 'u' adalah...", options: ["い", "う", "え", "お"], ans: "う" },
-        { q: "3. Huruf Hiragana 'か' dibaca...", options: ["ka", "ki", "ku", "ke"], ans: "ka" },
-        { q: "4. Huruf Hiragana 'き' dibaca...", options: ["ki", "sa", "shi", "ko"], ans: "ki" },
-        { q: "5. Huruf Hiragana untuk romaji 'ke' adalah...", options: ["く", "け", "こ", "せ"], ans: "け" },
-        { q: "6. Huruf Hiragana 'さ' dibaca...", options: ["sa", "shi", "su", "se"], ans: "sa" },
-        { q: "7. Huruf Hiragana untuk romaji 'shi' adalah...", options: ["さ", "し", "す", "そ"], ans: "し" },
-        { q: "8. Huruf Hiragana 'す' dibaca...", options: ["su", "se", "so", "u"], ans: "su" },
-        { q: "9. Huruf Hiragana 'そ' dibaca...", options: ["sa", "su", "se", "so"], ans: "so" },
-        { q: "10. Kata 'あさ' (a-sa) memiliki arti...", options: ["Pagi", "Malam", "Siang", "Sore"], ans: "Pagi" },
-        { q: "11. Kata 'かさ' (ka-sa) memiliki arti...", options: ["Payung", "Buku", "Sepatu", "Tas"], ans: "Payung" },
-        { q: "12. Apa arti kata 'daidokoro' (だいどころ)?", options: ["Kamar tidur", "Dapur", "Ruang tamu", "Halaman"], ans: "Dapur" },
-        { q: "13. Bahasa Jepang dari 'Ruang Tamu' adalah...", options: ["Heya", "Ima", "Uchi", "Niwa"], ans: "Ima" },
-        { q: "14. Kata 'Heya' (へや) memiliki arti...", options: ["Dapur", "Kamar", "Rumah", "Kamar Mandi"], ans: "Kamar" },
-        { q: "15. Perangkat 'Terebi' (テレビ) adalah...", options: ["Radio", "Televisi", "Telepon", "AC"], ans: "Televisi" },
-        { q: "16. Bahasa Jepang dari 'Kulkas' adalah...", options: ["Senpuuki", "Reizouko", "Eakon", "Rajikase"], ans: "Reizouko" },
-        { q: "17. Kata 'Senpuuki' (せんぷうき) berarti...", options: ["Kipas Angin", "Kulkas", "Mesin Cuci", "Lampu"], ans: "Kipas Angin" },
+        { q: "1. Karakter Hiragana 'あ' dibaca dalam huruf Latin (romaji) sebagai...", options: ["a", "i", "u", "e"], ans: "a" },
+        { q: "2. Penulisan karakter Hiragana yang tepat untuk bunyi romaji 'u' adalah...", options: ["い", "う", "え", "お"], ans: "う" },
+        { q: "3. Karakter Hiragana 'か' dibaca dalam huruf Latin sebagai...", options: ["ka", "ki", "ku", "ke"], ans: "ka" },
+        { q: "4. Karakter Hiragana 'き' dibaca dalam huruf Latin sebagai...", options: ["ki", "sa", "shi", "ko"], ans: "ki" },
+        { q: "5. Penulisan karakter Hiragana yang tepat untuk bunyi romaji 'ke' adalah...", options: ["く", "け", "こ", "せ"], ans: "け" },
+        { q: "6. Karakter Hiragana 'さ' dibaca dalam huruf Latin sebagai...", options: ["sa", "shi", "su", "se"], ans: "sa" },
+        { q: "7. Penulisan karakter Hiragana yang tepat untuk bunyi romaji 'shi' adalah...", options: ["さ", "し", "す", "そ"], ans: "し" },
+        { q: "8. Karakter Hiragana 'す' dibaca dalam huruf Latin sebagai...", options: ["su", "se", "so", "u"], ans: "su" },
+        { q: "9. Karakter Hiragana 'そ' dibaca dalam huruf Latin sebagai...", options: ["sa", "su", "se", "so"], ans: "so" },
+        { q: "10. Kosakata Hiragana 'あさ' (a-sa) dalam bahasa Indonesia berarti...", options: ["Pagi", "Malam", "Siang", "Sore"], ans: "Pagi" },
+        { q: "11. Kosakata Hiragana 'かさ' (ka-sa) dalam bahasa Indonesia berarti...", options: ["Payung", "Buku", "Sepatu", "Tas"], ans: "Payung" },
+        { q: "12. Dalam topik pembagian ruangan di rumah (Bab 21), kata 'daidokoro' (だいどころ) berarti...", options: ["Kamar tidur", "Dapur", "Ruang tamu", "Halaman"], ans: "Dapur" },
+        { q: "13. Sebutan untuk ruangan 'Ruang Tamu' dalam bahasa Jepang adalah...", options: ["Heya", "Ima", "Uchi", "Niwa"], ans: "Ima" },
+        { q: "14. Kata 'Heya' (へや) merujuk pada bagian rumah yaitu...", options: ["Dapur", "Kamar", "Rumah", "Kamar Mandi"], ans: "Kamar" },
+        { q: "15. Perangkat elektronik 'Terebi' (テレビ) dalam bahasa Indonesia adalah...", options: ["Radio", "Televisi", "Telepon", "AC"], ans: "Televisi" },
+        { q: "16. Bahasa Jepang yang tepat untuk menyebut 'Kulkas / Lemari Es' adalah...", options: ["Senpuuki", "Reizouko", "Eakon", "Rajikase"], ans: "Reizouko" },
+        { q: "17. Perangkat rumah tangga 'Senpuuki' (せんぷうき) berfungsi sebagai...", options: ["Kipas Angin", "Kulkas", "Mesin Cuci", "Lampu"], ans: "Kipas Angin" },
         { q: "18. Alat komunikasi 'Denwa' (でんわ) berarti...", options: ["Televisi", "Telepon", "Komputer", "Radio"], ans: "Telepon" },
         { q: "19. Perabot 'Hondana' (ほんだな) digunakan untuk menyimpan...", options: ["Pakaian", "Buku", "Makanan", "Sepatu"], ans: "Buku" },
-        { q: "20. Pola kalimat untuk menyatakan 'Di (tempat) ada (barang)' adalah...", options: ["KB (tempat) wa KB (barang) desu", "KB (tempat) ni KB (barang) ga arimasu", "KB (barang) ni KB (tempat) ga arimasu", "KB (tempat) de KB (barang) arimasu"], ans: "KB (tempat) ni KB (barang) ga arimasu" },
-        { q: "21. Terjemahan dari 'Watashi no heya ni terebi ga arimasu' adalah...", options: ["Di rumah saya ada televisi", "Di kamar saya ada televisi", "Televisi ada di ruang tamu", "Kamar saya ada televisinya"], ans: "Di kamar saya ada televisi" },
-        { q: "22. Jawaban positif untuk 'Uchi ni terebi ga arimasu ka' adalah...", options: ["Hai, arimasen", "Hai, arimasu", "Iie, arimasu", "Iie, arimasen"], ans: "Hai, arimasu" },
-        { q: "23. Jawaban negatif untuk 'Daidokoro ni denwa ga arimasu ka' adalah...", options: ["Hai, arimasu", "Iie, arimasen", "Iie, arimasu", "Hai, arimasen"], ans: "Iie, arimasen" },
-        { q: "24. Partikel penyambung kata benda yang berarti 'dan' adalah...", options: ["ni", "wa", "to", "ga"], ans: "to" },
-        { q: "25. Lawan kata dari 'Ookii' (besar) adalah...", options: ["Hiroi", "Chiisai", "Kurai", "Kitanai"], ans: "Chiisai" },
-        { q: "26. Lawan kata dari 'Hiroi' (luas) adalah...", options: ["Semai", "Chiisai", "Furui", "Kitanai"], ans: "Semai" },
-        { q: "27. Kata 'Akarui' memiliki arti...", options: ["Gelap", "Terang", "Bersih", "Baru"], ans: "Terang" },
-        { q: "28. Lawan kata dari 'Akarui' (terang) adalah...", options: ["Kitanai", "Kurai", "Semai", "Furui"], ans: "Kurai" },
-        { q: "29. Kata 'Kirei' (きれい) dalam konteks kamar berarti...", options: ["Kotor", "Bersih / Indah", "Luas", "Sempit"], ans: "Bersih / Indah" },
-        { q: "30. Lawan kata dari 'Kirei' adalah...", options: ["Kitanai", "Chiisai", "Kurai", "Semai"], ans: "Kitanai" },
-        { q: "31. Kata 'Atarashii' (あたらしい) memiliki arti...", options: ["Lama / Tua", "Baru", "Terang", "Kecil"], ans: "Baru" },
-        { q: "32. Terjemahan 'B-san no heya wa kirei desu' adalah...", options: ["Kamar B-san besar", "Kamar B-san bersih/indah", "Kamar B-san luas", "Kamar B-san baru"], ans: "Kamar B-san bersih/indah" },
-        { q: "33. Posisi 'atas' dalam bahasa Jepang disebut...", options: ["Shita", "Ue", "Naka", "Soto"], ans: "Ue" },
-        { q: "34. Posisi 'bawah' dalam bahasa Jepang disebut...", options: ["Ue", "Shita", "Naka", "Mae"], ans: "Shita" },
-        { q: "35. Terjemahan 'Tsukue no ue ni konpyuutaa ga arimasu' adalah...", options: ["Di bawah meja ada komputer", "Di atas meja ada komputer", "Di dalam meja ada komputer", "Di samping meja ada komputer"], ans: "Di atas meja ada komputer" }
+        { q: "20. Pola kalimat yang digunakan untuk menyatakan keberadaan benda di suatu tempat adalah...", options: ["KB (tempat) wa KB (barang) desu", "KB (tempat) ni KB (barang) ga arimasu", "KB (barang) ni KB (tempat) ga arimasu", "KB (tempat) de KB (barang) arimasu"], ans: "KB (tempat) ni KB (barang) ga arimasu" },
+        { q: "21. Kalimat 'Watashi no heya ni terebi ga arimasu' jika diterjemahkan ke bahasa Indonesia menjadi...", options: ["Di rumah saya ada televisi", "Di kamar saya ada televisi", "Televisi ada di ruang tamu", "Kamar saya ada televisinya"], ans: "Di kamar saya ada televisi" },
+        { q: "22. Jawaban konfirmasi positif (ya) untuk pertanyaan 'Uchi ni terebi ga arimasu ka' adalah...", options: ["Hai, arimasen", "Hai, arimasu", "Iie, arimasu", "Iie, arimasen"], ans: "Hai, arimasu" },
+        { q: "23. Jawaban konfirmasi negatif (tidak) untuk pertanyaan 'Daidokoro ni denwa ga arimasu ka' adalah...", options: ["Hai, arimasu", "Iie, arimasen", "Iie, arimasu", "Hai, arimasen"], ans: "Iie, arimasen" },
+        { q: "24. Partikel penyambung dua kata benda yang berfungsi sebagai kata 'dan' adalah...", options: ["ni", "wa", "to", "ga"], ans: "to" },
+        { q: "25. Antonim (lawan kata) dari kata sifat 'Ookii' (besar) adalah...", options: ["Hiroi", "Chiisai", "Kurai", "Kitanai"], ans: "Chiisai" },
+        { q: "26. Antonim (lawan kata) dari kata sifat 'Hiroi' (luas) adalah...", options: ["Semai", "Chiisai", "Furui", "Kitanai"], ans: "Semai" },
+        { q: "27. Kata sifat 'Akarui' (明るい) dalam mendeskripsikan kondisi ruangan berarti...", options: ["Gelap", "Terang", "Bersih", "Baru"], ans: "Terang" },
+        { q: "28. Antonim (lawan kata) dari 'Akarui' (terang) adalah...", options: ["Kitanai", "Kurai", "Semai", "Furui"], ans: "Kurai" },
+        { q: "29. Kata sifat 'Kirei' (きれい) dalam konteks kondisi kamar berarti...", options: ["Kotor", "Bersih / Indah", "Luas", "Sempit"], ans: "Bersih / Indah" },
+        { q: "30. Antonim (lawan kata) dari 'Kirei' (bersih) adalah...", options: ["Kitanai", "Chiisai", "Kurai", "Semai"], ans: "Kitanai" },
+        { q: "31. Kata sifat 'Atarashii' (あたらしい) memiliki arti...", options: ["Lama / Tua", "Baru", "Terang", "Kecil"], ans: "Baru" },
+        { q: "32. Arti dari kalimat deskripsi 'B-san no heya wa kirei desu' adalah...", options: ["Kamar B-san besar", "Kamar B-san bersih/indah", "Kamar B-san luas", "Kamar B-san baru"], ans: "Kamar B-san bersih/indah" },
+        { q: "33. Kata penunjuk posisi 'atas' dalam bahasa Jepang disebut...", options: ["Shita", "Ue", "Naka", "Soto"], ans: "Ue" },
+        { q: "34. Kata penunjuk posisi 'bawah' dalam bahasa Jepang disebut...", options: ["Ue", "Shita", "Naka", "Mae"], ans: "Shita" },
+        { q: "35. Terjemahan yang paling tepat untuk 'Tsukue no ue ni konpyuutaa ga arimasu' adalah...", options: ["Di bawah meja ada komputer", "Di atas meja ada komputer", "Di dalam meja ada komputer", "Di samping meja ada komputer"], ans: "Di atas meja ada komputer" }
     ];
 
     function renderQuiz() {
@@ -308,7 +306,7 @@
                 optsHtml += `<li><label id="lbl-${idx}-${oIdx}"><input type="radio" name="q${idx}" value="${opt}"> ${opt}</label></li>`;
             });
             container.innerHTML += `
-                <div class="question-card">
+                <div class="question-card" id="q-card-${idx}">
                     <div class="question-text">${qObj.q}</div>
                     <ul class="options">${optsHtml}</ul>
                     <div id="ans-${idx}" class="answer-key">Jawaban Benar: ${qObj.ans}</div>
@@ -317,7 +315,6 @@
         });
     }
 
-    // 3. FUNGSI SIMPAN HASIL KE DASHBOARD ADMIN (NODE: bjepang)
     async function submitQuiz() {
         let correctCount = 0;
         let wrongCount = 0;
@@ -328,13 +325,22 @@
 
             q.options.forEach((opt, oIdx) => {
                 const lbl = document.getElementById(`lbl-${idx}-${oIdx}`);
-                lbl.querySelector("input").disabled = true;
-                if (opt === q.ans) lbl.classList.add("correct-opt");
-                if (selected && selected.value === opt && opt !== q.ans) lbl.classList.add("wrong-opt");
+                const radio = lbl.querySelector("input");
+                radio.disabled = true;
+
+                if (opt === q.ans) {
+                    lbl.classList.add("correct-opt");
+                }
+                if (selected && selected.value === opt && opt !== q.ans) {
+                    lbl.classList.add("wrong-opt");
+                }
             });
 
-            if (selected && selected.value === q.ans) correctCount++;
-            else wrongCount++;
+            if (selected && selected.value === q.ans) {
+                correctCount++;
+            } else {
+                wrongCount++;
+            }
         });
 
         const finalScore = Math.round((correctCount / questions.length) * 100);
@@ -347,17 +353,14 @@
         resultBox.style.display = 'block';
         resultBox.scrollIntoView({ behavior: 'smooth' });
 
-        // Kirim hasil ujian ke Firebase di bawah key "bjepang"
-        await simpanHasilUjian("bjepang", finalScore, correctCount, wrongCount, questions.length);
+        // Simpan hasil ujian ke Firebase
+        simpanHasilUjian("bjepang", finalScore, correctCount, wrongCount, questions.length);
     }
 
     async function simpanHasilUjian(modulId, nilai, benar, salah, totalSoal) {
         try {
             const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-            if (!currentUser || !currentUser.username) {
-                alert("Nilai tidak tersimpan di dashboard admin karena Anda belum login!");
-                return;
-            }
+            if (!currentUser || !currentUser.username) return;
 
             const endpoint = FIREBASE_URL + "/examResults/" + modulId + "/" + currentUser.username + ".json";
             await fetch(endpoint, {
@@ -373,13 +376,11 @@
                     waktu: Date.now()
                 })
             });
-            alert("Hasil ujian berhasil dikirim ke Dashboard Admin!");
         } catch (err) {
             console.error("Gagal menyimpan hasil ujian:", err);
         }
     }
 
-    // 4. HEARTBEAT ACTIVE USER & AUTO KICK (SAMA PERSIS AIJ)
     (function() {
         const userSesi = JSON.parse(localStorage.getItem("currentUser"));
         if (!userSesi || !userSesi.username) return;
@@ -395,7 +396,7 @@
                     alert("Anda telah dikeluarkan dari sesi oleh Administrator!");
                     await fetch(presenceEndpoint, { method: "DELETE" });
                     localStorage.removeItem("currentUser");
-                    location.reload();
+                    window.location.href = "index.html";
                     return;
                 }
 
@@ -414,7 +415,7 @@
         }
 
         heartbeatDanCekKick();
-        setInterval(heartbeatDanCekKick, 3000);
+        setInterval(heartbeatDanCekKick, 5000);
     })();
 
     function resetQuiz() {
