@@ -169,6 +169,14 @@
       align-items: center;
       justify-content: space-between;
       gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
     }
 
     .checkbox-label {
@@ -474,16 +482,30 @@
     <div id="announcementAdminBox" class="announcement-admin-box">
       <div class="announcement-admin-title">
         <i class="fa-solid fa-bullhorn"></i>
-        <span>Pengaturan Pengumuman (Admin)</span>
+        <span>Pengaturan Pengumuman & Notifikasi Bot WA (Admin)</span>
       </div>
       <div class="announcement-admin-form">
-        <input type="text" id="adminAnnTitle" placeholder="Judul Pengumuman (Misal: 📢 Informasi Ujian)">
-        <textarea id="adminAnnMessage" placeholder="Tuliskan pesan/isi pengumuman di sini..."></textarea>
+        <input type="text" id="adminAnnTitle" placeholder="Judul Modul/Pengumuman (Misal: Penalaran Matematika Bab 1)">
+        <textarea id="adminAnnMessage" placeholder="Tuliskan deskripsi/instruksi soal di sini..."></textarea>
+        
+        <!-- Pilihan Penerima Notifikasi WhatsApp -->
+        <input type="text" id="adminAnnTargetPhone" placeholder="Nomor WA Pribadi Target (opsional, pisahkan koma misal: 081234567890)">
+
         <div class="announcement-admin-actions">
-          <label class="checkbox-label">
-            <input type="checkbox" id="adminAnnActive" checked>
-            <span>Tampilkan Pop-up Pengumuman ke Siswa</span>
-          </label>
+          <div class="checkbox-group">
+            <label class="checkbox-label">
+              <input type="checkbox" id="adminAnnActive" checked>
+              <span>Tampilkan Pop-up di Web</span>
+            </label>
+            <label class="checkbox-label" style="color:#22c55e;">
+              <input type="checkbox" id="adminAnnSendGrup" checked>
+              <span><i class="fa-brands fa-whatsapp"></i> Kirim ke Grup WA</span>
+            </label>
+            <label class="checkbox-label" style="color:#22c55e;">
+              <input type="checkbox" id="adminAnnSendPrivate">
+              <span><i class="fa-brands fa-whatsapp"></i> Kirim ke No. Pribadi</span>
+            </label>
+          </div>
           <button class="btn-publish-announcement" onclick="saveAnnouncement()">
             <i class="fa-solid fa-paper-plane"></i> Simpan & Kirim
           </button>
@@ -689,6 +711,10 @@
   <script>
     const FIREBASE_URL = "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app";
     const ANNOUNCEMENT_ENDPOINT = FIREBASE_URL + "/announcement.json";
+    
+    // ID GRUP WA TKJ2 (Otomatis dari hasil pencarian ID sebelumnya)
+    const TARGET_GRUP_WA = ["120363402654153009@g.us"]; 
+    const BOT_WEBHOOK_URL = "http://localhost:3000/notif-pbm";
 
     // Fitur Pengumuman Otomatis
     async function checkAnnouncement() {
@@ -714,27 +740,62 @@
       }
     }
 
-    // Simpan Pengumuman ke Firebase (Khusus Admin)
+    // Simpan Pengumuman ke Firebase & Kirim ke Bot WhatsApp (Khusus Admin)
     async function saveAnnouncement() {
       if (currentUser.role !== "admin") return;
       
       const title = document.getElementById("adminAnnTitle").value;
       const message = document.getElementById("adminAnnMessage").value;
       const active = document.getElementById("adminAnnActive").checked;
+      
+      const sendToGrup = document.getElementById("adminAnnSendGrup").checked;
+      const sendToPrivate = document.getElementById("adminAnnSendPrivate").checked;
+      const rawPhones = document.getElementById("adminAnnTargetPhone").value;
 
       const payload = {
-        title: title || "📢 Pengumuman",
+        title: title || "📢 Pengumuman Modul PBM",
         message: message || "",
         active: active
       };
 
       try {
+        // 1. Simpan ke Firebase Database
         await fetch(ANNOUNCEMENT_ENDPOINT, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
-        alert("Pengumuman berhasil diperbarui di server!");
+
+        let waStatusMsg = "";
+
+        // 2. Kirim Notifikasi via Bot WhatsApp (Jika opsi dicentang)
+        if (sendToGrup || sendToPrivate) {
+          const targetGrupArray = sendToGrup ? TARGET_GRUP_WA : [];
+          const targetNomorArray = sendToPrivate && rawPhones ? rawPhones.split(",").map(p => p.trim()) : [];
+
+          try {
+            const waRes = await fetch(BOT_WEBHOOK_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                judulModul: title || "Pengumuman Baru",
+                targetNomor: targetNomorArray,
+                targetGrup: targetGrupArray
+              })
+            });
+
+            if (waRes.ok) {
+              waStatusMsg = "\n\n✅ Notifikasi WhatsApp BERHASIL terkirim ke target!";
+            } else {
+              waStatusMsg = "\n\n⚠️ Pengumuman tersimpan, tapi GAGAL mengirim WhatsApp (Pastikan bot terhubung).";
+            }
+          } catch (waErr) {
+            console.error("Bot WA Offline:", waErr);
+            waStatusMsg = "\n\n⚠️ Pengumuman tersimpan, tapi Server Bot WA sedang offline.";
+          }
+        }
+
+        alert("Pengumuman berhasil diperbarui di server!" + waStatusMsg);
         checkAnnouncement();
       } catch (err) {
         console.error("Gagal menyimpan pengumuman:", err);
