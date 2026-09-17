@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembelajaran Bahasa Jepang - Bab 21 & 22</title>
+    
+    <!-- Firebase SDK v8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --secondary: #0f172a;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --border-color: #cbd5e1;
+            --correct-bg: #dcfce7;
+            --correct-border: #22c55e;
+            --wrong-bg: #fee2e2;
+            --wrong-border: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; padding: 20px; }
+        .container { max-width: 1000px; margin: 0 auto; background: var(--card-bg); padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08); }
+        header { text-align: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 3px solid var(--primary); }
+        header h1 { color: var(--primary); font-size: 1.8rem; margin-bottom: 5px; }
+        
+        .login-box { max-width: 400px; margin: 50px auto; padding: 25px; background: white; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .login-box input { width: 100%; padding: 10px; margin: 8px 0; border: 1px solid #ccc; border-radius: 5px; }
+        .login-box button { width: 100%; padding: 10px; background: var(--primary); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+        .nav-tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 2px solid var(--border-color); padding-bottom: 10px; }
+        .tab-btn { flex: 1; padding: 12px; border: none; background-color: #e2e8f0; color: var(--secondary); font-size: 1rem; font-weight: 600; cursor: pointer; border-radius: 8px; transition: all 0.3s ease; }
+        .tab-btn.active { background-color: var(--primary); color: #ffffff; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        h2 { color: var(--primary); background: #eff6ff; padding: 10px 15px; border-left: 5px solid var(--primary); border-radius: 4px; margin: 25px 0 15px 0; font-size: 1.3rem; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { border: 1px solid var(--border-color); padding: 10px; text-align: left; }
+        th { background-color: var(--primary); color: white; }
+
+        .question-card { background: #f8fafc; border: 1px solid var(--border-color); border-radius: 8px; padding: 18px; margin-bottom: 15px; }
+        .question-text { font-weight: 600; color: var(--secondary); margin-bottom: 12px; }
+        .options { list-style: none; }
+        .options li { margin-bottom: 8px; }
+        .options label { display: block; padding: 10px; background: #ffffff; border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; }
+        .options label.correct-opt { background-color: var(--correct-bg) !important; border-color: var(--correct-border) !important; color: #14532d; font-weight: bold; }
+        .options label.wrong-opt { background-color: var(--wrong-bg) !important; border-color: var(--wrong-border) !important; color: #7f1d1d; font-weight: bold; }
+        .answer-key { display: none; background-color: #dcfce7; border: 1px solid #86efac; color: #166534; padding: 10px; border-radius: 6px; margin-top: 10px; font-weight: bold; }
+
+        .btn-submit { width: 100%; padding: 14px; background-color: #16a34a; color: white; border: none; border-radius: 8px; font-size: 1.05rem; font-weight: bold; cursor: pointer; }
+        .result-box { display: none; background: #eff6ff; border: 2px solid var(--primary-light); border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 25px; }
+    </style>
+</head>
+<body>
+
+<!-- FORM LOGIN -->
+<div id="login-section" class="login-box">
+    <h2 style="text-align: center; margin-top:0;">Login Siswa</h2>
+    <input type="text" id="username" placeholder="Masukkan Nama/NISN">
+    <button onclick="loginUser()">Masuk Jaringan</button>
+</div>
+
+<!-- KONTEN UTAMA MODUL -->
+<div id="app-section" class="container" style="display: none;">
+    <header>
+        <h1 id="user-display">🌸 Modul Bahasa Jepang Bab 21 & 22</h1>
+        <p>Keberadaan Benda di Rumah & Deskripsi Kamar (Uchi ni terebi ga arimasu ka / Maria-san no heya)</p>
+        <button onclick="logoutUser()" style="float: right; margin-top: -30px; background:#dc2626; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">Keluar</button>
+    </header>
+
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('rangkuman')">📘 Rangkuman Materi</button>
+        <button class="tab-btn" onclick="switchTab('kuis')">📝 Simulasi 35 Soal</button>
+    </div>
+
+    <!-- BAGIAN 1: RANGKUMAN MATERI -->
+    <div id="rangkuman" class="tab-content active">
+        <h2>🏠 Bab 21: Uchi ni Terebi ga Arimasu ka (うちにテレビがありますか)</h2>
+        <table>
+            <thead><tr><th>Kosakata Ruangan</th><th>Bahasa Jepang</th><th>Kosakata Perabot/Elektronik</th><th>Bahasa Jepang</th></tr></thead>
+            <tbody>
+                <tr><td>Rumah</td><td>Uchi (うち)</td><td>Televisi / Komputer</td><td>Terebi / Konpyuutaa</td></tr>
+                <tr><td>Dapur</td><td>Daidokoro (だいどころ)</td><td>AC / Radio Kaset</td><td>Eakon / Rajikase</td></tr>
+                <tr><td>Ruang Tamu</td><td>Ima (いま)</td><td>Kulkas / Kipas Angin</td><td>Reizouko / Senpuuki</td></tr>
+                <tr><td>Kamar</td><td>Heya (へや)</td><td>Telepon / Rak Buku</td><td>Denwa / Hondana</td></tr>
+                <tr><td>Meja Belajar / Meja Makan</td><td>Tsukue / Teeburu</td><td>Sofa / Kasur</td><td>Sofa / Beddo</td></tr>
+            </tbody>
+        </table>
+
+        <h2>✨ Bab 22: Maria-san no Heya (マリアさんのへや)</h2>
+        <p><b>Kata Sifat Antonym (Berlawanan):</b></p>
+        <ul>
+            <li><b>Ookii (Besar)</b> ↔ <b>Chiisai (Kecil)</b></li>
+            <li><b>Hiroi (Luas)</b> ↔ <b>Semai (Sempit)</b></li>
+            <li><b>Akarui (Terang)</b> ↔ <b>Kurai (Gelap)</b></li>
+            <li><b>Kirei (Bersih/Indah)</b> ↔ <b>Kitanai (Kotor)</b></li>
+            <li><b>Atarashii (Baru)</b> ↔ <b>Furui (Lama/Tua)</b></li>
+        </ul>
+    </div>
+
+    <!-- BAGIAN 2: SIMULASI SOAL -->
+    <div id="kuis" class="tab-content">
+        <div id="result-box" class="result-box">
+            <h3 id="final-score">Nilai: 0 / 100</h3>
+            <p id="details-count">Benar: 0 | Salah: 0</p>
+        </div>
+
+        <form id="quiz-form">
+            <div id="quiz-container"></div>
+            <button type="button" class="btn-submit" onclick="submitQuiz()">✅ Selesai & Kirim Nilai</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // 1. FIREBASE CONFIGURATION
+    const firebaseConfig = {
+        databaseURL: "https://mapel12-website-default-rtdb.asia-southeast1.firebasedatabase.app"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    let currentUser = null;
+    let heartbeatInterval = null;
+
+    // 2. SISTEM LOGIN & PRESENSI ONLINE
+    function loginUser() {
+        const userIn = document.getElementById("username").value.trim();
+        if (!userIn) return alert("Masukkan nama terlebih dahulu!");
+
+        currentUser = { username: userIn };
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+        
+        startApp();
+    }
+
+    function startApp() {
+        const saved = localStorage.getItem("currentUser");
+        if (saved) currentUser = JSON.parse(saved);
+        if (!currentUser) return;
+
+        document.getElementById("login-section").style.display = "none";
+        document.getElementById("app-section").style.display = "block";
+        document.getElementById("user-display").innerText = "🌸 Halo, " + currentUser.username;
+
+        // Bikin status online di Realtime Database
+        const presenceRef = db.ref("activeUsers/" + currentUser.username);
+        
+        // Hapus otomatis jika browser ditutup/offline (onDisconnect)
+        presenceRef.onDisconnect().remove();
+
+        // Heartbeat memperbarui timestamp & cek jika di-kick
+        presenceRef.set({ username: currentUser.username, lastSeen: Date.now(), kicked: false });
+
+        presenceRef.on("value", (snapshot) => {
+            const data = snapshot.val();
+            // KALO DI-KICK / KUNCI DI DASHBOARD ADMIN:
+            if (!data || data.kicked === true) {
+                alert("Akses Anda telah dikunci/dikeluarkan oleh Admin!");
+                logoutUser();
+            }
+        });
+
+        // Loop heartbeat setiap 3 detik
+        heartbeatInterval = setInterval(() => {
+            presenceRef.update({ lastSeen: Date.now() });
+        }, 3000);
+
+        renderQuiz();
+    }
+
+    function logoutUser() {
+        if (currentUser) {
+            db.ref("activeUsers/" + currentUser.username).remove();
+        }
+        clearInterval(heartbeatInterval);
+        localStorage.removeItem("currentUser");
+        document.getElementById("login-section").style.display = "block";
+        document.getElementById("app-section").style.display = "none";
+    }
+
+    window.onload = function() {
+        if (localStorage.getItem("currentUser")) {
+            startApp();
+        }
+    };
+
+    // 3. TAB NAVIGASI
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    // 4. DATA 35 SOAL MATERI
+    const questions = [
+        { q: "1. Apa arti kata 'daidokoro' (だいどころ) dalam bahasa Indonesia?", options: ["Kamar tidur", "Dapur", "Ruang tamu", "Halaman"], ans: "Dapur" },
+        { q: "2. Bahasa Jepang dari 'Ruang Tamu' adalah...", options: ["Heya", "Ima", "Uchi", "Niwa"], ans: "Ima" },
+        { q: "3. Kata 'Heya' (へや) memiliki arti...", options: ["Dapur", "Kamar", "Rumah", "Kamar Mandi"], ans: "Kamar" },
+        { q: "4. Perangkat 'Terebi' (テレビ) adalah...", options: ["Radio", "Televisi", "Telepon", "AC"], ans: "Televisi" },
+        { q: "5. Bahasa Jepang dari 'Kulkas' adalah...", options: ["Senpuuki", "Reizouko", "Eakon", "Rajikase"], ans: "Reizouko" },
+        { q: "6. Kata 'Senpuuki' (せんぷうき) berarti...", options: ["Kipas Angin", "Kulkas", "Mesin Cuci", "Lampu"], ans: "Kipas Angin" },
+        { q: "7. Alat komunikasi 'Denwa' (でんわ) berarti...", options: ["Televisi", "Telepon", "Komputer", "Radio"], ans: "Telepon" },
+        { q: "8. Perabot 'Hondana' (ほんだな) digunakan untuk menyimpan...", options: ["Pakaian", "Buku", "Makanan", "Sepatu"], ans: "Buku" },
+        { q: "9. Kata 'Beddo' (ベッド) berarti...", options: ["Meja Belajar", "Kursi", "Kasur / Tempat Tidur", "Lemari"], ans: "Kasur / Tempat Tidur" },
+        { q: "10. Perbedaan penggunaan 'tsukue' dan 'teeburu' adalah...", options: ["Tsukue untuk meja belajar/kerja, Teeburu untuk meja makan/sofa", "Tsukue untuk meja makan, Teeburu untuk meja kerja", "Sama saja tidak ada bedanya", "Tsukue perabot kayu, Teeburu perabot besi"], ans: "Tsukue untuk meja belajar/kerja, Teeburu untuk meja makan/sofa" },
+        { q: "11. Pola kalimat untuk menyatakan 'Di (tempat) ada (barang)' adalah...", options: ["KB (tempat) wa KB (barang) desu", "KB (tempat) ni KB (barang) ga arimasu", "KB (barang) ni KB (tempat) ga arimasu", "KB (tempat) de KB (barang) arimasu"], ans: "KB (tempat) ni KB (barang) ga arimasu" },
+        { q: "12. Terjemahan dari 'Watashi no heya ni terebi ga arimasu' adalah...", options: ["Di rumah saya ada televisi", "Di kamar saya ada televisi", "Televisi ada di ruang tamu", "Kamar saya ada televisinya"], ans: "Di kamar saya ada televisi" },
+        { q: "13. Jawaban positif untuk pertanyaan 'Uchi ni terebi ga arimasu ka' adalah...", options: ["Hai, arimasen", "Hai, arimasu", "Iie, arimasu", "Iie, arimasen"], ans: "Hai, arimasu" },
+        { q: "14. Jawaban negatif untuk pertanyaan 'Daidokoro ni denwa ga arimasu ka' adalah...", options: ["Hai, arimasu", "Iie, arimasen", "Iie, arimasu", "Hai, arimasen"], ans: "Iie, arimasen" },
+        { q: "15. Kata sambung 'dan' untuk menghubungkan benda (contoh: beddo ... hondana) menggunakan partikel...", options: ["ni", "wa", "to", "ga"], ans: "to" },
+        { q: "16. Arti dari 'Watashi no heya ni beddo to hondana ga arimasu' adalah...", options: ["Di kamar saya ada kasur dan rak buku", "Di rumah saya ada kasur dan meja", "Di kamar saya tidak ada kasur dan rak buku", "Di ruang tamu ada kasur dan rak buku"], ans: "Di kamar saya ada kasur dan rak buku" },
+        { q: "17. Kata tanya yang digunakan untuk menanyakan 'benda apa' adalah...", options: ["Doko", "Nani", "Dare", "Itsu"], ans: "Nani" },
+        { q: "18. Lawan kata dari 'Ookii' (besar) adalah...", options: ["Hiroi", "Chiisai", "Kurai", "Kitanai"], ans: "Chiisai" },
+        { q: "19. Lawan kata dari 'Hiroi' (luas) adalah...", options: ["Semai", "Chiisai", "Furui", "Kitanai"], ans: "Semai" },
+        { q: "20. Kata 'Akarui' memiliki arti...", options: ["Gelap", "Terang", "Bersih", "Baru"], ans: "Terang" },
+        { q: "21. Lawan kata dari 'Akarui' (terang) adalah...", options: ["Kitanai", "Kurai", "Semai", "Furui"], ans: "Kurai" },
+        { q: "22. Kata 'Kirei' (きれい) dalam konteks kamar berarti...", options: ["Kotor", "Bersih / Indah", "Luas", "Sempit"], ans: "Bersih / Indah" },
+        { q: "23. Lawan kata dari 'Kirei' adalah...", options: ["Kitanai", "Chiisai", "Kurai", "Semai"], ans: "Kitanai" },
+        { q: "24. Kata 'Atarashii' (あたらしい) memiliki arti...", options: ["Lama / Tua", "Baru", "Terang", "Kecil"], ans: "Baru" },
+        { q: "25. Terjemahan 'B-san no heya wa kirei desu' adalah...", options: ["Kamar B-san besar", "Kamar B-san bersih/indah", "Kamar B-san luas", "Kamar B-san baru"], ans: "Kamar B-san bersih/indah" },
+        { q: "26. Terjemahan 'Watashi no uchi wa ookii desu' adalah...", options: ["Rumah saya besar", "Kamar saya besar", "Rumah saya bersih", "Rumah saya baru"], ans: "Rumah saya besar" },
+        { q: "27. Apabila seseorang bertanya 'Maria-san no heya wa ookii desu ka' dan dijawab tidak, bentuknya adalah...", options: ["Hai, ookii desu", "Iie, chiisai desu", "Iie, ookii desu", "Hai, chiisai desu"], ans: "Iie, chiisai desu" },
+        { q: "28. Posisi 'atas' dalam bahasa Jepang disebut...", options: ["Shita", "Ue", "Naka", "Soto"], ans: "Ue" },
+        { q: "29. Posisi 'bawah' dalam bahasa Jepang disebut...", options: ["Ue", "Shita", "Naka", "Mae"], ans: "Shita" },
+        { q: "30. Terjemahan 'Tsukue no ue ni konpyuutaa ga arimasu' adalah...", options: ["Di bawah meja ada komputer", "Di atas meja ada komputer", "Di dalam meja ada komputer", "Di samping meja ada komputer"], ans: "Di atas meja ada komputer" },
+        { q: "31. Terjemahan 'Tsukue no shita ni gomibako ga arimasu' adalah...", options: ["Di atas meja ada tempat sampah", "Di bawah meja ada tempat sampah", "Di dalam meja ada tempat sampah", "Di luar kamar ada tempat sampah"], ans: "Di bawah meja ada tempat sampah" },
+        { q: "32. Tempat sampah dalam bahasa Jepang dinamakan...", options: ["Gomibako", "Hondana", "Kaban", "Tokei"], ans: "Gomibako" },
+        { q: "33. Pola untuk bertanya sifat suatu kamar (misal: Apakah luas?) adalah...", options: ["KB (tempat) wa KS desu ka", "KB (tempat) ni KS ga arimasu ka", "KB (tempat) no KS desu", "KB (tempat) ga KS desu ka"], ans: "KB (tempat) wa KS desu ka" },
+        { q: "34. Pilihan kata berikut yang merupakan kelompok kata perabot/elektronik adalah...", options: ["Heya, Ima, Uchi", "Terebi, Reizouko, Beddo", "Ookii, Hiroi, Kirei", "Ue, Shita, Naka"], ans: "Terebi, Reizouko, Beddo" },
+        { q: "35. Huruf Hiragana 'A' sampai 'So' berjumlah...", options: ["10 huruf", "15 huruf", "20 huruf", "25 huruf"], ans: "15 huruf" }
+    ];
+
+    function renderQuiz() {
+        const container = document.getElementById("quiz-container");
+        container.innerHTML = "";
+        questions.forEach((qObj, idx) => {
+            let optsHtml = "";
+            qObj.options.forEach((opt, oIdx) => {
+                optsHtml += `<li><label id="lbl-${idx}-${oIdx}"><input type="radio" name="q${idx}" value="${opt}"> ${opt}</label></li>`;
+            });
+            container.innerHTML += `
+                <div class="question-card">
+                    <div class="question-text">${qObj.q}</div>
+                    <ul class="options">${optsHtml}</ul>
+                    <div id="ans-${idx}" class="answer-key">Jawaban Benar: ${qObj.ans}</div>
+                </div>
+            `;
+        });
+    }
+
+    // 5. PENILAIAN & SIMPAN HASIL KE FIREBASE
+    async function submitQuiz() {
+        let correct = 0;
+        let wrong = 0;
+
+        questions.forEach((q, idx) => {
+            const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+            document.getElementById(`ans-${idx}`).style.display = "block";
+
+            q.options.forEach((opt, oIdx) => {
+                const lbl = document.getElementById(`lbl-${idx}-${oIdx}`);
+                lbl.querySelector("input").disabled = true;
+                if (opt === q.ans) lbl.classList.add("correct-opt");
+                if (selected && selected.value === opt && opt !== q.ans) lbl.classList.add("wrong-opt");
+            });
+
+            if (selected && selected.value === q.ans) correct++;
+            else wrong++;
+        });
+
+        const score = Math.round((correct / questions.length) * 100);
+        document.getElementById("final-score").innerText = `Nilai Akhir: ${score} / 100`;
+        document.getElementById("details-count").innerText = `Benar: ${correct} | Salah: ${wrong}`;
+        document.getElementById("result-box").style.display = "block";
+
+        // Simpan Hasil ke Firebase Database
+        if (currentUser) {
+            await db.ref("examResults/bahasaJepang/" + currentUser.username).set({
+                username: currentUser.username,
+                nilai: score,
+                benar: correct,
+                salah: wrong,
+                waktu: Date.now()
+            });
+        }
+    }
+</script>
+</body>
+</html>
